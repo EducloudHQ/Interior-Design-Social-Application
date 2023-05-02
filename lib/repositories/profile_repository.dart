@@ -9,7 +9,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
-import 'package:amplify_core/amplify_core.dart';
+import 'package:aws_common/vm.dart';
+
 
 import '../models/User.dart';
 
@@ -80,6 +81,10 @@ class ProfileRepository extends ChangeNotifier {
   ///
   Future<bool>saveUserProfileDetails(String email) async{
     loading = true;
+    if(kDebugMode){
+      //033fb710-e931-11ed-beee-b3f37cb21a38.png
+      print('profile pic key here $profilePicKey');
+    }
     User newUser = User(username:usernameController.text.trim(),firstName: firstNameController.text.trim(),
         lastName: lastNameController.text.trim(),
         profilePicKey: profilePicKey,
@@ -135,38 +140,59 @@ class ProfileRepository extends ChangeNotifier {
     super.dispose();
   }
 
-  Future<String> getPicUrl(String pictureKey) async{
-    GetUrlResult resultDownload =
-        await Amplify.Storage.getUrl(key: profilePicKey);
-
-    print('profile pic url ${resultDownload.url}');
-    return resultDownload.url;
-
-  }
-  Future<void> uploadImage(String imageFilePath,String targetPath)async {
-    var uuid =  const Uuid().v1();
-    S3UploadFileOptions  options = S3UploadFileOptions(accessLevel: StorageAccessLevel.guest,);
+  Future<String> getProfilePicDownloadUrl({
+    required String key,
+  }) async {
     try {
-      UploadFileResult result  =  await Amplify.Storage.uploadFile(
-          key: uuid,
-          local: File(imageFilePath),
+      final result = await Amplify.Storage.getUrl(
+        key: key,
+        options: const StorageGetUrlOptions(
+          accessLevel: StorageAccessLevel.guest,
+          pluginOptions: S3GetUrlPluginOptions(
+            validateObjectExistence: true,
+            expiresIn: Duration(days: 1),
+          ),
+        ),
+      ).result;
+      return result.url.toString();
+    } on StorageException catch (e) {
+      safePrint('Could not get a downloadable URL: ${e.message}');
+      rethrow;
+    }
+  }
+
+
+  Future<void> uploadImage(String imageFilePath,String targetPath) async {
+    var uuid =  const Uuid().v1();
+    final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
+    try {
+      final uploadResult =  await Amplify.Storage.uploadFile(
+          key: '$uuid.png',
+          localFile: awsFile,
           options: options
-      );
-      profilePicKey  = result.key;
+      ).result;
+
+
+      safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
+      profilePicKey  = uploadResult.uploadedItem.key;
+
+      final resultDownload =
+      await getProfilePicDownloadUrl(key: profilePicKey);
       if (kDebugMode) {
-        print("the key is "+profilePicKey);
+        print(resultDownload);
       }
-      GetUrlResult resultDownload =
-          await Amplify.Storage.getUrl(key: profilePicKey);
-      if (kDebugMode) {
-        print(resultDownload.url);
-      }
-      profilePic = resultDownload.url;
+      profilePic = resultDownload;
       loading = false;
+      if (kDebugMode) {
+        print("the key is $profilePicKey");
+      }
+
 
     } on StorageException catch (e) {
-      print("error message is" + e.message);
+      safePrint("error message is${e.message}");
       loading= false;
+      safePrint('Error uploading file: ${e.message}');
+      rethrow;
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -31,14 +32,16 @@ class TaskItem extends StatelessWidget {
                   },initialData: null,
                   child: Consumer(builder: (_,User? user,child){
                     if(user != null){
-
+                      if(kDebugMode){
+                        print('profile pic key is ${user.profilePicKey}');
+                      }
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
 
-                              FutureProvider<String?>.value(value:ProfileRepository.instance().getPicUrl(user.profilePicKey),
+                              FutureProvider<String?>.value(value:ProfileRepository.instance().getProfilePicDownloadUrl(key:user.profilePicKey),
                               catchError: (context,error)=>throw error!,
                               initialData: '',
                               child: Consumer(builder: (key,String? profilePicUrl,child){

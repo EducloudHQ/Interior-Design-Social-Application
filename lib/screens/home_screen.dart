@@ -21,6 +21,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? userId;
   int count = 0;
+  Future<void> signOutCurrentUser() async {
+    try {
+      await Amplify.Auth.signOut();
+
+    } on AuthException catch (e) {
+      print(e.message);
+    }
+  }
 
 
   late StreamSubscription<QuerySnapshot<Task>> tasksStream;
@@ -88,11 +96,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 appBar: AppBar(
                   title: const Text('Todoish'),
                   backgroundColor: Theme.of(context).colorScheme.secondary,
+                  actions: [
+                    IconButton(onPressed: (){
+                      signOutCurrentUser();
+                      sharedPrefs.deleteAllKeys();
+
+                    }, icon: Icon(Icons.logout_outlined))
+                  ],
                 ),
                 body:
-
-
-
 
                 taskRepo.tasks.isEmpty ? const Center(child: Text("No Tasks available")) :
                   ListView.builder(

@@ -35,7 +35,7 @@ void initState(){
 
 
 
-  commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()]).listen((QuerySnapshot<Comment> event) {
+  commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()],where:Comment.TASKID.eq(widget.task.id) ).listen((QuerySnapshot<Comment> event) {
     if (commentsRepo.comments.isNotEmpty) {
       if(commentsRepo.comments[0].id != event.items[0].id){
         commentsRepo.comment = event.items[0];
@@ -173,7 +173,7 @@ void dispose(){
                                         Row(
                                           children: [
 
-                                            FutureProvider<String?>.value(value:ProfileRepository.instance().getPicUrl(user.profilePicKey),
+                                            FutureProvider<String?>.value(value:ProfileRepository.instance().getProfilePicDownloadUrl(key:user.profilePicKey),
                                               catchError: (context,error)=>throw error!,
                                               initialData: '',
                                               child: Consumer(builder: (key,String? profilePicUrl,child){

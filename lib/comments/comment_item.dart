@@ -105,15 +105,19 @@ class CommentItem  extends StatelessWidget {
                         Container(
 
                             margin:EdgeInsets.only(left: 55),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
+                            child:
                                 Text(comment.comment!),
-                                Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(comment.createdOn!.toSeconds() * 1000)),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
+                             ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(comment.createdOn!.toSeconds() * 1000)),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
 
-                              ],
-                            )),
+                            ],
+                          ),
+                        )
+
 
                       ],
                     );
