@@ -21,9 +21,9 @@ class TaskRepository extends ChangeNotifier{
 
   List<Task> _tasks = [];
   final List<TextEditingController> _controllers = [];
-   TextEditingController _controller = TextEditingController();
+   final TextEditingController _controller = TextEditingController();
   final List<TextField> _fields = [];
-TextField _field = TextField();
+final TextField _field = TextField();
 
 
   List<TextField> get fields => _fields;

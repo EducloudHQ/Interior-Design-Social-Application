@@ -17,10 +17,11 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 void main() {
   runApp(
+
       ChangeNotifierProvider(
         create: (_) =>
             LoginRepository.instance(),
-        child: const MyApp(),
+        child: MyApp(),
       ),
 
       );
@@ -98,15 +99,22 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Todoish',
 
+
       theme: ThemeData(
+
+ appBarTheme: const AppBarTheme(
+
+   backgroundColor: Color(0xFFe76f51),
+ ),
       fontFamily: 'Montserrat',
-       primaryColor: Color(0xFF264653),
+       primaryColor: const Color(0xFF264653),
           colorScheme:ColorScheme.fromSwatch().copyWith(secondary: const Color(0xFFe76f51))
 
 
 
 
       ),
+     debugShowCheckedModeBanner: false,
 
      home: loginRepo.loadingAmplify ? const Center(child: CircularProgressIndicator(),) :
      MultiProvider(

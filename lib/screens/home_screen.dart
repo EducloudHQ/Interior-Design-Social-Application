@@ -11,7 +11,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import '../models/ModelProvider.dart';
 import '../models/Task.dart';
 import '../repositories/task_respository.dart';
-import 'package:todoish/repositories/task_respository.dart';
+
 import 'package:amplify_datastore/amplify_datastore.dart';
 class HomeScreen extends StatefulWidget {
   @override
@@ -53,9 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
        });
 
 
-
-
-
   }
 
 
@@ -95,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
                 appBar: AppBar(
                   title: const Text('Todoish'),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
+
                   actions: [
                     IconButton(onPressed: (){
                       signOutCurrentUser();
