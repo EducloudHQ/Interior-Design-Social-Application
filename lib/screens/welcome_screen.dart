@@ -23,59 +23,191 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     var loginRepo= context.watch<LoginRepository>();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: const Color(0xFF264653),
-      body: Column(
+backgroundColor: const Color(0xFF8A47EB),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            stretch: true,
+            floating: false,
+            pinned: false,
 
-        children: [
-          Expanded(
-            child: Container(
+            snap: false,
 
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+
+
+            expandedHeight: size.height/2.2,
+
+            flexibleSpace: FlexibleSpaceBar(
+
+              stretchModes: const <StretchMode>[
+                StretchMode.zoomBackground,
+                StretchMode.blurBackground,
+                StretchMode.fadeTitle,
+              ],
+              background: Stack(
+                fit: StackFit.expand,
                 children: [
-                  SvgPicture.asset('assets/todo.svg',height: 50,width: 50,color: Color(0xFFe76f51),),
-                  const Text("Todoish",style: TextStyle(fontFamily: 'Ultra-Regular',
-                    fontSize: 40,color: Color(0xFFe76f51),),),
+                  Image.asset('assets/meal.png',fit: BoxFit.cover,),
+                   DecoratedBox(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment(0.0, 0.5),
+                        end: Alignment.center,
+                        colors: <Color>[
+                          Color(0xFF8A47EB).withOpacity(0.9),
+                          Color(0xFF8A47EB).withOpacity(0.5),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
+
+
           ),
-          Container(
-            padding: const EdgeInsets.only(bottom: 50),
-            child: SizedBox(
-              width: size.width/1.4,
-              height:50,
+SliverToBoxAdapter(
+  child:  Container(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 10,bottom: 10),
 
-              child: ElevatedButton(
-
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondary),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
-
-                  ),
-                   onPressed: ()=> loginRepo.googleSignIn(context),
-                  /*
-                  onPressed: (){
-                    loginRepo.signOutCurrentUser();
-                    sharedPrefs.deleteAllKeys();
-                  },
-
-                   */
+          width: size.width/1.2,
+          height: size.height/18,
 
 
+          child: ElevatedButton(
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SvgPicture.asset('assets/google.svg',height: 24,width: 24,color: Colors.white),
-                      const Text('Continue with Google',style: TextStyle(fontWeight:FontWeight.bold, color: Colors.white),),
-                    ],
-                  )),
-            ),
-          )
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.black),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)))
+
+              ),
+              onPressed: ()=> loginRepo.googleSignIn(context),
+
+
+              child:const Text('Sign up with email',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 17, color: Colors.white),),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                color: Colors.white,
+                width: size.width/6,
+                height: 2,
+              ),
+              Container(
+                child: Text('or use social sign up',style: TextStyle(fontSize: 15,color: Colors.white),),
+              ),
+              Container(
+                color: Colors.white,
+                width: size.width/6,
+                height: 2,
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+
+          width: size.width/1.2,
+          height: size.height/18,
+
+          child: ElevatedButton(
+
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)))
+
+              ),
+              onPressed: ()=> loginRepo.googleSignIn(context),
+
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SvgPicture.asset('assets/google.svg',height: 24,width: 24,color: Colors.red,),
+                  const Text('Continue with Google',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15, color: Colors.black),),
+                ],
+              )),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 10,top: 10),
+
+          width: size.width/1.2,
+          height: size.height/18,
+
+          child: ElevatedButton(
+
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)))
+
+              ),
+              onPressed: ()=> loginRepo.googleSignIn(context),
+
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SvgPicture.asset('assets/apple.svg',height: 24,width: 24,),
+                  const Text('Continue with apple',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15, color: Colors.black),),
+                ],
+              )),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 10,top: 10),
+
+          width: size.width/1.2,
+          height: size.height/18,
+
+          child: ElevatedButton(
+
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)))
+
+              ),
+              onPressed: ()=> loginRepo.googleSignIn(context),
+
+
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SvgPicture.asset('assets/facebook.svg',height: 24,width: 24),
+                  const Text('Continue with facebook',style: TextStyle(fontWeight:FontWeight.bold,fontSize: 15, color: Colors.black),),
+                ],
+              )),
+        ),
+
+        Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Already have an account ?',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+              TextButton(
+
+                  onPressed: (){}, child: Text('Log In',style: TextStyle(color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline),))
+            ],
+          ),
+        )
+      ],
+    ),
+  ),
+)
+
 
         ],
-      ),
+      )
+
+
     );
 
 

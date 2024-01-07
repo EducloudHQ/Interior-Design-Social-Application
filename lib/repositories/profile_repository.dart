@@ -28,7 +28,7 @@ class ProfileRepository extends ChangeNotifier {
 
 
 
-  S3UploadFileOptions? options;
+
   bool _loading = false;
   String _userId='';
   String _username='';
@@ -98,6 +98,9 @@ class ProfileRepository extends ChangeNotifier {
 
 
   }
+  //userId = test@gmail.com
+  
+
 
   Future<User>getUserProfile(String userId) async{
 
@@ -169,7 +172,7 @@ class ProfileRepository extends ChangeNotifier {
       final uploadResult =  await Amplify.Storage.uploadFile(
           key: '$uuid.png',
           localFile: awsFile,
-          options: options
+
       ).result;
 
 

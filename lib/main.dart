@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     var loginRepo = context.watch<LoginRepository>();
     return MaterialApp(
-      title: 'Todoish',
+      title: 'Social App',
 
 
       theme: ThemeData(
@@ -116,7 +116,9 @@ class _MyAppState extends State<MyApp> {
       ),
      debugShowCheckedModeBanner: false,
 
-     home: loginRepo.loadingAmplify ? const Center(child: CircularProgressIndicator(),) :
+     home:
+
+    // loginRepo.loadingAmplify ? const Center(child: CircularProgressIndicator(),) :
      MultiProvider(
        providers: [
          ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
@@ -125,8 +127,9 @@ class _MyAppState extends State<MyApp> {
 
          ),
        ],
-       child: HomeScreen(),
-     // child: WelcomeScreen(),
+
+       child: WelcomeScreen(),
+
      ),
 
 
