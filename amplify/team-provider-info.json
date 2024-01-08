@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-todoish-dev-204106-authRole",
+      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-todoish-dev-204106-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-todoish-dev-204106-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-todoish-dev-204106-deployment",
+      "UnauthRoleName": "amplify-todoish-dev-204106-unauthRole",
+      "StackName": "amplify-todoish-dev-204106",
+      "StackId": "arn:aws:cloudformation:us-east-1:132260253285:stack/amplify-todoish-dev-204106/b73f0630-ad94-11ee-bde1-0adb97798635",
+      "AmplifyAppId": "d3b1efcrc7q3z7"
+    },
+    "categories": {
+      "auth": {
+        "todoishd7ee5e21": {}
+      }
+    }
+  }
+}

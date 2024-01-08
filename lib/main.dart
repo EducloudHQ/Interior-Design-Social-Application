@@ -3,19 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:todoish/repositories/login_respository.dart';
-import 'package:todoish/repositories/task_respository.dart';
-import 'package:todoish/screens/welcome_screen.dart';
-import 'package:todoish/utils/shared_preferences.dart';
-import 'package:todoish/screens/home_screen.dart';
+import 'package:social_media/repositories/login_respository.dart';
+import 'package:social_media/repositories/task_respository.dart';
+import 'package:social_media/screens/home_screen.dart';
+import 'package:social_media/screens/welcome_screen.dart';
 
-
+import 'package:go_router/go_router.dart';
+import 'package:social_media/utils/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'models/ModelProvider.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
+
+final AmplifyLogger _logger = AmplifyLogger('socialApp');
 void main() {
+  AmplifyLogger().logLevel = LogLevel.verbose;
   runApp(
 
       ChangeNotifierProvider(
@@ -36,8 +39,25 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  static final _router = GoRouter(
+    routes: [
+    GoRoute(
+    path: '/',
+    builder: (BuildContext _, GoRouterState __) =>
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
+            ChangeNotifierProvider(create: (BuildContext context) => LoginRepository.instance(),),
+            ChangeNotifierProvider(create: (BuildContext context) => TaskRepository.instance(),
+
+            ),
+          ],
+        child:HomeScreen()),
+  ),]);
+
+
   Future<void> _configureAmplify() async {
-    var loginRepo = context.read<LoginRepository>();
+   // var loginRepo = context.read<LoginRepository>();
     try{
 
 
@@ -48,6 +68,12 @@ class _MyAppState extends State<MyApp> {
         AmplifyStorageS3()
       ]);
 
+      await Amplify.configure(amplifyconfig);
+      _logger.debug('Successfully configured Amplify');
+
+      Amplify.Hub.listen(HubChannel.Auth, (event) {
+        _logger.info('Auth Event: $event');
+      });/*
       // Once Plugins are added, configure Amplify
       await Amplify.configure(amplifyconfig);
       if(Amplify.isConfigured){
@@ -59,10 +85,11 @@ class _MyAppState extends State<MyApp> {
         loginRepo.loadingAmplify = true;
       }
 
-
-    } catch(e) {
-      loginRepo.loadingAmplify = true;
+*/
+    }on Exception catch (e, st) {
+    //  loginRepo.loadingAmplify = true;
       print('an error occured during amplify configuration: $e');
+      _logger.error('Configuring Amplify failed', e, st);
 
 
 
@@ -95,8 +122,8 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   Widget build(BuildContext context) {
-    var loginRepo = context.watch<LoginRepository>();
-    return MaterialApp(
+   // var loginRepo = context.watch<LoginRepository>();
+    return MaterialApp.router(
       title: 'Social App',
 
 
@@ -115,8 +142,11 @@ class _MyAppState extends State<MyApp> {
 
       ),
      debugShowCheckedModeBanner: false,
-
-     home:
+     routerConfig: _router,
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+/*
+     home:_router
 
     // loginRepo.loadingAmplify ? const Center(child: CircularProgressIndicator(),) :
      MultiProvider(
@@ -131,7 +161,7 @@ class _MyAppState extends State<MyApp> {
        child: WelcomeScreen(),
 
      ),
-
+*/
 
 
     );

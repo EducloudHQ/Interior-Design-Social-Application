@@ -3,16 +3,17 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todoish/screens/create_task_screen.dart';
-import 'package:todoish/screens/task_item.dart';
-import 'package:todoish/screens/welcome_screen.dart';
-import 'package:todoish/utils/shared_preferences.dart';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:social_media/screens/welcome_screen.dart';
+import 'package:social_media/utils/shared_preferences.dart';
 import '../models/ModelProvider.dart';
 import '../models/Task.dart';
 import '../repositories/task_respository.dart';
 
 import 'package:amplify_datastore/amplify_datastore.dart';
+
+import 'create_task_screen.dart';
 class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -101,16 +102,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     }, icon: Icon(Icons.logout_outlined))
                   ],
                 ),
-                body:
-
+                body:Center(child: Text("No Tasks available")),
+/*
                 taskRepo.tasks.isEmpty ? const Center(child: Text("No Tasks available")) :
+
+
                   ListView.builder(
                   itemBuilder: (context, index) {
                     return TaskItem(taskRepo.tasks[index]);
                   },
                   itemCount:taskRepo.tasks.length,
                 ),
-
+*/
 
 
                 floatingActionButton: FloatingActionButton(

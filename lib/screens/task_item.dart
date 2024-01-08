@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'package:todoish/models/ModelProvider.dart';
+
 
 import '../comments/comments_repository.dart';
 import '../comments/comments_screen.dart';
@@ -12,9 +12,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 
 class TaskItem extends StatelessWidget {
-  TaskItem(this.task);
 
-  final Task task;
+
+ // final Task task;
 
 
   @override
@@ -26,6 +26,7 @@ class TaskItem extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child:  Column(
           children: [
+            /*
             FutureProvider<User?>.value(value: ProfileRepository.instance().getUserProfile(task.userId),
                   catchError: (context,error){
                     throw error!;
@@ -180,6 +181,7 @@ class TaskItem extends StatelessWidget {
                 ],
               ),
             ),
+          */
           ],
         ),
 

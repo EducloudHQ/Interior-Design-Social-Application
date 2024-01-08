@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media/repositories/profile_repository.dart';
 
-import 'package:todoish/repositories/profile_repository.dart';
+
 
 import '../screens/create_user_account.dart';
 import '../utils/shared_preferences.dart';
