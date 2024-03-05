@@ -5,8 +5,7 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import '../models/Comment.dart';
-import '../models/Task.dart';
+
 
 
 
@@ -26,11 +25,11 @@ class CommentsRepository extends ChangeNotifier {
   S3UploadFileOptions? options;
   bool _loading = false;
   String? _userId;
-  List<Comment> _comments = [];
+ // List<Comment> _comments = [];
 
   late StreamSubscription commentsStream;
-  List<Comment> get comments => _comments;
-
+ // List<Comment> get comments => _comments;
+/*
   set comments(List<Comment> value) {
     _comments = value;
     notifyListeners();
@@ -41,7 +40,7 @@ class CommentsRepository extends ChangeNotifier {
     notifyListeners();
 
   }
-
+*/
   String? get userId => _userId;
 
   set userId(String? value) {
@@ -103,7 +102,7 @@ class CommentsRepository extends ChangeNotifier {
 
     super.dispose();
   }
-
+/*
   Future<List<Comment>>queryAllCommentsForTask(String taskId) async{
     List<Comment> comments= await Amplify.DataStore.query(Comment.classType,
         where: Comment.TASKID.eq(taskId),
@@ -134,6 +133,6 @@ class CommentsRepository extends ChangeNotifier {
     }
   }
 
-
+*/
 
 }

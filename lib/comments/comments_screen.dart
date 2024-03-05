@@ -10,17 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../models/Comment.dart';
-import '../models/Task.dart';
-import '../models/User.dart';
 import '../repositories/profile_repository.dart';
 import 'comment_item.dart';
 import 'comments_repository.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({required this.userId,required this.task});
+  const CommentsScreen({required this.userId});
   final String userId;
-  final Task task;
+ // final Task task;
   @override
   _CommentsScreenState createState() => _CommentsScreenState();
 }
@@ -34,7 +31,7 @@ void initState(){
 
 
 
-
+/*
   commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()],where:Comment.TASKID.eq(widget.task.id) ).listen((QuerySnapshot<Comment> event) {
     if (commentsRepo.comments.isNotEmpty) {
       if(commentsRepo.comments[0].id != event.items[0].id){
@@ -51,7 +48,7 @@ void initState(){
     }
 
   });
-
+*/
     super.initState();
 
   }
@@ -121,12 +118,14 @@ void dispose(){
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward),
                     onPressed: () {
+                      /*
                       if(commentsRepository.commentController.text.isNotEmpty){
                         commentsRepository.createComment(widget.userId,widget.task).then((_){
                           commentsRepository.commentController.clear();
                         });
 
                       }
+                   */
                     },
                     color: Colors.white,
                   ),
@@ -160,6 +159,7 @@ void dispose(){
                         padding: const EdgeInsets.all(10),
                         child:  Column(
                           children: [
+                            /*
                             FutureProvider<User?>.value(value: ProfileRepository.instance().getUserProfile(widget.task.userId),
                                 catchError: (context,error){
                                   throw error!;
@@ -292,6 +292,8 @@ void dispose(){
                                 ],
                               ),
                             ),
+
+                             */
                           ],
                         ),
 
@@ -300,10 +302,11 @@ void dispose(){
                     );
                   }else{
                     index -= 1;
-                    return CommentItem(widget.task.userId,commentsRepo.comments[index]);
+                    return Container();
+                  //  return CommentItem(commentsRepo.comments[index]);
                   }
 
-                },itemCount: commentsRepo.comments.length+1,),
+                },itemCount: 101,),
             ),
             buildInput(commentsRepo)
           ],

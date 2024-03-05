@@ -10,6 +10,7 @@ PODS:
     - AmplifyPlugins/AWSAPIPlugin (= 1.30.4)
     - AmplifyPlugins/AWSDataStorePlugin (= 1.30.4)
     - Flutter
+    - Starscream (= 4.0.4)
   - amplify_secure_storage (0.0.1):
     - Flutter
   - AmplifyPlugins/AWSAPIPlugin (1.30.4):
@@ -42,8 +43,9 @@ PODS:
   - path_provider_ios (0.0.1):
     - Flutter
   - ReachabilitySwift (5.0.0)
-  - shared_preferences_ios (0.0.1):
+  - shared_preferences_foundation (0.0.1):
     - Flutter
+    - FlutterMacOS
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
@@ -62,7 +64,7 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
-  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
 SPEC REPOS:
@@ -96,15 +98,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
-  shared_preferences_ios:
-    :path: ".symlinks/plugins/shared_preferences_ios/ios"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
   Amplify: 4e41668c8801667e174ab50c12bc3099c71a257f
   amplify_auth_cognito: 76b5a54f05f66f69966b468b8121a0dd33a32c70
-  amplify_datastore: 635cdd33aa500e2b8366343de90f70377c0fa1e8
+  amplify_datastore: 806c9f0489d77bf3648cefd61df63cb4e00477e2
   amplify_secure_storage: 501cbdac671a050090d48dfcc002d5637d3f4a55
   AmplifyPlugins: 1335f0919aa07329df58685a020f2311c75a5176
   AppSyncRealTimeClient: 49901c6f21e541bec09281854c5695a6c1309bf7
@@ -112,17 +114,17 @@ SPEC CHECKSUMS:
   AWSPluginsCore: f2188458c27e6cb09597c67876f80611d14275d7
   connectivity_plus: 07c49e96d7fc92bc9920617b83238c4d178b446a
   device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
+  image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   SQLite.swift: 4fc2be46c36392e3b87afe6fe7f1801c1daa07ef
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
 
 PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.15.2

@@ -1,16 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import 'package:timeago/timeago.dart' as timeago;
 import 'package:provider/provider.dart';
 
-import '../models/Task.dart';
-import '../models/User.dart';
 import '../repositories/profile_repository.dart';
 
 class TaskCommentItem extends StatelessWidget{
-  TaskCommentItem(this.task);
-  final Task task;
+
+
 
 
   @override
@@ -22,6 +19,7 @@ class TaskCommentItem extends StatelessWidget{
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
+            /*
             FutureProvider.value(value: ProfileRepository.instance().getUserProfile(task.userId!),
                 catchError: (context,error){
                   print(error);
@@ -90,7 +88,7 @@ class TaskCommentItem extends StatelessWidget{
                     );
                   }
                 })),
-
+*/
 
             Container(
 
@@ -104,7 +102,7 @@ class TaskCommentItem extends StatelessWidget{
                     children: [
                       Expanded(child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Text(task.description!,style: TextStyle(color: Colors.white),))),
+                          child: Text("description",style: TextStyle(color: Colors.white),))),
 
                     ],
                   ),

@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 
-import '../models/Task.dart';
 import '../repositories/task_respository.dart';
 import '../utils/shared_preferences.dart';
 import 'home_screen.dart';
@@ -444,7 +443,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                         if (kDebugMode) {
                                           print(profileRepo.profilePic);
                                         }
-
+/*
                                         profileRepo
                                             .saveUserProfileDetails(
                                                 widget.email)
@@ -469,6 +468,8 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                             );
                                           }));
                                         });
+
+*/
                                       }
                                     },
                                     child: const Text(

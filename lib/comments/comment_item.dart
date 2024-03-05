@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-import '../models/Comment.dart';
-import '../models/User.dart';
 import '../repositories/profile_repository.dart';
 class CommentItem  extends StatelessWidget {
-   CommentItem (this.userId,this.comment);
-  final String userId;
-  final Comment comment;
+
+
+
 
 
 
@@ -25,6 +23,7 @@ class CommentItem  extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /*
             FutureProvider.value(value: ProfileRepository.instance().getUserProfile(comment.userId),
                 catchError: (context,error){
                   print(error);
@@ -134,7 +133,7 @@ class CommentItem  extends StatelessWidget {
                     );
                   }
                 })),
-
+*/
 
 
 

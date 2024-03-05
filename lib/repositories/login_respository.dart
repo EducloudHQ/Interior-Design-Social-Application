@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/repositories/profile_repository.dart';
-
+import 'package:go_router/go_router.dart';
 
 
 import '../screens/create_user_account.dart';
@@ -136,8 +136,9 @@ class LoginRepository extends ChangeNotifier{
               SharedPrefsUtils.instance().saveUserEmail(item.value).then((value) {
                 print("email address saved");
               });
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
-                  child:CreateUserAccountScreen(email: item.value,))));
+
+              context.pushReplacement('users/${item.value}');
+
 
 
             }

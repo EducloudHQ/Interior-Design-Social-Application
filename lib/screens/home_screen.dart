@@ -7,8 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
-import '../models/ModelProvider.dart';
-import '../models/Task.dart';
+
+
 import '../repositories/task_respository.dart';
 
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
+/*
   late StreamSubscription<QuerySnapshot<Task>> tasksStream;
 
   Future<void> _getAllTasks() async {
@@ -55,13 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   }
-
+*/
 
 
   @override
   void initState() {
     // TODO: implement initState
-    _getAllTasks();
+   // _getAllTasks();
 
     super.initState();
 
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    tasksStream.cancel();
+  //  tasksStream.cancel();
   }
 
   @override

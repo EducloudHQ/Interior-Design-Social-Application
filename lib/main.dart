@@ -4,7 +4,9 @@ import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:social_media/repositories/login_respository.dart';
+import 'package:social_media/repositories/profile_repository.dart';
 import 'package:social_media/repositories/task_respository.dart';
+import 'package:social_media/screens/create_user_account.dart';
 import 'package:social_media/screens/home_screen.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 
@@ -12,7 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'models/ModelProvider.dart';
+
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 
@@ -52,8 +54,21 @@ class _MyAppState extends State<MyApp> {
 
             ),
           ],
-        child:HomeScreen()),
-  ),]);
+        child:WelcomeScreen()),
+  ),
+      GoRoute(
+          name:'createUserAccount',
+          path: '/users/:email',
+          builder: (context, state) {
+            return ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
+              child: CreateUserAccountScreen(email:state.pathParameters['email']!,)
+
+
+            );
+
+
+          }),
+    ]);
 
 
   Future<void> _configureAmplify() async {
@@ -62,7 +77,7 @@ class _MyAppState extends State<MyApp> {
 
 
       await Amplify.addPlugins([
-        AmplifyDataStore(modelProvider: ModelProvider.instance),
+
         AmplifyAuthCognito(),
         AmplifyAPI(),
         AmplifyStorageS3()
@@ -142,9 +157,8 @@ class _MyAppState extends State<MyApp> {
 
       ),
      debugShowCheckedModeBanner: false,
-     routerConfig: _router,
-      routeInformationParser: _router.routeInformationParser,
-      routerDelegate: _router.routerDelegate,
+     routerConfig: _router
+
 /*
      home:_router
 

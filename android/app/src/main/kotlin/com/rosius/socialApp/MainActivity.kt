@@ -1,4 +1,4 @@
-package com.example.todoish
+package com.rosius.socialApp
 
 import io.flutter.embedding.android.FlutterActivity
 

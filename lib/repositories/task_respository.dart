@@ -6,8 +6,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 
-import '../models/Task.dart';
-import '../models/User.dart';
 
 
 class TaskRepository extends ChangeNotifier{
@@ -19,7 +17,7 @@ class TaskRepository extends ChangeNotifier{
 
   bool get loading => _loading;
 
-  List<Task> _tasks = [];
+  //List<Task> _tasks = [];
   final List<TextEditingController> _controllers = [];
    final TextEditingController _controller = TextEditingController();
   final List<TextField> _fields = [];
@@ -50,7 +48,7 @@ final TextField _field = TextField();
     _controllers.addAll(value);
     notifyListeners();
   }
-
+/*
   List<Task> get tasks => _tasks;
 
   set setTasks(List<Task> value) {
@@ -64,7 +62,7 @@ final TextField _field = TextField();
     _tasks.insert(0, value);
     notifyListeners();
   }
-
+*/
   set loading(bool value) {
     _loading = value;
     notifyListeners();
@@ -72,7 +70,7 @@ final TextField _field = TextField();
 
   final taskTitleController = TextEditingController();
   final taskDescriptionController = TextEditingController();
-
+/*
   Future<bool> createTask(String email) async{
     loading = true;
     /**
@@ -133,6 +131,8 @@ final TextField _field = TextField();
         sortBy: [Task.CREATEDON.descending()]);
     return tasks;
   }
+
+ */
   void showInSnackBar(BuildContext context,String value) {
     ScaffoldMessenger.of(context).showSnackBar( SnackBar(
       content: Text(
@@ -145,7 +145,7 @@ final TextField _field = TextField();
   }
 
 
-
+/*
   Future<void> updateTask(String taskId) async{
     Task oldTask = (await Amplify.DataStore.query(Task.classType,
         where: Task.ID.eq(taskId)))[0];
@@ -163,7 +163,7 @@ final TextField _field = TextField();
 
   }
 
-
+*/
 
   @override
   void dispose() {

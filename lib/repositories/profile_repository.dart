@@ -12,7 +12,6 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:aws_common/vm.dart';
 
 
-import '../models/User.dart';
 
 class ProfileRepository extends ChangeNotifier {
 
@@ -76,7 +75,7 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-
+/*
   /// save user details to profile
   ///
   Future<bool>saveUserProfileDetails(String email) async{
@@ -114,7 +113,7 @@ class ProfileRepository extends ChangeNotifier {
 
   }
 
-
+*/
 
 
   void showInSnackBar(BuildContext context,String value) {
