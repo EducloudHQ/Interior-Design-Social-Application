@@ -142,21 +142,11 @@ class _MyAppState extends State<MyApp> {
       title: 'Social App',
 
 
-      theme: ThemeData(
-
- appBarTheme: const AppBarTheme(
-
-   backgroundColor: Color(0xFFe76f51),
- ),
-      fontFamily: 'Montserrat',
-       primaryColor: const Color(0xFF264653),
-          colorScheme:ColorScheme.fromSwatch().copyWith(secondary: const Color(0xFFe76f51))
-
-
-
-
-      ),
-     debugShowCheckedModeBanner: false,
+       // theme: ThemeData(),
+        theme: ThemeData.dark(),
+        //darkTheme: ThemeData.light(), // standard dark theme
+      //  themeMode: ThemeMode.system,
+        debugShowCheckedModeBanner: false,
      routerConfig: _router
 
 /*
