@@ -7,10 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
-
-import '../repositories/task_respository.dart';
-import '../utils/shared_preferences.dart';
-import 'home_screen.dart';
 import '../repositories/profile_repository.dart';
 
 class CreateUserAccountScreen extends StatefulWidget {

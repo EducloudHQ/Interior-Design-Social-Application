@@ -1,17 +1,11 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
-
-
 import '../repositories/task_respository.dart';
-
-import 'package:amplify_datastore/amplify_datastore.dart';
 
 import 'create_task_screen.dart';
 class HomeScreen extends StatefulWidget {

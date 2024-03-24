@@ -113,7 +113,19 @@ class ProfileRepository extends ChangeNotifier {
 
   }
 
+    Future<User>getUserProfile(String userId) async{
+
+    List<User> user = await Amplify.DataStore.query(User.classType, where: User.EMAIL.eq(userId));
+
+    profilePic =user[0].profilePicUrl!;
+
+
+    return user[0];
+
+
+
 */
+
 
 
   void showInSnackBar(BuildContext context,String value) {
