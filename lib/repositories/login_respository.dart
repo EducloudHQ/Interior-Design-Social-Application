@@ -22,7 +22,7 @@ class LoginRepository extends ChangeNotifier{
 
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
-
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool _isSignedIn = false;
   bool _loading = false;
