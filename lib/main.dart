@@ -8,6 +8,7 @@ import 'package:social_media/repositories/profile_repository.dart';
 import 'package:social_media/repositories/task_respository.dart';
 import 'package:social_media/screens/create_user_account.dart';
 import 'package:social_media/screens/home_screen.dart';
+import 'package:social_media/screens/profile_screen.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 
 import 'package:go_router/go_router.dart';
@@ -54,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
             ),
           ],
-        child:WelcomeScreen()),
+        child:ProfileScreen()),
   ),
       GoRoute(
           name:'createUserAccount',
@@ -65,6 +66,18 @@ class _MyAppState extends State<MyApp> {
 
 
             );
+
+
+          }),
+
+      GoRoute(
+          name:'userProfile',
+          path: '/profile',
+          builder: (context, state) {
+            return  ProfileScreen();
+
+
+
 
 
           }),
@@ -141,10 +154,12 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp.router(
       title: 'Social App',
 
+      theme: ThemeData(
+        fontFamily: 'Montserrat',
+      ),
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData.dark(),
 
-       // theme: ThemeData(),
-        theme: ThemeData.dark(),
-        //darkTheme: ThemeData.light(), // standard dark theme
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
      routerConfig: _router
