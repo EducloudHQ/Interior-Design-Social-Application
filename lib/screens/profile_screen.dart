@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media/models/ModelProvider.dart';
 import '../models/user.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -21,7 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
   //  var profileModel = context.watch<User?>();
-    User profileModel = User(id: '23423423',firstName: "Rosius",lastName: "Ndimofor",username: "ro",profilePicUrl: "", email: 'fasdfdfs', userType: "asdasd");
+    //User profileModel = User(id: '23423423',firstName: "Rosius",lastName: "Ndimofor",username: "ro",profilePicUrl: "", email: 'fasdfdfs', userType: USERTYPE.ADMIN);
     return  Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -46,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child:  CachedNetworkImage(
                           width: 60,
                           height: 60,
-                          imageUrl: profileModel.profilePicUrl,
+                          imageUrl:" profileModel.profilePicUrl",
                           placeholder: (context, url) => CircularProgressIndicator(),
                           errorWidget: (context, url, error) => ClipRRect(
                             borderRadius: BorderRadius.circular(1000),
@@ -65,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Container(
 
-                            child: Text("${profileModel.firstName} ${profileModel.lastName}" ,
+                            child: Text(" " ,
                               style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
                           ),
                           Container(

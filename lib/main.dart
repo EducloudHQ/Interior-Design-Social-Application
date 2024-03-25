@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:social_media/repositories/profile_repository.dart';
 import 'package:social_media/repositories/task_respository.dart';
 import 'package:social_media/screens/create_user_account.dart';
 import 'package:social_media/screens/home_screen.dart';
 import 'package:social_media/screens/profile_screen.dart';
-
-
 import 'package:go_router/go_router.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
@@ -20,7 +19,7 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 
-import 'models/ModelProvider.dart';
+
 
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
 void main() {
@@ -102,12 +101,7 @@ class _MyAppState extends State<App> {
           ),
         ),
         AmplifyStorageS3(),
-        AmplifyDataStore(
-          modelProvider: ModelProvider.instance,
-          errorHandler: ((error) => {
-            if (kDebugMode) {print("Custom ErrorHandler received: $error")}
-          }),
-        )
+
       ]);
 
       await Amplify.configure(amplifyconfig);
