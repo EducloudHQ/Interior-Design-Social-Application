@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -41,16 +43,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   ClipRRect(
                       borderRadius: BorderRadius.circular(1000),
-                      child: CachedNetworkImage(
-                        width: 60,
-                        height: 60,
-                        imageUrl: profileModel.profilePicUrl,
-                        placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => ClipRRect(
-                          borderRadius: BorderRadius.circular(1000),
-                          child: Image.asset("assets/avatars/Image-71.jpg",width: 60,height: 60,fit: BoxFit.cover,),
+                      child:  CachedNetworkImage(
+                          width: 60,
+                          height: 60,
+                          imageUrl: profileModel.profilePicUrl,
+                          placeholder: (context, url) => CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => ClipRRect(
+                            borderRadius: BorderRadius.circular(1000),
+                            child: Image.asset("assets/avatars/Image-71.jpg",width: 60,height: 60,fit: BoxFit.cover,),
+                          ),
                         ),
-                      ),
+
                     ),
 
                   Expanded(
@@ -110,27 +113,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Container(
                       child: const Row(
                         children: [
-                          Text('170',style: TextStyle(color: Colors.grey),),
+                          Text('170',style: TextStyle(fontWeight: FontWeight.bold),),
                           Text(' '),
-                          Text('Followers',style: TextStyle(color: Colors.grey),)
+                          Text('Followers',style: TextStyle(),)
                         ],
                       ),
                     ),
                     Container(
                       child: const Row(
                         children: [
-                          Text('6',style: TextStyle(color: Colors.grey),),
+                          Text('6',style: TextStyle(fontWeight: FontWeight.bold),),
                           Text(' '),
-                          Text('Followings',style: TextStyle(color: Colors.grey),)
+                          Text('Followings',style: TextStyle())
                         ],
                       ),
                     ),
                     Container(
                       child: const Row(
                         children: [
-                          Text('6',style: TextStyle(color: Colors.grey),),
+                          Text('6',style: TextStyle(fontWeight: FontWeight.bold),),
                           Text(' '),
-                          Text('Followings',style: TextStyle(color: Colors.grey),)
+                          Text('Followings',style: TextStyle(),)
                         ],
                       ),
                     ),
@@ -144,16 +147,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    Text('About',style: TextStyle(fontWeight: FontWeight.bold),),
+                    const Text('About',style: TextStyle(fontWeight: FontWeight.bold),),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
-                      child: Text("A gradient has two anchor points, begin and end. The begin point corresponds to 0.0, and the end point corresponds to 1.0. These points are expressed in fractions, so that the same "),
+                      child: const Text("A gradient has two anchor points, begin and end. The begin point corresponds to 0.0, and the end point corresponds to 1.0. These points are expressed in fractions, so that the same "),
                     )
                   ],
                 ),
               ),
 
-              Row(
+              const Row(
                 children: [
                   Text("Posts"),
                   Row(

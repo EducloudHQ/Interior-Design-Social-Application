@@ -158,7 +158,7 @@ class _MyAppState extends State<MyApp> {
         fontFamily: 'Montserrat',
       ),
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.light(),
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
