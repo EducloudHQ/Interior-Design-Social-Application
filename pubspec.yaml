@@ -95,9 +95,9 @@ flutter:
         - asset: assets/fonts/Montserrat.ttf
     #       - asset: fonts/Schyler-Italic.ttf
     #         style: italic
-    - family: Ultra-Regular
+    - family: Syne-Regular
       fonts:
-        - asset: assets/fonts/Ultra-Regular.ttf
+        - asset: assets/fonts/Syne-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

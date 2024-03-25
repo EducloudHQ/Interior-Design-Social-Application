@@ -1,5 +1,6 @@
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -81,7 +82,7 @@ Size size = MediaQuery.of(context).size;
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'title';
+                                return "What's on your mind today ?";
                               }
                               return null;
                             },
@@ -103,64 +104,122 @@ Size size = MediaQuery.of(context).size;
 
 
 
-                  Container(
-                    margin:const EdgeInsets.only(bottom: 20),
-                    child: Column(
-                      children: <Widget>[
-                        postRepo.loading? Container(
-                          padding: const EdgeInsets.only(top: 30.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: InkWell(
+                          onTap: (){
+                            final FormState form = formKey.currentState!;
+                            if (!form.validate()) {
 
-                          child: const CircularProgressIndicator(),
-                        ) :
-                        Container(
-                          padding: const EdgeInsets.only(top: 50),
-                          child: SizedBox(
-                            width: size.width/1.1,
-                            height:50,
+                            } else {
+                              form.save();
 
-                            child: ElevatedButton(
+                        /*
+                                      taskRepo.createTask(widget.email).then((bool value){
+                                       if(value){
+                                         Navigator.of(context).pop();
+                                       }else{
+                                         taskRepo.showInSnackBar(context, 'An Error Occured While creating task');
+                                       }
+                                }
 
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.secondary),
-                                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)))
+                                        );
+                        */
 
+
+                            }},
+                          child:  Container(
+
+                                padding: const EdgeInsets.symmetric(vertical: 20),
+                                margin: const EdgeInsets.only(right: 10),
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF30343F),
+                                  borderRadius: BorderRadius.circular(50)
                                 ),
-                                onPressed: (){
 
 
+                                child:  Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                       padding: EdgeInsets.only(right: 5),
+                                        child: Icon(Icons.cancel)),
+                                    Text("clear",style: TextStyle(fontSize: 15),),
+                                  ],
+                                )),
+
+                        ),
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: Container(
+                          margin:const EdgeInsets.only(bottom: 20,top: 20),
+                          child: Column(
+                            children: <Widget>[
+                              postRepo.loading? Container(
+                                padding: const EdgeInsets.only(top: 30.0),
+
+                                child: const CircularProgressIndicator(),
+                              ) :
+                              InkWell(
+                                onTap: (){
                                   final FormState form = formKey.currentState!;
                                   if (!form.validate()) {
 
                                   } else {
                                     form.save();
 
-/*
-                                    taskRepo.createTask(widget.email).then((bool value){
-                                     if(value){
-                                       Navigator.of(context).pop();
-                                     }else{
-                                       taskRepo.showInSnackBar(context, 'An Error Occured While creating task');
-                                     }
-        }
+                        /*
+                                      taskRepo.createTask(widget.email).then((bool value){
+                                       if(value){
+                                         Navigator.of(context).pop();
+                                       }else{
+                                         taskRepo.showInSnackBar(context, 'An Error Occured While creating task');
+                                       }
+                                }
 
-                                      );
-*/
-
-
+                                        );
+                        */
 
 
+                                  }},
+                                child: Container(
+                                    width: size.width/1.2,
+                                    padding: EdgeInsets.symmetric(vertical: 20),
+                                    alignment: Alignment.center,
+                                    decoration:  BoxDecoration(
+                                        borderRadius: BorderRadius.circular(50),
+                                        gradient: const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment(0.8, 1),
+                                            colors: [
+                                              Color(0xFFFBDA61),
+                                              Color(0xFFFF5ACD),
+
+                                            ]
+
+                                        )
+                                    ),
+
+
+                                    child: Text("Create Post",style: TextStyle(fontSize: 15),)),
+                              )
 
 
 
-                                  }
 
-                                }, child: const Text('Create Post',style: TextStyle(fontWeight:FontWeight.bold, color: Colors.white),)),
+
+                            ],
                           ),
-                        )
-
-                      ],
-                    ),
-                  ),
+                        ),
+                      ),
+                    ],
+                  )
 
 
 

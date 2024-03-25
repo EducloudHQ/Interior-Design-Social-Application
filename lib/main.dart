@@ -152,7 +152,7 @@ class _MyAppState extends State<App> {
       title: 'Social App',
 
       theme: ThemeData(
-        fontFamily: 'Montserrat',
+        fontFamily: 'Syne-Regular',
       ),
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData.dark(),
