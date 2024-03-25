@@ -90,6 +90,38 @@ Size size = MediaQuery.of(context).size;
 
                         ),
 
+                        Container(
+                          padding: EdgeInsets.only(top: 20),
+                          child: Row(
+                            children: [
+                              Container(
+                                width:50,
+                                height: 50,
+
+
+                                decoration: const BoxDecoration(
+                                    shape:BoxShape.circle,
+                                    gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment(0.8, 1),
+                                        colors: [
+                                          Color(0xFFFBDA61),
+                                          Color(0xFFFF5ACD),
+
+                                        ]
+
+                                    )
+                                ),
+                                child: Image.asset('assets/bedrock.png',width: 50, height: 50,),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 10),
+                                child: const Text('Click to generate ai image',style: TextStyle(fontSize: 17),),
+                              )
+                            ],
+                          ),
+                        )
+
 
                       ],
                     )

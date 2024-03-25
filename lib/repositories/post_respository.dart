@@ -33,6 +33,7 @@ class PostRepository extends ChangeNotifier{
   }
 
   final contentController = TextEditingController();
+  final promptController = TextEditingController();
 
 /*
   Future<bool> createTask(String email) async{
@@ -134,6 +135,7 @@ class PostRepository extends ChangeNotifier{
     // TODO: implement dispose
 
     contentController.dispose();
+    promptController.dispose();
 
     super.dispose();
 
