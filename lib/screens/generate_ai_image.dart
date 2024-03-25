@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:social_media/repositories/post_respository.dart';
 import 'package:provider/provider.dart';
@@ -22,86 +24,82 @@ class _GenerateAiImageScreenState extends State<GenerateAiImageScreen> {
       child:Consumer(
         builder:(_,PostRepository postRepo, child){
           return SingleChildScrollView(
-              child: Column(children: [
-                Form(
-                    key: formKey,
-                    autovalidateMode: AutovalidateMode.always,
-                    child:Column(
-                      children: [
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Column(children: [
+                  Form(
+                      key: formKey,
+                      autovalidateMode: AutovalidateMode.always,
+                      child:Column(
+                        children: [
 
 
-                        Container(
+                          Container(
 
-                          margin: const EdgeInsets.only(top: 20),
-                          child: TextFormField(
+                            margin: const EdgeInsets.only(top: 20),
+                            child: TextFormField(
 
-                            controller: postRepo.promptController,
-
-
-                            maxLines: null,
-                            decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "write your prompt",
-                                hintStyle: TextStyle(
-                                  color: Colors.grey,
-                                )),
+                              controller: postRepo.promptController,
 
 
+                              maxLines: 6,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "write your prompt",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                  )),
+
+
+
+                            ),
 
                           ),
 
-                        ),
 
 
-
-                      ],
-                    )
-
+                        ],
+                      )
 
 
 
 
 
 
-                ),
-                Container(
-                  margin:const EdgeInsets.only(bottom: 20,top: 20),
-                  child: Column(
-                    children: <Widget>[
-                      postRepo.loading? Container(
-                        padding: const EdgeInsets.only(top: 30.0),
 
-                        child: const CircularProgressIndicator(),
-                      ) :
-                      InkWell(
-                        onTap: (){
-                          final FormState form = formKey.currentState!;
-                          if (!form.validate()) {
+                  ),
 
-                          } else {
-                            form.save();
-
-                            /*
-                                      taskRepo.createTask(widget.email).then((bool value){
-                                       if(value){
-                                         Navigator.of(context).pop();
-                                       }else{
-                                         taskRepo.showInSnackBar(context, 'An Error Occured While creating task');
-                                       }
-                                }
-
-                                        );
-                        */
+                  postRepo.base64ImageString.isEmpty?Container(): Image.memory(base64Decode(postRepo.base64ImageString),width: size.width,fit: BoxFit.cover,),
+                  Container(
+                    margin:const EdgeInsets.only(bottom: 20,top: 20),
+                    child: Column(
+                      children: <Widget>[
+                        postRepo.loading? Container(
 
 
-                          }},
-                        child: Container(
-                            width: size.width/1.2,
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            alignment: Alignment.center,
-                            decoration:  BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                gradient: const LinearGradient(
+                          child: const CircularProgressIndicator(),
+                        ) :
+                        InkWell(
+                          onTap: (){
+                            final FormState form = formKey.currentState!;
+                            if (!form.validate()) {
+
+                            } else {
+                              form.save();
+
+                            postRepo.generateImage(postRepo.promptController.text).then((String base64ImageString) {
+                              postRepo.base64ImageString = base64ImageString;
+                            });
+
+                            }},
+                          child: Container(
+                            width:50,
+                            height: 50,
+
+
+                            decoration: const BoxDecoration(
+                                shape:BoxShape.circle,
+                                gradient: LinearGradient(
                                     begin: Alignment.topLeft,
                                     end: Alignment(0.8, 1),
                                     colors: [
@@ -112,19 +110,19 @@ class _GenerateAiImageScreenState extends State<GenerateAiImageScreen> {
 
                                 )
                             ),
-
-
-                            child: const Text("Generate Image",style: TextStyle(fontSize: 15),)),
-                      )
-
-
+                            child: Image.asset('assets/bedrock.png',width: 50, height: 50,),
+                          ),
+                        )
 
 
 
-                    ],
+
+
+                      ],
+                    ),
                   ),
-                ),
-              ],)
+                ],),
+              )
 
           );
       },

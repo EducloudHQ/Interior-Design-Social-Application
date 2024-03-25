@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -5,6 +6,8 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
+
+import '../models/generate_post_image_model.dart';
 
 
 
@@ -35,69 +38,39 @@ class PostRepository extends ChangeNotifier{
   final contentController = TextEditingController();
   final promptController = TextEditingController();
 
-/*
-  Future<bool> createTask(String email) async{
+
+  Future<String> generateImage(String prompt) async {
     loading = true;
-    /**
-     * first retrieve user model
-     */
-    try {
-      List<User> user = await Amplify.DataStore.query(
-          User.classType, where: User.EMAIL.eq(email));
-      if (kDebugMode) {
-        print("user details${user[0]}");
-      }
-      Task task = Task(userId:email,isComplete: false, title: taskTitleController.text.trim(),
-      description: taskDescriptionController.text.trim(),createdOn: TemporalTimestamp.now());
-      await Amplify.DataStore.save(task);
-      loading = false;
-      return true;
-    }catch(ex){
-      if (kDebugMode) {
-        print(ex.toString());
-      }
-      loading = false;
-      return false;
+    String graphQLDocument = '''query  generatePostImage(\$prompt: String!) {
+
+   generatePostImage(prompt: \$prompt)
+}''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "prompt": prompt,
+
+          },
+        ));
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+    loading = false;
+
+
+
+    GeneratePostImage generatePostImageModel = GeneratePostImage.fromJson(json.decode(responseJson['generatePostImage']));
+    if (kDebugMode) {
+      print("returning ${generatePostImageModel.images!}");
     }
-  }
-  Future<List<Task>>queryTasks() async{
-    List<Task> tasks = await Amplify.DataStore.query(Task.classType);
 
-    return tasks;
+    return generatePostImageModel.images![0];
   }
 
- Future<List<Task>>queryAllTasks() async{
-
-      List<Task> tasks = await Amplify.DataStore.query(Task.classType,sortBy: [Task.CREATEDON.descending()]);
-
-        print("tasks is $tasks");
-
-      setTasks = tasks;
-
-      return tasks;
-
-
-
-
-  }
-
-  Future<List<Task>>paginateTasks(int page) async{
-    List<Task> tasks = await Amplify.DataStore.query(Task.classType,sortBy: [Task.CREATEDON.descending()],
-                 pagination: QueryPagination(page:page, limit:100));
-    return tasks;
-  }
-  Future<List<Task>>getSingleTasks(String taskID) async{
-    List<Task> tasks = await Amplify.DataStore.query(Task.classType,where: Task.ID.eq(taskID));
-    return tasks;
-  }
-  Future<List<Task>>queryAllUserTasks(String userId) async{
-    List<Task> tasks = await Amplify.DataStore.query(Task.classType,
-        where: Task.USERID.eq(userId),
-        sortBy: [Task.CREATEDON.descending()]);
-    return tasks;
-  }
-
- */
   void showInSnackBar(BuildContext context,String value) {
     ScaffoldMessenger.of(context).showSnackBar( SnackBar(
       content: Text(
