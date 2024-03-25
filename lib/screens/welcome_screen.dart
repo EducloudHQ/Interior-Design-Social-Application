@@ -125,7 +125,7 @@ class WelcomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 100),
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: SizedBox(
+              child: loginRepo.googleLoading ? CircularProgressIndicator() : SizedBox(
                 height: size.height/18,
                 width: size.width/1.2,
                 child: ElevatedButton(

@@ -7,9 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
-import '../repositories/task_respository.dart';
+import '../repositories/post_respository.dart';
 
-import 'create_task_screen.dart';
+import 'create_post_screen.dart';
 class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -72,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var taskRepo = context.watch<TaskRepository>();
+    var taskRepo = context.watch<PostRepository>();
     var sharedPrefs = context.watch<SharedPrefsUtils>();
 
 
@@ -116,11 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 floatingActionButton: FloatingActionButton(
 
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        (MaterialPageRoute(builder: (BuildContext context) {
-                          return CreateTaskScreen(email: email);
-                        })));
+                   context.push('/post/$email');
                   },
                   child: const Icon(Icons.add),
                 ),

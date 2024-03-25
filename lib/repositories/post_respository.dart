@@ -8,68 +8,32 @@ import 'package:flutter/material.dart';
 
 
 
-class TaskRepository extends ChangeNotifier{
+class PostRepository extends ChangeNotifier{
 
-  TaskRepository.instance();
+  PostRepository.instance();
 
   bool _loading = false;
 
 
   bool get loading => _loading;
 
-  //List<Task> _tasks = [];
-  final List<TextEditingController> _controllers = [];
-   final TextEditingController _controller = TextEditingController();
-  final List<TextField> _fields = [];
-final TextField _field = TextField();
+  String _base64ImageString="";
 
 
-  List<TextField> get fields => _fields;
+  String get base64ImageString => _base64ImageString;
 
-
-  TextEditingController get controller => _controller;
-
-  set controller(TextEditingController value) {
-    _controllers.add(value);
-    notifyListeners();
-  }
-  TextField get field => _field;
-
-  set field(TextField value) {
-    _fields.add(_field);
-    notifyListeners();
-
-  }
-
-
-  List<TextEditingController> get controllers => _controllers;
-
-  set controllers(List<TextEditingController> value) {
-    _controllers.addAll(value);
-    notifyListeners();
-  }
-/*
-  List<Task> get tasks => _tasks;
-
-  set setTasks(List<Task> value) {
-
-    _tasks = value;
+  set base64ImageString(String value) {
+    _base64ImageString = value;
     notifyListeners();
   }
 
-  set setTask(Task value) {
-
-    _tasks.insert(0, value);
-    notifyListeners();
-  }
-*/
   set loading(bool value) {
     _loading = value;
     notifyListeners();
   }
 
-  final taskTitleController = TextEditingController();
-  final taskDescriptionController = TextEditingController();
+  final contentController = TextEditingController();
+
 /*
   Future<bool> createTask(String email) async{
     loading = true;
@@ -168,11 +132,9 @@ final TextField _field = TextField();
   @override
   void dispose() {
     // TODO: implement dispose
-    for (final controller in _controllers) {
-      controller.dispose();
-    }
-    taskTitleController.dispose();
-    taskDescriptionController.dispose();
+
+    contentController.dispose();
+
     super.dispose();
 
 

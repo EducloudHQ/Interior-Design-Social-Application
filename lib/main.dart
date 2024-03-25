@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:social_media/repositories/profile_repository.dart';
-import 'package:social_media/repositories/task_respository.dart';
+import 'package:social_media/repositories/post_respository.dart';
+import 'package:social_media/screens/create_post_screen.dart';
 import 'package:social_media/screens/create_user_account.dart';
 import 'package:social_media/screens/home_screen.dart';
 import 'package:social_media/screens/profile_screen.dart';
@@ -53,12 +53,20 @@ class _MyAppState extends State<App> {
           providers: [
             ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
             ChangeNotifierProvider(create: (BuildContext context) => LoginRepository.instance(),),
-            ChangeNotifierProvider(create: (BuildContext context) => TaskRepository.instance(),
+            ChangeNotifierProvider(create: (BuildContext context) => PostRepository.instance(),
 
             ),
           ],
         child:HomeScreen()),
   ),
+      GoRoute(
+        name:'createPost',
+        path:'/post/:userId',
+        builder: (context,state){
+          return  CreatePostScreen(email: state.pathParameters['userId']!);
+        }
+
+      ),
       GoRoute(
           name:'createUserAccount',
           path: '/users/:email',
@@ -147,7 +155,7 @@ class _MyAppState extends State<App> {
         fontFamily: 'Montserrat',
       ),
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
