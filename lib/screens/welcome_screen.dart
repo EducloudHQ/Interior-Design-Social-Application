@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:social_media/repositories/login_respository.dart';
+import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -7,6 +8,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    LoginRepository loginRepo = context.watch<LoginRepository>();
     return Scaffold(
 
       body: Stack(
@@ -132,11 +134,14 @@ class WelcomeScreen extends StatelessWidget {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
                       backgroundColor: MaterialStateProperty.all(Colors.red)
                   ),
-                  onPressed: (){
-                    String email = "test@gmail.com";
-                    // /createUserAccount/:email'
-                    context.pushReplacement('/createUserAccount/$email');
-
+                  onPressed: () async{
+                   await loginRepo.googleSignIn(context).then((bool success) {
+                     if(success){
+                       context.pushReplacement('/');
+                     }else{
+                       loginRepo.showSnackBar(context, "An Error occured during login");
+                     }
+                   });
                   },
 
                   child: const Text("Login with Google",style: TextStyle(fontSize: 15,color: Colors.white,

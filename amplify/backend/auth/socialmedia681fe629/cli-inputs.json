@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "todoishd7ee5e21_identitypool_d7ee5e21",
-    "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "todoisd7ee5e21",
-    "userPoolName": "todoishd7ee5e21_userpool_d7ee5e21",
+    "identityPoolName": "socialmedia681fe629_identitypool_681fe629",
+    "allowUnauthenticatedIdentities": true,
+    "resourceNameTruncated": "social681fe629",
+    "userPoolName": "socialmedia681fe629_userpool_681fe629",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,14 +31,14 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "todoisd7ee5e21_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "social681fe629_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "d7ee5e21",
-    "resourceName": "todoishd7ee5e21",
+    "sharedId": "681fe629",
+    "resourceName": "socialmedia681fe629",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
-    "hostedUIDomainName": "todoishd7ee5e21-d7ee5e21",
+    "hostedUIDomainName": "socialmedia681fe629-681fe629",
     "authProvidersUserPool": [
       "Google"
     ],
@@ -47,6 +47,20 @@
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
-    "useEnabledMfas": true
+    "useEnabledMfas": true,
+    "authRoleArn": {
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
+    },
+    "unauthRoleArn": {
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
+    },
+    "breakCircularDependency": true,
+    "dependsOn": []
   }
 }

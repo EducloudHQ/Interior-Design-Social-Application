@@ -1,22 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-todoish-dev-204106-authRole",
-      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-todoish-dev-204106-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-todoish-dev-204106-authRole",
+      "AuthRoleName": "amplify-socialmedia-dev-122329-authRole",
+      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-socialmedia-dev-122329-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-socialmedia-dev-122329-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-todoish-dev-204106-deployment",
-      "UnauthRoleName": "amplify-todoish-dev-204106-unauthRole",
-      "StackName": "amplify-todoish-dev-204106",
-      "StackId": "arn:aws:cloudformation:us-east-1:132260253285:stack/amplify-todoish-dev-204106/b73f0630-ad94-11ee-bde1-0adb97798635",
-      "AmplifyAppId": "d3b1efcrc7q3z7"
+      "DeploymentBucketName": "amplify-socialmedia-dev-122329-deployment",
+      "UnauthRoleName": "amplify-socialmedia-dev-122329-unauthRole",
+      "StackName": "amplify-socialmedia-dev-122329",
+      "StackId": "arn:aws:cloudformation:us-east-1:132260253285:stack/amplify-socialmedia-dev-122329/1e620eb0-ea9a-11ee-93e0-1261bcfa881d",
+      "AmplifyAppId": "d1abouhj3cttwg"
     },
     "categories": {
       "auth": {
-        "todoishd7ee5e21": {}
+        "socialmedia681fe629": {}
       },
       "storage": {
-        "s383665ea8": {}
+        "s377696833": {}
       }
     }
   }

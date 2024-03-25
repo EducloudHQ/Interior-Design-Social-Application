@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "todoishd7ee5e21": {
+    "socialmedia681fe629": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "HostedUIDomain": "string",
@@ -13,7 +13,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "s383665ea8": {
+    "s377696833": {
       "BucketName": "string",
       "Region": "string"
     }

@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
   //  var profileModel = context.watch<User?>();
-    User profileModel = User(id: '23423423',firstName: "Rosius",lastName: "Ndimofor",username: "ro",profilePicUrl: "");
+    User profileModel = User(id: '23423423',firstName: "Rosius",lastName: "Ndimofor",username: "ro",profilePicUrl: "", email: 'fasdfdfs', userType: "asdasd");
     return  Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(

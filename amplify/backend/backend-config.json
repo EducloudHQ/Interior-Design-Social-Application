@@ -1,6 +1,6 @@
 {
   "auth": {
-    "todoishd7ee5e21": {
+    "socialmedia681fe629": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -28,7 +28,7 @@
     }
   },
   "storage": {
-    "s383665ea8": {
+    "s377696833": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

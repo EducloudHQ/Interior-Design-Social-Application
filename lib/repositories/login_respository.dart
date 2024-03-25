@@ -7,11 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/repositories/profile_repository.dart';
-import 'package:go_router/go_router.dart';
 
-
-import '../screens/create_user_account.dart';
 import '../utils/shared_preferences.dart';
 
 
@@ -28,6 +24,16 @@ class LoginRepository extends ChangeNotifier{
   bool _loading = false;
   bool _obscureText = true;
   bool _isValidEmail = false;
+
+  bool _success = false;
+
+
+  bool get success => _success;
+
+  set success(bool value) {
+    _success = value;
+    notifyListeners();
+  }
 
   bool _loadingAmplify  = true;
 
@@ -112,7 +118,7 @@ class LoginRepository extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void>googleSignIn(BuildContext context) async{
+  Future<bool>googleSignIn(BuildContext context) async{
     googleLoading = true;
     try {
      var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
@@ -123,21 +129,33 @@ class LoginRepository extends ChangeNotifier{
       if(isSignedIn){
 
 
-        googleLoading = false;
-        return fetchCurrentUserAttributes().then((List<AuthUserAttribute> listUserAttributes) {
+
+         return fetchCurrentUserAttributes().then((List<AuthUserAttribute> listUserAttributes) {
           String userSub = listUserAttributes[0].value;
           String email = listUserAttributes[1].value;
+
+          if(kDebugMode)
+            {
+              print(userSub);
+              print(email);
+            }
 
 
 
           for(var item in listUserAttributes){
             if(item.userAttributeKey.key =='email'){
-              print("list user attributes are ${item.value}");
-              SharedPrefsUtils.instance().saveUserEmail(item.value).then((value) {
-                print("email address saved");
+
+            return SharedPrefsUtils.instance().saveUserEmail(item.value).then((value) {
+                if (kDebugMode) {
+                  print("email address saved");
+                }
+                googleLoading = false;
+                return success = true;
+
+
               });
 
-              context.pushReplacement('users/${item.value}');
+
 
 
 
@@ -145,17 +163,25 @@ class LoginRepository extends ChangeNotifier{
 
           }
 
+          return success = true;
+
         });
 
 
       }else{
 
         googleLoading = false;
+        return success = false;
+
       }
 
     } on AmplifyException catch (e) {
-      print(e.message);
+      if (kDebugMode) {
+        print(e.message);
+      }
+
       googleLoading = false;
+      return success = false;
     }
 
 

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:social_media/repositories/login_respository.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import '../repositories/task_respository.dart';
@@ -81,12 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
       initialData: null,
       child: Consumer<String?>(builder: (_, String? email, child) {
         return email == null
-            ? WelcomeScreen()
+            ? ChangeNotifierProvider(create: (context) => LoginRepository.instance(),
+        child:  WelcomeScreen(),)
             : Scaffold(
 
           floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
                 appBar: AppBar(
-                  title: const Text('Todoish'),
+                  title: const Text('Social Rust'),
 
                   actions: [
                     IconButton(onPressed: (){

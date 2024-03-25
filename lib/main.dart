@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:amplify_api/amplify_api.dart';
@@ -9,7 +10,7 @@ import 'package:social_media/repositories/task_respository.dart';
 import 'package:social_media/screens/create_user_account.dart';
 import 'package:social_media/screens/home_screen.dart';
 import 'package:social_media/screens/profile_screen.dart';
-import 'package:social_media/screens/welcome_screen.dart';
+
 
 import 'package:go_router/go_router.dart';
 import 'package:social_media/utils/shared_preferences.dart';
@@ -19,6 +20,8 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 
+import 'models/ModelProvider.dart';
+
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
 void main() {
   AmplifyLogger().logLevel = LogLevel.verbose;
@@ -27,20 +30,20 @@ void main() {
       ChangeNotifierProvider(
         create: (_) =>
             LoginRepository.instance(),
-        child: MyApp(),
+        child: App(),
       ),
 
       );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<App> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<App> {
 
   static final _router = GoRouter(
     routes: [
@@ -55,7 +58,7 @@ class _MyAppState extends State<MyApp> {
 
             ),
           ],
-        child:ProfileScreen()),
+        child:HomeScreen()),
   ),
       GoRoute(
           name:'createUserAccount',
@@ -85,15 +88,26 @@ class _MyAppState extends State<MyApp> {
 
 
   Future<void> _configureAmplify() async {
-   // var loginRepo = context.read<LoginRepository>();
-    try{
-
-
+    try {
       await Amplify.addPlugins([
-
-        AmplifyAuthCognito(),
         AmplifyAPI(),
-        AmplifyStorageS3()
+        AmplifyAuthCognito(
+          // FIXME: In your app, make sure to remove this line and set up
+          /// Keychain Sharing in Xcode as described in the docs:
+          /// https://docs.amplify.aws/lib/project-setup/platform-setup/q/platform/flutter/#enable-keychain
+          secureStorageFactory: AmplifySecureStorage.factoryFrom(
+            macOSOptions:
+            // ignore: invalid_use_of_visible_for_testing_member
+            MacOSSecureStorageOptions(useDataProtection: false),
+          ),
+        ),
+        AmplifyStorageS3(),
+        AmplifyDataStore(
+          modelProvider: ModelProvider.instance,
+          errorHandler: ((error) => {
+            if (kDebugMode) {print("Custom ErrorHandler received: $error")}
+          }),
+        )
       ]);
 
       await Amplify.configure(amplifyconfig);
@@ -101,29 +115,10 @@ class _MyAppState extends State<MyApp> {
 
       Amplify.Hub.listen(HubChannel.Auth, (event) {
         _logger.info('Auth Event: $event');
-      });/*
-      // Once Plugins are added, configure Amplify
-      await Amplify.configure(amplifyconfig);
-      if(Amplify.isConfigured){
-        print('amplify configure');
-       // changeSync();
-        loginRepo.loadingAmplify = false;
-      }else{
-        print('amplify not configure');
-        loginRepo.loadingAmplify = true;
-      }
-
-*/
-    }on Exception catch (e, st) {
-    //  loginRepo.loadingAmplify = true;
-      print('an error occured during amplify configuration: $e');
+      });
+    } on Exception catch (e, st) {
       _logger.error('Configuring Amplify failed', e, st);
-
-
-
     }
-
-
   }
 
   @override
@@ -150,7 +145,7 @@ class _MyAppState extends State<MyApp> {
   }
   @override
   Widget build(BuildContext context) {
-   // var loginRepo = context.watch<LoginRepository>();
+
     return MaterialApp.router(
       title: 'Social App',
 
