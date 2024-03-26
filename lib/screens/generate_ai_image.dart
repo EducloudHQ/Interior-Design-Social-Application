@@ -17,7 +17,7 @@ class _GenerateAiImageScreenState extends State<GenerateAiImageScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Generate ai image'),
+        title: const Text('Generate ai image'),
         centerTitle: true,
       ),
       body: ChangeNotifierProvider(create:(context) => PostRepository.instance(),
@@ -25,37 +25,60 @@ class _GenerateAiImageScreenState extends State<GenerateAiImageScreen> {
         builder:(_,PostRepository postRepo, child){
           return SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(children: [
                   Form(
                       key: formKey,
                       autovalidateMode: AutovalidateMode.always,
-                      child:Column(
+                      child:Row(
                         children: [
 
 
-                          Container(
+                          Flexible(
+                            flex:1,
+                            child: Container(
 
-                            margin: const EdgeInsets.only(top: 20),
-                            child: TextFormField(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(color: const Color(0xFFFF5ACD))
+                              ),
+                              margin: const EdgeInsets.only(top: 20),
+                              child: TextFormField(
 
-                              controller: postRepo.promptController,
-
-
-                              maxLines: 6,
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "write your prompt",
-                                  hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                  )),
+                                controller: postRepo.promptController,
 
 
+                                maxLines: 6,
+                                decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "write your prompt",
+                                    hintStyle: TextStyle(
+                                      color: Colors.grey,
+                                    )),
+
+
+
+                              ),
 
                             ),
-
                           ),
 
+                          postRepo.base64ImageString.isEmpty?Flexible(
+                              flex:2,
+                              child: Container()):
+                          Container(
+                            margin: EdgeInsets.only(top: 20,left: 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                                child:
+
+                                  Image.memory(base64Decode(postRepo.base64ImageString),
+
+
+                                    width: size.width/2,fit: BoxFit.cover,),
+                                ),
+                          ),
 
 
                         ],
@@ -69,8 +92,7 @@ class _GenerateAiImageScreenState extends State<GenerateAiImageScreen> {
 
                   ),
 
-                  postRepo.base64ImageString.isEmpty?Container(): Image.memory(base64Decode(postRepo.base64ImageString),width: size.width,fit: BoxFit.cover,),
-                  Container(
+                 Container(
                     margin:const EdgeInsets.only(bottom: 20,top: 20),
                     child: Column(
                       children: <Widget>[

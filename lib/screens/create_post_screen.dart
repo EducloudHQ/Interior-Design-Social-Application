@@ -1,5 +1,7 @@
 
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -91,11 +93,62 @@ Size size = MediaQuery.of(context).size;
 
                         ),
 
+                        Container(
+
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(color: const Color(0xFFFF5ACD))
+                            ),
+                            margin: const EdgeInsets.only(top: 20),
+                            child: TextFormField(
+
+                              controller: postRepo.promptController,
+                              onChanged: (String value){
+
+                              },
+
+
+                              maxLines:4,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "write a prompt",
+                                  hintStyle: TextStyle(
+                                    color: Colors.grey,
+                                  )),
+
+
+
+                            ),
+
+                          ),
+
+                        postRepo.base64ImageString.isEmpty?
+
+                            Container():
+                        Container(
+                          margin: EdgeInsets.only(top: 20,left: 10),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child:
+
+                            Image.memory(base64Decode(postRepo.base64ImageString),
+
+
+                              width: size.width/2,fit: BoxFit.cover,),
+                          ),
+                        ),
+
+
+
                         InkWell(
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return GenerateAiImageScreen();
-                            }));
+
+
+
+              postRepo.generateImage(postRepo.promptController.text).then((String base64ImageString) {
+                postRepo.base64ImageString = base64ImageString;
+              });
                           },
                           child: Container(
                             padding: EdgeInsets.only(top: 20),

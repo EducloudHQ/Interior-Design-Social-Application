@@ -21,7 +21,15 @@ class PostRepository extends ChangeNotifier{
   bool get loading => _loading;
 
   String _base64ImageString="";
+  bool _isGenerateBtnVissible= false;
 
+
+  bool get isGenerateBtnVissible => _isGenerateBtnVissible;
+
+  set isGenerateBtnVissible(bool value) {
+    _isGenerateBtnVissible = value;
+    notifyListeners();
+  }
 
   String get base64ImageString => _base64ImageString;
 
