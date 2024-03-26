@@ -22,7 +22,15 @@ class PostRepository extends ChangeNotifier{
 
   String _base64ImageString="";
   bool _isGenerateBtnVissible= false;
+  bool _isLoadingGeneratedImage =false;
 
+
+  bool get isLoadingGeneratedImage => _isLoadingGeneratedImage;
+
+  set isLoadingGeneratedImage(bool value) {
+    _isLoadingGeneratedImage = value;
+    notifyListeners();
+  }
 
   bool get isGenerateBtnVissible => _isGenerateBtnVissible;
 
@@ -48,7 +56,7 @@ class PostRepository extends ChangeNotifier{
 
 
   Future<String> generateImage(String prompt) async {
-    loading = true;
+    isLoadingGeneratedImage = true;
     String graphQLDocument = '''query  generatePostImage(\$prompt: String!) {
 
    generatePostImage(prompt: \$prompt)
@@ -67,7 +75,7 @@ class PostRepository extends ChangeNotifier{
     var response = await operation.response;
 
     final responseJson = json.decode(response.data!);
-    loading = false;
+    isLoadingGeneratedImage = false;
 
 
 

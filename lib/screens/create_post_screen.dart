@@ -105,6 +105,12 @@ Size size = MediaQuery.of(context).size;
 
                               controller: postRepo.promptController,
                               onChanged: (String value){
+                                if(value.isEmpty){
+                                  postRepo.isGenerateBtnVissible = false;
+                                }else{
+                                  postRepo.isGenerateBtnVissible = true;
+                                }
+
 
                               },
 
@@ -141,7 +147,14 @@ Size size = MediaQuery.of(context).size;
 
 
 
-                        InkWell(
+                       postRepo.isGenerateBtnVissible ?
+                       postRepo.isLoadingGeneratedImage ? Container(
+                         padding: const EdgeInsets.only(top: 30.0),
+
+                         child: const CircularProgressIndicator(),
+                       ) :
+
+                       InkWell(
                           onTap: (){
 
 
@@ -181,7 +194,7 @@ Size size = MediaQuery.of(context).size;
                               ],
                             ),
                           ),
-                        )
+                        ) : SizedBox()
 
 
                       ],
