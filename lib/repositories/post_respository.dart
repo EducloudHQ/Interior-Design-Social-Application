@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:path/path.dart';
+
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:aws_common/vm.dart';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
@@ -77,11 +76,12 @@ class PostRepository extends ChangeNotifier{
   final contentController = TextEditingController();
   final promptController = TextEditingController();
 
-  Future<void> uploadImage(String base64String,String fileKey) async {
+  Future<String> uploadImage(String base64String) async {
 
+   String uuid = const Uuid().v4();
     try {
       final uploadResult =  await Amplify.Storage.uploadData(
-        key: fileKey,
+        key: uuid,
 
         data: S3DataPayload.string(
           base64String,
@@ -90,8 +90,6 @@ class PostRepository extends ChangeNotifier{
 
       ).result;
 
-
-      safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
       postImageKeys.add(uploadResult.uploadedItem.key);
       final resultDownload =
       await getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
@@ -99,16 +97,10 @@ class PostRepository extends ChangeNotifier{
         print(resultDownload);
       }
 
-      postImageUrls.add(resultDownload);
-      loading = false;
-      if (kDebugMode) {
-        print("the post image url is ${postImageUrls[0]}");
-      }
 
-
+     return resultDownload;
     } on StorageException catch (e) {
-      safePrint("error message is${e.message}");
-      loading= false;
+
       safePrint('Error uploading file: ${e.message}');
       rethrow;
     }
@@ -177,6 +169,93 @@ class PostRepository extends ChangeNotifier{
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ));
   }
+
+  Future<void> createPost(String userId) async {
+    loading = true;
+
+
+
+    for(int i = 0; i< base64ImageStrings.length; i++){
+      await uploadImage(base64ImageStrings[i]).then((String value) {
+        print("image value here is $value");
+        postImageUrls.add(value);
+
+        if(i ==base64ImageStrings.length-1)  {
+          print("image length is ${postImageUrls.length}");
+          loading = false;
+         savePostDetails(contentController.text, userId);
+        }
+      });
+
+
+    }
+
+
+  }
+
+  Future<void> savePostDetails(String content, String userId) async{
+
+    try {
+      String graphQLDocument =
+      '''
+      mutation createPost(\$content:String!,\$userId:String!,\$imageUrls:[String!]!, \$imageKeys:[String!]!) {
+  createPost(
+    postInput: {
+      content: \$content,
+      userId: \$userId,
+   
+      imageUrls: \$imageUrls,
+       imageKeys: \$imageKeys
+    }
+  ) {
+    content
+    createdOn
+    id
+    imageUrls
+    imageKeys
+    updatedOn
+    userId
+  }
+}
+''';
+
+      var operation = Amplify.API.mutate(
+
+
+          request: GraphQLRequest<String>(
+            document: graphQLDocument, apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+            variables: {
+              "content": content,
+              "imageUrls":postImageUrls,
+              "imageKeys":postImageKeys,
+              "userId": userId
+            },));
+
+
+      var response = await operation.response;
+      if(response.data != null){
+        final responseJson = json.decode(response.data!);
+        if (kDebugMode) {
+          print("here${responseJson['createPost']}");
+        }
+        loading = false;
+
+      }else{
+        print("something happened");
+        loading = false;
+
+      }
+
+
+    } catch (ex) {
+      if (kDebugMode) {
+        print(ex.toString());
+      }
+      loading = false;
+
+    }
+  }
+
 
 
   @override

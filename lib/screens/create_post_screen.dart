@@ -1,7 +1,7 @@
 
 
 import 'dart:convert';
-
+import 'package:uuid/uuid.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,9 +36,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
   @override
   Widget build(BuildContext context) {
+
 Size size = MediaQuery.of(context).size;
     return ChangeNotifierProvider(create: (_)=>PostRepository.instance(),
       child: Consumer(builder: (_,PostRepository postRepo,child){
+
         return Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
@@ -183,7 +185,7 @@ Size size = MediaQuery.of(context).size;
 
               postRepo.generateImage(postRepo.promptController.text).then((List<String> base64ImageString) {
 
-                print("number of generated images are ${base64ImageString.length}");
+
                 postRepo.base64ImageStrings = base64ImageString;
               });
                           },
@@ -247,18 +249,6 @@ Size size = MediaQuery.of(context).size;
                             } else {
                               form.save();
 
-                        /*
-                                      taskRepo.createTask(widget.email).then((bool value){
-                                       if(value){
-                                         Navigator.of(context).pop();
-                                       }else{
-                                         taskRepo.showInSnackBar(context, 'An Error Occured While creating task');
-                                       }
-                                }
-
-                                        );
-                        */
-
 
                             }},
                           child:  Container(
@@ -278,8 +268,8 @@ Size size = MediaQuery.of(context).size;
                                   children: [
                                     Container(
                                        padding: EdgeInsets.only(right: 5),
-                                        child: Icon(Icons.cancel)),
-                                    Text("clear",style: TextStyle(fontSize: 15),),
+                                        child: Icon(Icons.cancel,color:Colors.white)),
+                                    Text("clear",style: TextStyle(fontSize: 15,color:Colors.white),),
                                   ],
                                 )),
 
@@ -291,8 +281,9 @@ Size size = MediaQuery.of(context).size;
                           margin:const EdgeInsets.only(bottom: 20,top: 20),
                           child: Column(
                             children: <Widget>[
+
                               postRepo.loading? Container(
-                                padding: const EdgeInsets.only(top: 30.0),
+
 
                                 child: const CircularProgressIndicator(),
                               ) :
@@ -303,18 +294,9 @@ Size size = MediaQuery.of(context).size;
 
                                   } else {
                                     form.save();
+                                    String userId = const Uuid().v4();
+                                    postRepo.createPost(userId);
 
-                        /*
-                                      taskRepo.createTask(widget.email).then((bool value){
-                                       if(value){
-                                         Navigator.of(context).pop();
-                                       }else{
-                                         taskRepo.showInSnackBar(context, 'An Error Occured While creating task');
-                                       }
-                                }
-
-                                        );
-                        */
 
 
                                   }},
