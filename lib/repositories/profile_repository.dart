@@ -75,56 +75,6 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-/*
-  /// save user details to profile
-  ///
-  Future<bool>saveUserProfileDetails(String email) async{
-    loading = true;
-    if(kDebugMode){
-      //033fb710-e931-11ed-beee-b3f37cb21a38.png
-      print('profile pic key here $profilePicKey');
-    }
-    User newUser = User(username:usernameController.text.trim(),firstName: firstNameController.text.trim(),
-        lastName: lastNameController.text.trim(),
-        profilePicKey: profilePicKey,
-
-        profilePicUrl: profilePic,email: email,createdOn: TemporalTimestamp.now());
-
-    return await Amplify.DataStore.save(newUser).then((_){
-      loading = false;
-      return true;
-    });
-
-
-  }
-  //userId = test@gmail.com
-  
-
-
-  Future<User>getUserProfile(String userId) async{
-
-    List<User> user = await Amplify.DataStore.query(User.classType, where: User.EMAIL.eq(userId));
-
-    profilePic =user[0].profilePicUrl!;
-
-
-    return user[0];
-
-
-  }
-
-    Future<User>getUserProfile(String userId) async{
-
-    List<User> user = await Amplify.DataStore.query(User.classType, where: User.EMAIL.eq(userId));
-
-    profilePic =user[0].profilePicUrl!;
-
-
-    return user[0];
-
-
-
-*/
 
 
 

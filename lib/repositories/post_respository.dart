@@ -1,8 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-
+import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:path/path.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:aws_common/vm.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
@@ -23,7 +27,23 @@ class PostRepository extends ChangeNotifier{
   List<String> _base64ImageStrings=[];
   bool _isGenerateBtnVissible= false;
   bool _isLoadingGeneratedImage =false;
+  List<String> _postImageKeys =[];
+  List<String>_postImageUrls =[];
 
+
+  List<String> get postImageKeys => _postImageKeys;
+
+  set postImageKeys(List<String> value) {
+    _postImageKeys = value;
+    notifyListeners();
+  }
+
+  List<String> get postImageUrls => _postImageUrls;
+
+  set postImageUrls(List<String> value) {
+    _postImageUrls = value;
+    notifyListeners();
+  }
 
   bool get isLoadingGeneratedImage => _isLoadingGeneratedImage;
 
@@ -57,6 +77,63 @@ class PostRepository extends ChangeNotifier{
   final contentController = TextEditingController();
   final promptController = TextEditingController();
 
+  Future<void> uploadImage(String base64String,String fileKey) async {
+
+    try {
+      final uploadResult =  await Amplify.Storage.uploadData(
+        key: fileKey,
+
+        data: S3DataPayload.string(
+          base64String,
+          contentType: 'text/plain',
+        ),
+
+      ).result;
+
+
+      safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
+      postImageKeys.add(uploadResult.uploadedItem.key);
+      final resultDownload =
+      await getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
+      if (kDebugMode) {
+        print(resultDownload);
+      }
+
+      postImageUrls.add(resultDownload);
+      loading = false;
+      if (kDebugMode) {
+        print("the post image url is ${postImageUrls[0]}");
+      }
+
+
+    } on StorageException catch (e) {
+      safePrint("error message is${e.message}");
+      loading= false;
+      safePrint('Error uploading file: ${e.message}');
+      rethrow;
+    }
+  }
+
+  Future<String> getProfilePicDownloadUrl({
+    required String key,
+  }) async {
+    try {
+      final result = await Amplify.Storage.getUrl(
+        key: key,
+        options: const StorageGetUrlOptions(
+          accessLevel: StorageAccessLevel.guest,
+          pluginOptions: S3GetUrlPluginOptions(
+            validateObjectExistence: true,
+            expiresIn: Duration(days: 1),
+          ),
+        ),
+      ).result;
+      return result.url.toString();
+    } on StorageException catch (e) {
+      safePrint('Could not get a downloadable URL: ${e.message}');
+      rethrow;
+    }
+  }
 
   Future<List<String>> generateImage(String prompt) async {
     isLoadingGeneratedImage = true;
@@ -101,26 +178,6 @@ class PostRepository extends ChangeNotifier{
     ));
   }
 
-
-/*
-  Future<void> updateTask(String taskId) async{
-    Task oldTask = (await Amplify.DataStore.query(Task.classType,
-        where: Task.ID.eq(taskId)))[0];
-    Task newTask = oldTask.copyWith(id: oldTask.id,
-        createdOn: TemporalTimestamp.now(),
-        );
-
-    await Amplify.DataStore.save(newTask);
-  }
-
-
-  Future<User> retrieveUser(String userId) async{
-    User user = (await Amplify.DataStore.query(User.classType, where: User.ID.eq(userId)))[0];
-    return user;
-
-  }
-
-*/
 
   @override
   void dispose() {
