@@ -4,11 +4,12 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:provider/provider.dart';
 
 import '../repositories/post_respository.dart';
-import 'generate_ai_image.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({required this.email});
@@ -115,7 +116,7 @@ Size size = MediaQuery.of(context).size;
                               },
 
 
-                              maxLines:4,
+                              maxLines:2,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: "write a prompt",
@@ -129,21 +130,42 @@ Size size = MediaQuery.of(context).size;
 
                           ),
 
-                        postRepo.base64ImageString.isEmpty?
+                        postRepo.base64ImageStrings.isEmpty?
 
                             Container():
-                        Container(
-                          margin: EdgeInsets.only(top: 20,left: 10),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child:
-
-                            Image.memory(base64Decode(postRepo.base64ImageString),
 
 
-                              width: size.width/2,fit: BoxFit.cover,),
-                          ),
-                        ),
+                            
+                            Container(
+                              height: 300,
+                              padding: EdgeInsets.only(top: 20),
+                              child: GridView.builder(
+
+                                itemCount:postRepo.base64ImageStrings.length ,
+
+                                  gridDelegate:  SliverQuiltedGridDelegate(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 2,
+                                crossAxisSpacing: 2,
+                                repeatPattern: QuiltedGridRepeatPattern.inverted,
+                                pattern: [
+
+                                  QuiltedGridTile(1, 2),
+                                  QuiltedGridTile(1, 1),
+
+
+
+                                ],
+                              ), itemBuilder: (BuildContext context, int index) {
+
+                                return Image.memory(base64Decode(postRepo.base64ImageStrings[index],),
+
+
+                                  fit: BoxFit.cover,);
+
+                              },
+                            ),),
+
 
 
 
@@ -159,8 +181,10 @@ Size size = MediaQuery.of(context).size;
 
 
 
-              postRepo.generateImage(postRepo.promptController.text).then((String base64ImageString) {
-                postRepo.base64ImageString = base64ImageString;
+              postRepo.generateImage(postRepo.promptController.text).then((List<String> base64ImageString) {
+
+                print("number of generated images are ${base64ImageString.length}");
+                postRepo.base64ImageStrings = base64ImageString;
               });
                           },
                           child: Container(

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amplify_datastore/amplify_datastore.dart';
+
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/foundation.dart';
 
@@ -20,7 +20,7 @@ class PostRepository extends ChangeNotifier{
 
   bool get loading => _loading;
 
-  String _base64ImageString="";
+  List<String> _base64ImageStrings=[];
   bool _isGenerateBtnVissible= false;
   bool _isLoadingGeneratedImage =false;
 
@@ -32,6 +32,14 @@ class PostRepository extends ChangeNotifier{
     notifyListeners();
   }
 
+
+  List<String> get base64ImageStrings => _base64ImageStrings;
+
+  set base64ImageStrings(List<String> value) {
+    _base64ImageStrings = value;
+    notifyListeners();
+  }
+
   bool get isGenerateBtnVissible => _isGenerateBtnVissible;
 
   set isGenerateBtnVissible(bool value) {
@@ -39,12 +47,7 @@ class PostRepository extends ChangeNotifier{
     notifyListeners();
   }
 
-  String get base64ImageString => _base64ImageString;
 
-  set base64ImageString(String value) {
-    _base64ImageString = value;
-    notifyListeners();
-  }
 
   set loading(bool value) {
     _loading = value;
@@ -55,7 +58,7 @@ class PostRepository extends ChangeNotifier{
   final promptController = TextEditingController();
 
 
-  Future<String> generateImage(String prompt) async {
+  Future<List<String>> generateImage(String prompt) async {
     isLoadingGeneratedImage = true;
     String graphQLDocument = '''query  generatePostImage(\$prompt: String!) {
 
@@ -84,7 +87,7 @@ class PostRepository extends ChangeNotifier{
       print("returning ${generatePostImageModel.images!}");
     }
 
-    return generatePostImageModel.images![0];
+    return generatePostImageModel.images!;
   }
 
   void showInSnackBar(BuildContext context,String value) {
