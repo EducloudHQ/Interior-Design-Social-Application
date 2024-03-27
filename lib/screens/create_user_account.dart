@@ -329,7 +329,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                       Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: TextFormField(
-                          controller: profileRepo.lastNameController,
+                          controller: profileRepo.aboutController,
 
 maxLines: 3,
                           decoration: InputDecoration(
@@ -380,6 +380,8 @@ maxLines: 3,
                             if (kDebugMode) {
                               print(profileRepo.profilePic);
                             }
+                            print("email is ${widget.email}");
+                           profileRepo.saveUserDetails(widget.email);
 
                           }
                         },

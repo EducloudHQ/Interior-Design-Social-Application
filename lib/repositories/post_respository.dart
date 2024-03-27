@@ -177,11 +177,13 @@ class PostRepository extends ChangeNotifier{
 
     for(int i = 0; i< base64ImageStrings.length; i++){
       await uploadImage(base64ImageStrings[i]).then((String value) {
-        print("image value here is $value");
+
         postImageUrls.add(value);
 
         if(i ==base64ImageStrings.length-1)  {
-          print("image length is ${postImageUrls.length}");
+          if (kDebugMode) {
+            print("image length is ${postImageUrls.length}");
+          }
           loading = false;
          savePostDetails(contentController.text, userId);
         }

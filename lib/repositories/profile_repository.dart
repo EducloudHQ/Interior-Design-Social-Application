@@ -22,6 +22,7 @@ class ProfileRepository extends ChangeNotifier {
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final aboutController = TextEditingController();
 
 
 
@@ -176,6 +177,82 @@ class ProfileRepository extends ChangeNotifier {
     AuthUser authUser = await Amplify.Auth.getCurrentUser();
     return authUser;
   }
+
+  Future<void> saveUserDetails(String email) async{
+    loading = true;
+
+    try {
+      String graphQLDocument = '''
+    mutation createUserAccount(\$username:String!,\$firstName:String!,\$lastName:String!,\$email:String!,\$userType:String!,\$profilePicUrl:String!,\$about:String!) {
+  createUserAccount(
+    userInput: {
+      username: \$username
+      firstName: \$firstName
+      lastName: \$lastName
+      email: \$email
+      about:\$about
+      userType: \$userType
+      profilePicUrl: \$profilePicUrl
+    }
+  ) {
+    createdOn
+    email
+    firstName
+    id
+    about
+    lastName
+    profilePicUrl
+    updatedOn
+    userType
+    username
+  }
+}
+
+    
+    ''';
+
+
+      var operation = Amplify.API.mutate(
+
+
+          request: GraphQLRequest<String>(
+            document: graphQLDocument, apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+            variables: {
+              "username": usernameController.text,
+              "firstName": firstNameController.text,
+              "lastName": lastNameController.text,
+              "about":aboutController.text,
+              "email": email,
+              "userType": "ADMIN",
+              "profilePicUrl": profilePic
+            },));
+
+
+      var response = await operation.response;
+      print("response operation ${response}");
+      if(response.data != null){
+        final responseJson = json.decode(response.data!);
+        if (kDebugMode) {
+          print("here${responseJson['createUserAccount']}");
+        }
+        loading = false;
+
+      }else{
+        print("something happened");
+        loading = false;
+
+      }
+
+
+    } catch (ex) {
+      if (kDebugMode) {
+        print(ex.toString());
+      }
+      loading = false;
+
+    }
+  }
+
 
 
 
