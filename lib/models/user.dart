@@ -30,6 +30,7 @@ class User {
   final String? _email;
   final String? _firstName;
   final String id;
+  final String? _about;
   final String? _lastName;
   final String? _profilePicUrl;
   final amplify_core.TemporalTimestamp? _updatedOn;
@@ -82,7 +83,18 @@ class User {
           );
     }
   }
-  
+  String get about {
+    try {
+      return _about!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+      );
+    }
+  }
   String get profilePicUrl {
     try {
       return _profilePicUrl!;
@@ -126,13 +138,18 @@ class User {
     }
   }
   
-  const User._internal({address, createdOn, required email, required firstName, required this.id, required lastName, required profilePicUrl, updatedOn, required userType, required username}): _address = address, _createdOn = createdOn, _email = email, _firstName = firstName, _lastName = lastName, _profilePicUrl = profilePicUrl, _updatedOn = updatedOn, _userType = userType, _username = username;
+  const User._internal({address, createdOn,required about, required email, required firstName, required this.id, required lastName, required profilePicUrl, updatedOn, required userType, required username}): _address = address,
+
+        _createdOn = createdOn,
+    _about = about,
+        _email = email, _firstName = firstName, _lastName = lastName, _profilePicUrl = profilePicUrl, _updatedOn = updatedOn, _userType = userType, _username = username;
   
-  factory User({Address? address, amplify_core.TemporalTimestamp? createdOn, required String email, required String firstName, String? id, required String lastName, required String profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, required USERTYPE userType, required String username}) {
+  factory User({Address? address, amplify_core.TemporalTimestamp? createdOn, required String email, required String firstName, String? id, required String lastName, required String about, required String profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, required USERTYPE userType, required String username}) {
     return User._internal(
       address: address,
       createdOn: createdOn,
       email: email,
+      about: about,
       firstName: firstName,
       id: id == null ? amplify_core.UUID.getUUID() : id,
       lastName: lastName,
@@ -153,6 +170,7 @@ class User {
       _address == other._address &&
       _createdOn == other._createdOn &&
       _email == other._email &&
+        _about == other._about &&
       _firstName == other._firstName &&
       id == other.id &&
       _lastName == other._lastName &&
@@ -176,6 +194,7 @@ class User {
     buffer.write("firstName=" + "$_firstName" + ", ");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("lastName=" + "$_lastName" + ", ");
+    buffer.write("about=" + "$_about" + ", ");
     buffer.write("profilePicUrl=" + "$_profilePicUrl" + ", ");
     buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.toString() : "null") + ", ");
     buffer.write("userType=" + (_userType != null ? amplify_core.enumToString(_userType)! : "null") + ", ");
@@ -185,12 +204,13 @@ class User {
     return buffer.toString();
   }
   
-  User copyWith({Address? address, amplify_core.TemporalTimestamp? createdOn, String? email, String? firstName, String? id, String? lastName, String? profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, USERTYPE? userType, String? username}) {
+  User copyWith({Address? address, amplify_core.TemporalTimestamp? createdOn,String? about, String? email, String? firstName, String? id, String? lastName, String? profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, USERTYPE? userType, String? username}) {
     return User._internal(
       address: address ?? this.address,
       createdOn: createdOn ?? this.createdOn,
       email: email ?? this.email,
       firstName: firstName ?? this.firstName,
+      about: about ?? this.about,
       id: id ?? this.id,
       lastName: lastName ?? this.lastName,
       profilePicUrl: profilePicUrl ?? this.profilePicUrl,
@@ -204,6 +224,7 @@ class User {
     ModelFieldValue<amplify_core.TemporalTimestamp?>? createdOn,
     ModelFieldValue<String>? email,
     ModelFieldValue<String>? firstName,
+    ModelFieldValue<String>? about,
     ModelFieldValue<String>? id,
     ModelFieldValue<String>? lastName,
     ModelFieldValue<String>? profilePicUrl,
@@ -216,6 +237,7 @@ class User {
       createdOn: createdOn == null ? this.createdOn : createdOn.value,
       email: email == null ? this.email : email.value,
       firstName: firstName == null ? this.firstName : firstName.value,
+      about: about == null ? this.about : about.value,
       id: id == null ? this.id : id.value,
       lastName: lastName == null ? this.lastName : lastName.value,
       profilePicUrl: profilePicUrl == null ? this.profilePicUrl : profilePicUrl.value,
@@ -232,6 +254,7 @@ class User {
       _createdOn = json['createdOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['createdOn']) : null,
       _email = json['email'],
       _firstName = json['firstName'],
+      _about= json['about'],
       id = json['id'],
       _lastName = json['lastName'],
       _profilePicUrl = json['profilePicUrl'],
@@ -240,7 +263,7 @@ class User {
       _username = json['username'];
   
   Map<String, dynamic> toJson() => {
-    'address': _address?.toJson(), 'createdOn': _createdOn?.toSeconds(), 'email': _email, 'firstName': _firstName, 'id': id, 'lastName': _lastName, 'profilePicUrl': _profilePicUrl, 'updatedOn': _updatedOn?.toSeconds(), 'userType': amplify_core.enumToString(_userType), 'username': _username
+    'address': _address?.toJson(), 'createdOn': _createdOn?.toSeconds(), 'about':_about,'email': _email, 'firstName': _firstName, 'id': id, 'lastName': _lastName, 'profilePicUrl': _profilePicUrl, 'updatedOn': _updatedOn?.toSeconds(), 'userType': amplify_core.enumToString(_userType), 'username': _username
   };
   
   Map<String, Object?> toMap() => {
@@ -248,6 +271,7 @@ class User {
     'createdOn': _createdOn,
     'email': _email,
     'firstName': _firstName,
+    'about': _about,
     'id': id,
     'lastName': _lastName,
     'profilePicUrl': _profilePicUrl,
@@ -300,6 +324,12 @@ class User {
       fieldName: 'profilePicUrl',
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
+        fieldName: 'about',
+        isRequired: true,
+        ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(

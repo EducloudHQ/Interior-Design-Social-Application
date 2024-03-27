@@ -11,6 +11,8 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 
 import 'package:aws_common/vm.dart';
 
+import '../models/User.dart';
+
 
 
 class ProfileRepository extends ChangeNotifier {
@@ -183,7 +185,7 @@ class ProfileRepository extends ChangeNotifier {
 
     try {
       String graphQLDocument = '''
-    mutation createUserAccount(\$username:String!,\$firstName:String!,\$lastName:String!,\$email:String!,\$userType:String!,\$profilePicUrl:String!,\$about:String!) {
+    mutation createUserAccount(\$username:String!,\$firstName:String!,\$lastName:String!,\$email:AWSEmail!,\$userType:USERTYPE!,\$profilePicUrl:String!,\$about:String!) {
   createUserAccount(
     userInput: {
       username: \$username
@@ -252,6 +254,54 @@ class ProfileRepository extends ChangeNotifier {
 
     }
   }
+
+
+  Future<User> getUserAccount(String id) async {
+    loading = true;
+    String graphQLDocument = '''
+    
+      query getUserAccount(\$id:String!) {
+  getUserAccount(id:\$id ) {
+  about
+  createdOn
+  email
+  firstName
+  id
+  lastName
+  profilePicUrl
+   userType
+    username
+  updatedOn
+  }
+}
+    ''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "id": id,
+
+          },
+        ));
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+    loading = false;
+
+    print("returning ${responseJson['getUserAccount']}");
+
+    User userModel = User.fromJson(responseJson['getUserAccount']);
+    if (kDebugMode) {
+      print("returning ${userModel.email}");
+    }
+
+    return userModel;
+  }
+
+
 
 
 

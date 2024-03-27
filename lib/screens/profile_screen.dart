@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:social_media/repositories/profile_repository.dart';
 
+import '../models/User.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({required this.email,super.key});
   final String email;
@@ -27,24 +30,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       ),
 
-      body:SingleChildScrollView(
-        child: Container(
+      body:
 
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+      FutureProvider<User?>(create: (_)=>ProfileRepository.instance().getUserAccount("2eGn5ojCxGXyVHze7bKhxNt1hzb"),
+      initialData: null,
+      catchError: (context,error){
+        throw error!;
+      },
+      child:Consumer(
+        builder: (_,User? userModel,child){
+          return    userModel == null ? Container(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ):
+           SingleChildScrollView(
+            child: Container(
+
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(1000),
-                      child:  CachedNetworkImage(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(1000),
+                        child:  CachedNetworkImage(
                           width: 60,
                           height: 60,
-                          imageUrl:" profileModel.profilePicUrl",
+                          fit: BoxFit.cover,
+                          imageUrl:userModel.profilePicUrl,
                           placeholder: (context, url) => CircularProgressIndicator(),
                           errorWidget: (context, url, error) => ClipRRect(
                             borderRadius: BorderRadius.circular(1000),
@@ -52,129 +70,133 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
 
-                    ),
-
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-
-                            child: Text(" " ,
-                              style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
-                          ),
-                          Container(
-
-                            child: const Text("Computer Programmer",),
-                          ),
-
-                        ],
                       ),
+
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+
+                                child: Text("${userModel.lastName} ${userModel.firstName}" ,
+                                  style: const TextStyle(fontSize: 17,fontWeight: FontWeight.bold),),
+                              ),
+                              Container(
+
+                                child:  Text(userModel.username),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          context.push("/userAccount/${widget.email}");
+                        },
+                        child: Container(
+                          width: 40,
+                          height: 40,
+
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+
+                              gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment(0.8, 1),
+                                  colors: [
+                                    Color(0xFFFBDA61),
+                                    Color(0xFFFF5ACD),
+
+                                  ]
+
+                              )
+                          ),
+                          child:
+                          const Icon(Icons.edit,color: Colors.white,),
+
+
+
+                        ),
+                      ),
+
+
+                    ],
+                  ),
+                  Container(
+                    padding:EdgeInsets.symmetric(vertical: 10) ,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          child: const Row(
+                            children: [
+                              Text('170',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text(' '),
+                              Text('Followers',style: TextStyle(),)
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: const Row(
+                            children: [
+                              Text('6',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text(' '),
+                              Text('Followings',style: TextStyle())
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: const Row(
+                            children: [
+                              Text('6',style: TextStyle(fontWeight: FontWeight.bold),),
+                              Text(' '),
+                              Text('Followings',style: TextStyle(),)
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  InkWell(
-                    onTap: (){
-                      context.push("/userAccount/${widget.email}");
-                    },
-                    child: Container(
-                      width: 40,
-                      height: 40,
+                  Container(
+                    padding: EdgeInsets.only(top: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
 
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-
-                          gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment(0.8, 1),
-                              colors: [
-                                Color(0xFFFBDA61),
-                                Color(0xFFFF5ACD),
-
-                              ]
-
-                          )
-                      ),
-                      child:
-                      const Icon(Icons.edit,color: Colors.white,),
-
-
-
+                        const Text('About',style: TextStyle(fontWeight: FontWeight.bold),),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          child:  Text(userModel.about),
+                        )
+                      ],
                     ),
                   ),
-              
 
-                ],
-              ),
-              Container(
-                padding:EdgeInsets.symmetric(vertical: 10) ,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: const Row(
-                        children: [
-                          Text('170',style: TextStyle(fontWeight: FontWeight.bold),),
-                          Text(' '),
-                          Text('Followers',style: TextStyle(),)
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: const Row(
-                        children: [
-                          Text('6',style: TextStyle(fontWeight: FontWeight.bold),),
-                          Text(' '),
-                          Text('Followings',style: TextStyle())
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: const Row(
-                        children: [
-                          Text('6',style: TextStyle(fontWeight: FontWeight.bold),),
-                          Text(' '),
-                          Text('Followings',style: TextStyle(),)
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    const Text('About',style: TextStyle(fontWeight: FontWeight.bold),),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: const Text("A gradient has two anchor points, begin and end. The begin point corresponds to 0.0, and the end point corresponds to 1.0. These points are expressed in fractions, so that the same "),
-                    )
-                  ],
-                ),
-              ),
-
-              const Row(
-                children: [
-                  Text("Posts"),
-                  Row(
-
+                  const Row(
                     children: [
-                      Icon(Icons.view_list_sharp),
-                      Icon(Icons.grid_view_sharp)
+                      Text("Posts"),
+                      Row(
+
+                        children: [
+                          Icon(Icons.view_list_sharp),
+                          Icon(Icons.grid_view_sharp)
+                        ],
+                      )
                     ],
                   )
                 ],
-              )
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
+          );
+        },
+      ))
+
+
     );
   }
 }

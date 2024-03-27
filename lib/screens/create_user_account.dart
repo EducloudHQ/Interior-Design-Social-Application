@@ -210,8 +210,8 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                           borderRadius:
                                               BorderRadius.circular(30),
                                           child: CachedNetworkImage(
-                                              width: 70.0,
-                                              height: 70.0,
+                                              width: 80.0,
+                                              height: 80.0,
                                               fit: BoxFit.cover,
                                               imageUrl: profileRepo.profilePic,
                                               placeholder: (context, url) =>
