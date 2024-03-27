@@ -69,7 +69,7 @@ class _MyAppState extends State<App> {
       ),
       GoRoute(
           name:'createUserAccount',
-          path: '/users/:email',
+          path: '/userAccount/:email',
           builder: (context, state) {
             return ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
               child: CreateUserAccountScreen(email:state.pathParameters['email']!,)
@@ -82,15 +82,16 @@ class _MyAppState extends State<App> {
 
       GoRoute(
           name:'userProfile',
-          path: '/profile',
+          path: '/profile/:email',
           builder: (context, state) {
-            return  ProfileScreen();
+            return  ProfileScreen(email:state.pathParameters['email']!);
 
 
 
 
 
           }),
+
     ]);
 
 
@@ -155,7 +156,7 @@ class _MyAppState extends State<App> {
         fontFamily: 'Syne-Regular',
       ),
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,

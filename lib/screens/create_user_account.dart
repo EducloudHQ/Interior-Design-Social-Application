@@ -161,15 +161,15 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
     var profileRepo = context.watch<ProfileRepository>();
 
     return Scaffold(
-        backgroundColor: Color(0xFF264653),
+
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          backgroundColor: Theme.of(context).primaryColor,
+
           title: const Text(
             'Edit Profile',
-            style: TextStyle(color: Colors.white),
+
           ),
         ),
         body: SingleChildScrollView(

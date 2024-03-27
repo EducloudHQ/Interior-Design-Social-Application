@@ -3,13 +3,12 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
-import 'package:social_media/models/ModelProvider.dart';
-import '../models/user.dart';
+import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  const ProfileScreen({required this.email,super.key});
+  final String email;
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -21,8 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-  //  var profileModel = context.watch<User?>();
-    //User profileModel = User(id: '23423423',firstName: "Rosius",lastName: "Ndimofor",username: "ro",profilePicUrl: "", email: 'fasdfdfs', userType: USERTYPE.ADMIN);
     return  Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -78,29 +75,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                  Container(
-                    width: 40,
-                    height: 40,
+                  InkWell(
+                    onTap: (){
+                      context.push("/userAccount/${widget.email}");
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
 
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
 
-                        gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment(0.8, 1),
-                            colors: [
-                              Color(0xFFFBDA61),
-                              Color(0xFFFF5ACD),
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment(0.8, 1),
+                              colors: [
+                                Color(0xFFFBDA61),
+                                Color(0xFFFF5ACD),
 
-                            ]
+                              ]
 
-                        )
+                          )
+                      ),
+                      child:
+                      const Icon(Icons.edit,color: Colors.white,),
+
+
+
                     ),
-                    child:
-                    const Icon(Icons.edit,color: Colors.white,),
-
-
-
                   ),
               
 
