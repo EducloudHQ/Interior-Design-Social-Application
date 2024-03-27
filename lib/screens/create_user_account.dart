@@ -245,38 +245,14 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                         margin: const EdgeInsets.only(top: 20),
                         child: TextFormField(
                           controller: profileRepo.usernameController,
-                          style: const TextStyle(color: Colors.white),
+
                           decoration: InputDecoration(
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
+                            filled: false,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
+
+
                             labelText: 'username',
                             labelStyle: TextStyle(color: Colors.white),
                             hintText: "username",
@@ -300,38 +276,14 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                           controller: profileRepo.firstNameController,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
+                            filled: false,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
+
+
+
                             labelText: 'First Name',
-                            labelStyle: TextStyle(color: Colors.white),
                             hintText: "First Name",
                             hintStyle: TextStyle(
                               color: Colors.grey[600],
@@ -351,38 +303,12 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                         margin: const EdgeInsets.only(top: 20),
                         child: TextFormField(
                           controller: profileRepo.lastNameController,
-                          style: const TextStyle(color: Colors.white),
+
                           decoration: InputDecoration(
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Theme.of(context).primaryColor,
-                                  width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: (Colors.grey[700])!, width: 2),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
+                            filled: false,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
                             labelText: 'Last Name',
                             labelStyle: TextStyle(color: Colors.white),
                             hintText: "Last Name",
@@ -400,11 +326,40 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                           },
                         ),
                       ),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child: TextFormField(
+                          controller: profileRepo.lastNameController,
+
+maxLines: 3,
+                          decoration: InputDecoration(
+                            filled: false,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+
+                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
+                            labelText: 'About you',
+                            labelStyle: TextStyle(color: Colors.white),
+                            hintText: "About you",
+                            hintStyle: TextStyle(
+                              color: Colors.grey[600],
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'About you';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.only(bottom: 20),
+                  margin: const EdgeInsets.only(bottom: 20,top: 20),
                   child: Column(
                     children: <Widget>[
                       profileRepo.loading
@@ -412,70 +367,46 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                               padding: const EdgeInsets.only(top: 30.0),
                               child: const CircularProgressIndicator(),
                             )
-                          : Container(
-                              padding: const EdgeInsets.only(top: 50),
-                              child: SizedBox(
-                                width: size.width / 1.1,
-                                height: 50,
-                                child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary),
-                                        shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10)))),
-                                    onPressed: () {
-                                      final FormState form =
-                                          formKey.currentState!;
-                                      if (!form.validate()) {
-                                      } else {
-                                        form.save();
+                          :
 
-                                        if (kDebugMode) {
-                                          print(profileRepo.profilePic);
-                                        }
-/*
-                                        profileRepo
-                                            .saveUserProfileDetails(
-                                                widget.email)
-                                            .then((_) {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return MultiProvider(
-                                              providers: [
-                                                ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
-                                                ChangeNotifierProvider(
-                                                  create: (_) =>
-                                                      ProfileRepository
-                                                          .instance(),
-                                                ),
-                                                ChangeNotifierProvider(
-                                                  create: (_) =>
-                                                      TaskRepository.instance(),
-                                                ),
-                                              ],
-                                              child: HomeScreen(),
-                                            );
-                                          }));
-                                        });
+                      InkWell(
+                        onTap: (){
+                          final FormState form =
+                          formKey.currentState!;
+                          if (!form.validate()) {
+                          } else {
+                            form.save();
 
-*/
-                                      }
-                                    },
-                                    child: const Text(
-                                      'Continue',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),
-                                    )),
-                              ),
-                            )
+                            if (kDebugMode) {
+                              print(profileRepo.profilePic);
+                            }
+
+                          }
+                        },
+                        child: Container(
+                            width: size.width/1.2,
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            alignment: Alignment.center,
+                            decoration:  BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment(0.8, 1),
+                                    colors: [
+                                      Color(0xFFFBDA61),
+                                      Color(0xFFFF5ACD),
+
+                                    ]
+
+                                )
+                            ),
+
+
+                            child: const Text("save account details",style: TextStyle(fontSize: 15),)),
+                      ),
+
+
+
                     ],
                   ),
                 )

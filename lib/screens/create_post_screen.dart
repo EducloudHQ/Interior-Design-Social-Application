@@ -319,7 +319,7 @@ Size size = MediaQuery.of(context).size;
                                     ),
 
 
-                                    child: Text("Create Post",style: TextStyle(fontSize: 15),)),
+                                    child: const Text("Create Post",style: TextStyle(fontSize: 15),)),
                               )
 
 
