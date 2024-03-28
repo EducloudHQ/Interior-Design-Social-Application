@@ -166,7 +166,7 @@ class PostRepository extends ChangeNotifier{
     String graphQLDocument = '''
     query getAllPosts(\$limit:Int!, \$nextToken:String) {
   getAllPosts(limit: \$limit, nextToken: \$nextToken) {
-    items {
+   items {
       content
       createdOn
       id
@@ -174,13 +174,43 @@ class PostRepository extends ChangeNotifier{
       imageUrls
       updatedOn
       userId
-      comment {
+      comments {
         comment
         createdOn
         id
         postId
         updatedOn
         userId
+        user {
+          about
+          address {
+            city
+            country
+            street
+            zip
+          }
+          createdOn
+          email
+          firstName
+          id
+          lastName
+          profilePicUrl
+          updatedOn
+          userType
+          username
+        }
+      }
+      user {
+        about
+        createdOn
+        email
+        firstName
+        id
+        updatedOn
+        userType
+        username
+        profilePicUrl
+        lastName
       }
     }
     nextToken

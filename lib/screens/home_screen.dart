@@ -7,6 +7,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
+import 'package:social_media/screens/post_item.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import '../repositories/post_respository.dart';
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var taskRepo = context.watch<PostRepository>();
+
     var sharedPrefs = context.watch<SharedPrefsUtils>();
 
 
@@ -88,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child:  WelcomeScreen(),)
             : Scaffold(
 
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
           drawer: Drawer(
             // Add a ListView to the drawer. This ensures the user can scroll
             // through the options in the drawer if there isn't enough vertical
@@ -222,28 +223,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Consumer(
                   builder: (_,PostsResult? postsResult,child){
-                    postsResult != null ?
-                   Container(
-
-                      child:Column(
-                        children: [
-
-                        ],
-                      ) ,
-                    ): Container();
+                   return postsResult != null ?
+                   ListView.builder(itemBuilder: (context,index){
+                      return PostItem(postsResult.items[index]);
+                   },itemCount: postsResult.items.length,): Container();
                   },
                 ),),
-/*
-                taskRepo.tasks.isEmpty ? const Center(child: Text("No Tasks available")) :
-
-
-                  ListView.builder(
-                  itemBuilder: (context, index) {
-                    return TaskItem(taskRepo.tasks[index]);
-                  },
-                  itemCount:taskRepo.tasks.length,
-                ),
-*/
 
 
                 floatingActionButton: FloatingActionButton(
@@ -251,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {
                    context.push('/post/$email');
                   },
-                  child: const Icon(Icons.add),
+                  child: const Icon(Icons.edit),
                 ),
               );
       }),

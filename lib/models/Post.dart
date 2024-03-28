@@ -26,17 +26,18 @@ import 'package:collection/collection.dart';
 
 /** This is an auto generated class representing the Post type in your schema. */
 class Post {
-  final List<Comment>? _comment;
+  final List<Comment>? _comments;
   final String? _content;
   final amplify_core.TemporalTimestamp? _createdOn;
   final String id;
   final List<String>? _imageKeys;
   final List<String>? _imageUrls;
   final amplify_core.TemporalTimestamp? _updatedOn;
+  final User? _user;
   final String? _userId;
 
-  List<Comment>? get comment {
-    return _comment;
+  List<Comment>? get comments {
+    return _comments;
   }
   
   String get content {
@@ -95,6 +96,19 @@ class Post {
     return _updatedOn;
   }
   
+  User get user {
+    try {
+      return _user!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
   String get userId {
     try {
       return _userId!;
@@ -108,17 +122,18 @@ class Post {
     }
   }
   
-  const Post._internal({comment, required content, required createdOn, required this.id, required imageKeys, required imageUrls, updatedOn, required userId}): _comment = comment, _content = content, _createdOn = createdOn, _imageKeys = imageKeys, _imageUrls = imageUrls, _updatedOn = updatedOn, _userId = userId;
+  const Post._internal({comments, required content, required createdOn, required this.id, required imageKeys, required imageUrls, updatedOn, required user, required userId}): _comments = comments, _content = content, _createdOn = createdOn, _imageKeys = imageKeys, _imageUrls = imageUrls, _updatedOn = updatedOn, _user = user, _userId = userId;
   
-  factory Post({List<Comment>? comment, required String content, required amplify_core.TemporalTimestamp createdOn, String? id, required List<String> imageKeys, required List<String> imageUrls, amplify_core.TemporalTimestamp? updatedOn, required String userId}) {
+  factory Post({List<Comment>? comments, required String content, required amplify_core.TemporalTimestamp createdOn, String? id, required List<String> imageKeys, required List<String> imageUrls, amplify_core.TemporalTimestamp? updatedOn, required User user, required String userId}) {
     return Post._internal(
-      comment: comment != null ? List<Comment>.unmodifiable(comment) : comment,
+      comments: comments != null ? List<Comment>.unmodifiable(comments) : comments,
       content: content,
       createdOn: createdOn,
       id: id == null ? amplify_core.UUID.getUUID() : id,
       imageKeys: imageKeys != null ? List<String>.unmodifiable(imageKeys) : imageKeys,
       imageUrls: imageUrls != null ? List<String>.unmodifiable(imageUrls) : imageUrls,
       updatedOn: updatedOn,
+      user: user,
       userId: userId);
   }
   
@@ -130,13 +145,14 @@ class Post {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Post &&
-      DeepCollectionEquality().equals(_comment, other._comment) &&
+      DeepCollectionEquality().equals(_comments, other._comments) &&
       _content == other._content &&
       _createdOn == other._createdOn &&
       id == other.id &&
       DeepCollectionEquality().equals(_imageKeys, other._imageKeys) &&
       DeepCollectionEquality().equals(_imageUrls, other._imageUrls) &&
       _updatedOn == other._updatedOn &&
+      _user == other._user &&
       _userId == other._userId;
   }
   
@@ -148,82 +164,88 @@ class Post {
     var buffer = new StringBuffer();
     
     buffer.write("Post {");
-    buffer.write("comment=" + (_comment != null ? _comment!.toString() : "null") + ", ");
+    buffer.write("comments=" + (_comments != null ? _comments!.toString() : "null") + ", ");
     buffer.write("content=" + "$_content" + ", ");
     buffer.write("createdOn=" + (_createdOn != null ? _createdOn!.toString() : "null") + ", ");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("imageKeys=" + (_imageKeys != null ? _imageKeys!.toString() : "null") + ", ");
     buffer.write("imageUrls=" + (_imageUrls != null ? _imageUrls!.toString() : "null") + ", ");
     buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.toString() : "null") + ", ");
+    buffer.write("user=" + (_user != null ? _user!.toString() : "null") + ", ");
     buffer.write("userId=" + "$_userId");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Post copyWith({List<Comment>? comment, String? content, amplify_core.TemporalTimestamp? createdOn, String? id, List<String>? imageKeys, List<String>? imageUrls, amplify_core.TemporalTimestamp? updatedOn, String? userId}) {
+  Post copyWith({List<Comment>? comments, String? content, amplify_core.TemporalTimestamp? createdOn, String? id, List<String>? imageKeys, List<String>? imageUrls, amplify_core.TemporalTimestamp? updatedOn, User? user, String? userId}) {
     return Post._internal(
-      comment: comment ?? this.comment,
+      comments: comments ?? this.comments,
       content: content ?? this.content,
       createdOn: createdOn ?? this.createdOn,
       id: id ?? this.id,
       imageKeys: imageKeys ?? this.imageKeys,
       imageUrls: imageUrls ?? this.imageUrls,
       updatedOn: updatedOn ?? this.updatedOn,
+      user: user ?? this.user,
       userId: userId ?? this.userId);
   }
   
   Post copyWithModelFieldValues({
-    ModelFieldValue<List<Comment>>? comment,
+    ModelFieldValue<List<Comment>>? comments,
     ModelFieldValue<String>? content,
     ModelFieldValue<amplify_core.TemporalTimestamp>? createdOn,
     ModelFieldValue<String>? id,
     ModelFieldValue<List<String>>? imageKeys,
     ModelFieldValue<List<String>>? imageUrls,
     ModelFieldValue<amplify_core.TemporalTimestamp?>? updatedOn,
+    ModelFieldValue<User>? user,
     ModelFieldValue<String>? userId
   }) {
     return Post._internal(
-      comment: comment == null ? this.comment : comment.value,
+      comments: comments == null ? this.comments : comments.value,
       content: content == null ? this.content : content.value,
       createdOn: createdOn == null ? this.createdOn : createdOn.value,
       id: id == null ? this.id : id.value,
       imageKeys: imageKeys == null ? this.imageKeys : imageKeys.value,
       imageUrls: imageUrls == null ? this.imageUrls : imageUrls.value,
       updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value,
+      user: user == null ? this.user : user.value,
       userId: userId == null ? this.userId : userId.value
     );
   }
-
-  Post.fromJson(Map<String, dynamic> json)
-      : _comment = json['comment'] is List
-      ? (json['comment'] as List)
-      .where((e) => e != null)
-      .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-      .toList()
-      : null,
-
-        _content = json['content'],
-        _createdOn = json['createdOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['createdOn']) : null,
-        id = json['id'],
-        _imageKeys = json['imageKeys']?.cast<String>(),
-        _imageUrls = json['imageUrls']?.cast<String>(),
-        _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['updatedOn']) : null,
-        _userId = json['userId'];
-
+  
+  Post.fromJson(Map<String, dynamic> json)  
+    : _comments = json['comments'] is List
+        ? (json['comments'] as List)
+          .where((e) => e != null)
+          .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e)))
+          .toList()
+        : null,
+      _content = json['content'],
+      _createdOn = json['createdOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['createdOn']) : null,
+      id = json['id'],
+      _imageKeys = json['imageKeys']?.cast<String>(),
+      _imageUrls = json['imageUrls']?.cast<String>(),
+      _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['updatedOn']) : null,
+      _user = json['user'] != null
+        ? User.fromJson(new Map<String, dynamic>.from(json['user']))
+        : null,
+      _userId = json['userId'];
   
   Map<String, dynamic> toJson() => {
-    'comment': _comment?.map((Comment? e) => e?.toJson()).toList(), 'content': _content, 'createdOn': _createdOn?.toSeconds(), 'id': id, 'imageKeys': _imageKeys, 'imageUrls': _imageUrls, 'updatedOn': _updatedOn?.toSeconds(), 'userId': _userId
+    'comments': _comments?.map((Comment? e) => e?.toJson()).toList(), 'content': _content, 'createdOn': _createdOn?.toSeconds(), 'id': id, 'imageKeys': _imageKeys, 'imageUrls': _imageUrls, 'updatedOn': _updatedOn?.toSeconds(), 'user': _user?.toJson(), 'userId': _userId
   };
   
   Map<String, Object?> toMap() => {
-    'comment': _comment,
+    'comments': _comments,
     'content': _content,
     'createdOn': _createdOn,
     'id': id,
     'imageKeys': _imageKeys,
     'imageUrls': _imageUrls,
     'updatedOn': _updatedOn,
+    'user': _user,
     'userId': _userId
   };
 
@@ -232,7 +254,7 @@ class Post {
     modelSchemaDefinition.pluralName = "Posts";
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
-      fieldName: 'comment',
+      fieldName: 'comments',
       isRequired: false,
       isArray: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embeddedCollection, ofCustomTypeName: 'Comment')
@@ -274,6 +296,12 @@ class Post {
       fieldName: 'updatedOn',
       isRequired: false,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.timestamp)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.embedded(
+      fieldName: 'user',
+      isRequired: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.embedded, ofCustomTypeName: 'User')
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(

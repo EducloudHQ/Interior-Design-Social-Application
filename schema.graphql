@@ -56,13 +56,14 @@ type Mutation {
 }
 
 type Post @aws_api_key @aws_cognito_user_pools {
-  comment: [Comment!]
+  comments: [Comment!]
   content: String!
   createdOn: AWSTimestamp!
   id: String!
   imageKeys: [String!]!
   imageUrls: [String!]!
   updatedOn: AWSTimestamp
+  user: User!
   userId: String!
 }
 
@@ -99,7 +100,7 @@ type TypingIndicator @aws_cognito_user_pools {
   typing: Boolean!
 }
 
-type User @aws_cognito_user_pools {
+type User @aws_api_key @aws_cognito_user_pools {
   about: String!
   address: Address
   createdOn: AWSTimestamp
