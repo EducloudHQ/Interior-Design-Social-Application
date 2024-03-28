@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
@@ -211,10 +212,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       signOutCurrentUser();
                       sharedPrefs.deleteAllKeys();
 
-                    }, icon: Icon(Icons.logout_outlined))
+                    }, icon: const Icon(Icons.logout_outlined))
                   ],
                 ),
-                body:Center(child: Text("No Tasks available")),
+                body:FutureProvider<PostsResult?>(create: (context)=>PostRepository.instance().getAllPosts(10),
+                initialData: null,
+                catchError: (context,error){
+                  throw error!;
+                },
+                child: Consumer(
+                  builder: (_,PostsResult? postsResult,child){
+                    postsResult != null ?
+                   Container(
+
+                      child:Column(
+                        children: [
+
+                        ],
+                      ) ,
+                    ): Container();
+                  },
+                ),),
 /*
                 taskRepo.tasks.isEmpty ? const Center(child: Text("No Tasks available")) :
 

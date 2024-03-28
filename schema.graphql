@@ -60,7 +60,8 @@ type Post @aws_api_key @aws_cognito_user_pools {
   content: String!
   createdOn: AWSTimestamp!
   id: String!
-  imageUrl: String
+  imageKeys: [String!]!
+  imageUrls: [String!]!
   updatedOn: AWSTimestamp
   userId: String!
 }
@@ -99,6 +100,7 @@ type TypingIndicator @aws_cognito_user_pools {
 }
 
 type User @aws_cognito_user_pools {
+  about: String!
   address: Address
   createdOn: AWSTimestamp
   email: AWSEmail!
@@ -136,11 +138,13 @@ input CreateCommentInput @aws_cognito_user_pools {
 
 input CreatePostInput @aws_cognito_user_pools {
   content: String!
-  imageUrl: String
+  imageKeys: [String!]!
+  imageUrls: [String!]!
   userId: String!
 }
 
 input CreateUserInput @aws_cognito_user_pools {
+  about: String!
   email: AWSEmail!
   firstName: String!
   lastName: String!
@@ -168,7 +172,8 @@ input UpdateMessageReadReceiptsInput @aws_cognito_user_pools {
 input UpdatePostInput @aws_cognito_user_pools {
   content: String
   id: String!
-  imageUrl: String
+  imageKeys: [String!]!
+  imageUrls: [String!]!
   userId: String
 }
 

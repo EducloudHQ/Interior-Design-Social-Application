@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:social_media/models/ModelProvider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 
@@ -10,6 +11,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 
+import '../models/Post.dart';
 import '../models/generate_post_image_model.dart';
 
 
@@ -157,6 +159,63 @@ class PostRepository extends ChangeNotifier{
     }
 
     return generatePostImageModel.images!;
+  }
+
+  Future<PostsResult> getAllPosts(int limit) async {
+   loading = true;
+    String graphQLDocument = '''
+    query getAllPosts(\$limit:Int!, \$nextToken:String) {
+  getAllPosts(limit: \$limit, nextToken: \$nextToken) {
+    items {
+      content
+      createdOn
+      id
+      imageKeys
+      imageUrls
+      updatedOn
+      userId
+      comment {
+        comment
+        createdOn
+        id
+        postId
+        updatedOn
+        userId
+      }
+    }
+    nextToken
+  }
+}
+''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "limit": limit,
+            "nextToken":null,
+
+          },
+        ));
+
+    var response = await operation.response;
+
+
+    final responseJson = json.decode(response.data!);
+    loading = false;
+
+   if (kDebugMode) {
+     print("returning ${responseJson['getAllPosts']}");
+   }
+
+    PostsResult postsResults = PostsResult.fromJson(responseJson['getAllPosts']);
+
+   if (kDebugMode) {
+     print("returning ${postsResults.items[0]}");
+   }
+
+    return postsResults;
   }
 
   void showInSnackBar(BuildContext context,String value) {

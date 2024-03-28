@@ -23,7 +23,9 @@ import 'package:provider/provider.dart';
 
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
 void main() {
+
   AmplifyLogger().logLevel = LogLevel.verbose;
+
   runApp(
 
       ChangeNotifierProvider(
@@ -44,56 +46,8 @@ class App extends StatefulWidget {
 
 class _MyAppState extends State<App> {
 
-  static final _router = GoRouter(
-    routes: [
-    GoRoute(
-    path: '/',
-    builder: (BuildContext _, GoRouterState __) =>
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
-            ChangeNotifierProvider(create: (BuildContext context) => LoginRepository.instance(),),
-            ChangeNotifierProvider(create: (BuildContext context) => PostRepository.instance(),
 
-            ),
-          ],
-        child:HomeScreen()),
-  ),
-      GoRoute(
-        name:'createPost',
-        path:'/post/:userId',
-        builder: (context,state){
-          return  CreatePostScreen(email: state.pathParameters['userId']!);
-        }
-
-      ),
-      GoRoute(
-          name:'createUserAccount',
-          path: '/userAccount/:email',
-          builder: (context, state) {
-            return ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
-              child: CreateUserAccountScreen(email:state.pathParameters['email']!,)
-
-
-            );
-
-
-          }),
-
-      GoRoute(
-          name:'userProfile',
-          path: '/profile/:email',
-          builder: (context, state) {
-            return  ProfileScreen(email:state.pathParameters['email']!);
-
-
-
-
-
-          }),
-
-    ]);
-
+  bool _isConfigured = false;
 
   Future<void> _configureAmplify() async {
     try {
@@ -114,6 +68,9 @@ class _MyAppState extends State<App> {
       ]);
 
       await Amplify.configure(amplifyconfig);
+       setState(() {
+         _isConfigured = true;
+       });
       _logger.debug('Successfully configured Amplify');
 
       Amplify.Hub.listen(HubChannel.Auth, (event) {
@@ -128,24 +85,11 @@ class _MyAppState extends State<App> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _configureAmplify();
+   _configureAmplify();
 
   }
 
-  Future<void> changeSync() async {
 
-    try {
-      await Amplify.DataStore.clear();
-    } on Exception catch (error) {
-      print('Error clearing DataStore: $error');
-    }
-
-    try {
-      await Amplify.DataStore.start();
-    } on Exception catch (error) {
-      print('Error starting DataStore: $error');
-    }
-  }
   @override
   Widget build(BuildContext context) {
 
@@ -160,7 +104,59 @@ class _MyAppState extends State<App> {
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
-     routerConfig: _router
+     routerConfig: GoRouter(
+         routes: [
+           GoRoute(
+             path: '/',
+             builder: (BuildContext _, GoRouterState __) =>
+                 MultiProvider(
+                     providers: [
+                       ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
+                       ChangeNotifierProvider(create: (BuildContext context) => LoginRepository.instance(),),
+                       ChangeNotifierProvider(create: (BuildContext context) => PostRepository.instance(),
+
+                       ),
+                     ],
+                     child:_isConfigured ?  HomeScreen() : Container(
+                       child: const Center(
+                         child: CircularProgressIndicator(),
+                       ),
+                     )),
+           ),
+           GoRoute(
+               name:'createPost',
+               path:'/post/:userId',
+               builder: (context,state){
+                 return  CreatePostScreen(email: state.pathParameters['userId']!);
+               }
+
+           ),
+           GoRoute(
+               name:'createUserAccount',
+               path: '/userAccount/:email',
+               builder: (context, state) {
+                 return ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
+                     child: CreateUserAccountScreen(email:state.pathParameters['email']!,)
+
+
+                 );
+
+
+               }),
+
+           GoRoute(
+               name:'userProfile',
+               path: '/profile/:email',
+               builder: (context, state) {
+                 return  ProfileScreen(email:state.pathParameters['email']!);
+
+
+
+
+
+               }),
+
+         ])
 
 /*
      home:_router

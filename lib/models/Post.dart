@@ -30,7 +30,8 @@ class Post {
   final String? _content;
   final amplify_core.TemporalTimestamp? _createdOn;
   final String id;
-  final String? _imageUrl;
+  final List<String>? _imageKeys;
+  final List<String>? _imageUrls;
   final amplify_core.TemporalTimestamp? _updatedOn;
   final String? _userId;
 
@@ -64,8 +65,30 @@ class Post {
     }
   }
   
-  String? get imageUrl {
-    return _imageUrl;
+  List<String> get imageKeys {
+    try {
+      return _imageKeys!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
+  }
+  
+  List<String> get imageUrls {
+    try {
+      return _imageUrls!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+            amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+          );
+    }
   }
   
   amplify_core.TemporalTimestamp? get updatedOn {
@@ -85,15 +108,16 @@ class Post {
     }
   }
   
-  const Post._internal({comment, required content, required createdOn, required this.id, imageUrl, updatedOn, required userId}): _comment = comment, _content = content, _createdOn = createdOn, _imageUrl = imageUrl, _updatedOn = updatedOn, _userId = userId;
+  const Post._internal({comment, required content, required createdOn, required this.id, required imageKeys, required imageUrls, updatedOn, required userId}): _comment = comment, _content = content, _createdOn = createdOn, _imageKeys = imageKeys, _imageUrls = imageUrls, _updatedOn = updatedOn, _userId = userId;
   
-  factory Post({List<Comment>? comment, required String content, required amplify_core.TemporalTimestamp createdOn, String? id, String? imageUrl, amplify_core.TemporalTimestamp? updatedOn, required String userId}) {
+  factory Post({List<Comment>? comment, required String content, required amplify_core.TemporalTimestamp createdOn, String? id, required List<String> imageKeys, required List<String> imageUrls, amplify_core.TemporalTimestamp? updatedOn, required String userId}) {
     return Post._internal(
       comment: comment != null ? List<Comment>.unmodifiable(comment) : comment,
       content: content,
       createdOn: createdOn,
       id: id == null ? amplify_core.UUID.getUUID() : id,
-      imageUrl: imageUrl,
+      imageKeys: imageKeys != null ? List<String>.unmodifiable(imageKeys) : imageKeys,
+      imageUrls: imageUrls != null ? List<String>.unmodifiable(imageUrls) : imageUrls,
       updatedOn: updatedOn,
       userId: userId);
   }
@@ -110,7 +134,8 @@ class Post {
       _content == other._content &&
       _createdOn == other._createdOn &&
       id == other.id &&
-      _imageUrl == other._imageUrl &&
+      DeepCollectionEquality().equals(_imageKeys, other._imageKeys) &&
+      DeepCollectionEquality().equals(_imageUrls, other._imageUrls) &&
       _updatedOn == other._updatedOn &&
       _userId == other._userId;
   }
@@ -127,7 +152,8 @@ class Post {
     buffer.write("content=" + "$_content" + ", ");
     buffer.write("createdOn=" + (_createdOn != null ? _createdOn!.toString() : "null") + ", ");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("imageUrl=" + "$_imageUrl" + ", ");
+    buffer.write("imageKeys=" + (_imageKeys != null ? _imageKeys!.toString() : "null") + ", ");
+    buffer.write("imageUrls=" + (_imageUrls != null ? _imageUrls!.toString() : "null") + ", ");
     buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.toString() : "null") + ", ");
     buffer.write("userId=" + "$_userId");
     buffer.write("}");
@@ -135,13 +161,14 @@ class Post {
     return buffer.toString();
   }
   
-  Post copyWith({List<Comment>? comment, String? content, amplify_core.TemporalTimestamp? createdOn, String? id, String? imageUrl, amplify_core.TemporalTimestamp? updatedOn, String? userId}) {
+  Post copyWith({List<Comment>? comment, String? content, amplify_core.TemporalTimestamp? createdOn, String? id, List<String>? imageKeys, List<String>? imageUrls, amplify_core.TemporalTimestamp? updatedOn, String? userId}) {
     return Post._internal(
       comment: comment ?? this.comment,
       content: content ?? this.content,
       createdOn: createdOn ?? this.createdOn,
       id: id ?? this.id,
-      imageUrl: imageUrl ?? this.imageUrl,
+      imageKeys: imageKeys ?? this.imageKeys,
+      imageUrls: imageUrls ?? this.imageUrls,
       updatedOn: updatedOn ?? this.updatedOn,
       userId: userId ?? this.userId);
   }
@@ -151,7 +178,8 @@ class Post {
     ModelFieldValue<String>? content,
     ModelFieldValue<amplify_core.TemporalTimestamp>? createdOn,
     ModelFieldValue<String>? id,
-    ModelFieldValue<String?>? imageUrl,
+    ModelFieldValue<List<String>>? imageKeys,
+    ModelFieldValue<List<String>>? imageUrls,
     ModelFieldValue<amplify_core.TemporalTimestamp?>? updatedOn,
     ModelFieldValue<String>? userId
   }) {
@@ -160,28 +188,32 @@ class Post {
       content: content == null ? this.content : content.value,
       createdOn: createdOn == null ? this.createdOn : createdOn.value,
       id: id == null ? this.id : id.value,
-      imageUrl: imageUrl == null ? this.imageUrl : imageUrl.value,
+      imageKeys: imageKeys == null ? this.imageKeys : imageKeys.value,
+      imageUrls: imageUrls == null ? this.imageUrls : imageUrls.value,
       updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value,
       userId: userId == null ? this.userId : userId.value
     );
   }
-  
-  Post.fromJson(Map<String, dynamic> json)  
-    : _comment = json['comment'] is List
-        ? (json['comment'] as List)
-          .where((e) => e != null)
-          .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
-      _content = json['content'],
-      _createdOn = json['createdOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['createdOn']) : null,
-      id = json['id'],
-      _imageUrl = json['imageUrl'],
-      _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['updatedOn']) : null,
-      _userId = json['userId'];
+
+  Post.fromJson(Map<String, dynamic> json)
+      : _comment = json['comment'] is List
+      ? (json['comment'] as List)
+      .where((e) => e != null)
+      .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+      .toList()
+      : null,
+
+        _content = json['content'],
+        _createdOn = json['createdOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['createdOn']) : null,
+        id = json['id'],
+        _imageKeys = json['imageKeys']?.cast<String>(),
+        _imageUrls = json['imageUrls']?.cast<String>(),
+        _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['updatedOn']) : null,
+        _userId = json['userId'];
+
   
   Map<String, dynamic> toJson() => {
-    'comment': _comment?.map((Comment? e) => e?.toJson()).toList(), 'content': _content, 'createdOn': _createdOn?.toSeconds(), 'id': id, 'imageUrl': _imageUrl, 'updatedOn': _updatedOn?.toSeconds(), 'userId': _userId
+    'comment': _comment?.map((Comment? e) => e?.toJson()).toList(), 'content': _content, 'createdOn': _createdOn?.toSeconds(), 'id': id, 'imageKeys': _imageKeys, 'imageUrls': _imageUrls, 'updatedOn': _updatedOn?.toSeconds(), 'userId': _userId
   };
   
   Map<String, Object?> toMap() => {
@@ -189,7 +221,8 @@ class Post {
     'content': _content,
     'createdOn': _createdOn,
     'id': id,
-    'imageUrl': _imageUrl,
+    'imageKeys': _imageKeys,
+    'imageUrls': _imageUrls,
     'updatedOn': _updatedOn,
     'userId': _userId
   };
@@ -224,9 +257,17 @@ class Post {
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
-      fieldName: 'imageUrl',
-      isRequired: false,
-      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+      fieldName: 'imageKeys',
+      isRequired: true,
+      isArray: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
+    ));
+    
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
+      fieldName: 'imageUrls',
+      isRequired: true,
+      isArray: true,
+      ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.collection, ofModelName: amplify_core.ModelFieldTypeEnum.string.name)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(

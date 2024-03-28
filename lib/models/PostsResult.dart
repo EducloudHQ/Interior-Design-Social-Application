@@ -101,7 +101,7 @@ class PostsResult {
     : _items = json['items'] is List
         ? (json['items'] as List)
           .where((e) => e != null)
-          .map((e) => Post.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .map((e) => Post.fromJson(new Map<String, dynamic>.from(e)))
           .toList()
         : null,
       _nextToken = json['nextToken'];
