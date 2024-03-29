@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../models/Comment.dart';
 import '../repositories/profile_repository.dart';
 class CommentItem  extends StatelessWidget {
-  const ConmmentItem({required this.})
+   CommentItem({required this.commentItem});
+   final Comment commentItem;
+
 
 
 

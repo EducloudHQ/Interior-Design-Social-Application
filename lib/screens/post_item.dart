@@ -16,7 +16,7 @@ class PostItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 Size size = MediaQuery.of(context).size;
-    return   Container(
+    return Container(
         padding: const EdgeInsets.all(10),
         child:  Column(
           children: [
