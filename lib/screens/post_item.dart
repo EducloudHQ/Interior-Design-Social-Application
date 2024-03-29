@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 
 import '../models/Post.dart';
 
@@ -66,10 +66,10 @@ Size size = MediaQuery.of(context).size;
     ),
                 Container(
 
-                  margin: const EdgeInsets.only(left: 15),
+                  margin: const EdgeInsets.only(left: 10),
                   child: Row(
                     children: [
-                      Text(postItem.user.firstName,style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                      Text(postItem.user.firstName,style: const TextStyle(fontSize: 16)),
                       Container(
                           padding: const EdgeInsets.only(left: 5),
                           child: Text('@${postItem.user.username}',style:  TextStyle(fontSize: 12,color:Color(0xFFFBDA61),fontWeight: FontWeight.bold))),

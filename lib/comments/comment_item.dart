@@ -5,6 +5,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 import '../repositories/profile_repository.dart';
 class CommentItem  extends StatelessWidget {
+  const ConmmentItem({required this.})
 
 
 
@@ -23,7 +24,7 @@ class CommentItem  extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*
+
             FutureProvider.value(value: ProfileRepository.instance().getUserProfile(comment.userId),
                 catchError: (context,error){
                   print(error);
@@ -133,7 +134,7 @@ class CommentItem  extends StatelessWidget {
                     );
                   }
                 })),
-*/
+
 
 
 

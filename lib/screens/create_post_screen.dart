@@ -14,6 +14,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({required this.email});
   final String email;
+
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
 }
@@ -272,7 +273,7 @@ Size size = MediaQuery.of(context).size;
                                     Container(
                                        padding: EdgeInsets.only(right: 5),
                                         child: Icon(Icons.cancel,color:Colors.white)),
-                                    Text("clear",style: TextStyle(fontSize: 15,color:Colors.white),),
+                                    const Text("clear",style: TextStyle(fontSize: 15,color:Colors.white),),
                                   ],
                                 )),
 
@@ -297,8 +298,8 @@ Size size = MediaQuery.of(context).size;
 
                                   } else {
                                     form.save();
-                                    String userId = const Uuid().v4();
-                                    postRepo.createPost(userId);
+
+                                    postRepo.createPost("2eGn5ojCxGXyVHze7bKhxNt1hzb");
 
 
 
