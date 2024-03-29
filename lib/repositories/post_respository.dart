@@ -78,9 +78,10 @@ class PostRepository extends ChangeNotifier{
   final contentController = TextEditingController();
   final promptController = TextEditingController();
 
+
   Future<String> uploadImage(String base64String) async {
 
-   String uuid = const Uuid().v4();
+    String uuid = const Uuid().v4();
     try {
       final uploadResult =  await Amplify.Storage.uploadData(
         key: uuid,
@@ -88,6 +89,36 @@ class PostRepository extends ChangeNotifier{
         data: S3DataPayload.string(
           base64String,
           contentType: 'text/plain',
+        ),
+
+      ).result;
+
+      postImageKeys.add(uploadResult.uploadedItem.key);
+      final resultDownload =
+      await getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
+      if (kDebugMode) {
+        print(resultDownload);
+      }
+
+
+      return resultDownload;
+    } on StorageException catch (e) {
+
+      safePrint('Error uploading file: ${e.message}');
+      rethrow;
+    }
+  }
+
+  Future<String> uploadByteImage(String base64String) async {
+    List<int> bytes =base64Decode(base64String);
+   String uuid = const Uuid().v4();
+    try {
+      final uploadResult =  await Amplify.Storage.uploadData(
+        key: uuid,
+
+        data: S3DataPayload.bytes(
+         bytes,
+          contentType: 'image/jpg',
         ),
 
       ).result;
@@ -115,7 +146,7 @@ class PostRepository extends ChangeNotifier{
       final result = await Amplify.Storage.getUrl(
         key: key,
         options: const StorageGetUrlOptions(
-          accessLevel: StorageAccessLevel.protected,
+          accessLevel: StorageAccessLevel.guest,
           pluginOptions: S3GetUrlPluginOptions(
             validateObjectExistence: true,
             expiresIn: Duration(days: 1),
@@ -230,7 +261,9 @@ class PostRepository extends ChangeNotifier{
         ));
 
     var response = await operation.response;
-
+   if (kDebugMode) {
+     print("returning ${response}");
+   }
 
     final responseJson = json.decode(response.data!);
     loading = false;
@@ -265,7 +298,7 @@ class PostRepository extends ChangeNotifier{
 
 
     for(int i = 0; i< base64ImageStrings.length; i++){
-      await uploadImage(base64ImageStrings[i]).then((String value) {
+      await uploadByteImage(base64ImageStrings[i]).then((String value) {
 
         postImageUrls.add(value);
 
