@@ -160,6 +160,9 @@ Size size = MediaQuery.of(context).size;
                                 ],
                               ), itemBuilder: (BuildContext context, int index) {
 
+                                  List<int> bytes =base64Decode(postRepo.base64ImageStrings[index]);
+                                   
+
                                 return Image.memory(base64Decode(postRepo.base64ImageStrings[index],),
 
 

@@ -115,7 +115,7 @@ class PostRepository extends ChangeNotifier{
       final result = await Amplify.Storage.getUrl(
         key: key,
         options: const StorageGetUrlOptions(
-          accessLevel: StorageAccessLevel.guest,
+          accessLevel: StorageAccessLevel.protected,
           pluginOptions: S3GetUrlPluginOptions(
             validateObjectExistence: true,
             expiresIn: Duration(days: 1),

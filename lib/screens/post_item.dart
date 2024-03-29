@@ -1,14 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-import 'package:provider/provider.dart';
-
-
-import '../comments/comments_repository.dart';
-import '../comments/comments_screen.dart';
 import '../models/Post.dart';
-import '../repositories/profile_repository.dart';
+
 import 'package:timeago/timeago.dart' as timeago;
 
 
@@ -19,7 +15,7 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+Size size = MediaQuery.of(context).size;
     return Card(
 
       child:  Container(
@@ -87,7 +83,7 @@ class PostItem extends StatelessWidget {
 
               ],
             ),
-            Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(postItem.createdOn.toSeconds() * 1000)),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
+            Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(int.parse(postItem.createdOn.toString()))),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
 
           ],
         ),
@@ -101,6 +97,64 @@ class PostItem extends StatelessWidget {
 
 
                   Text(postItem.content,style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                  Container(
+            width: size.width,
+                    height: 230,
+                    padding: EdgeInsets.only(top: 20),
+                    child: Row(
+                      children: [
+                      Flexible(
+                        flex:1,
+                        child: Container(
+                          width: size.width/2,
+                          height: 100,
+                          child: CachedNetworkImage(
+
+                          fit: BoxFit.cover,
+                          imageUrl:postItem.imageUrls[0],
+                          placeholder: (context, url) => CircularProgressIndicator(),
+                          errorWidget: (context, url, error) => ClipRRect(
+                            borderRadius: BorderRadius.circular(1000),
+                            child: Icon(Icons.image,),
+                          ),
+                                              ),
+                        ),
+                      ),
+                        Flexible(
+                            flex:1,
+                          child: Container(
+                            width: size.width/2,
+                            child: Column(
+                              children: [
+                              CachedNetworkImage(
+                              width: size.width/2,
+                              height: 100,
+                              fit: BoxFit.cover,
+                              imageUrl:postItem.imageUrls[1],
+                              placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => ClipRRect(
+                                borderRadius: BorderRadius.circular(1000),
+                                child: Icon(Icons.image,size: 50,),
+                              ),
+                            ),
+                                CachedNetworkImage(
+                                  width: size.width/2,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  imageUrl:postItem.imageUrls[2],
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(1000),
+                                    child: Icon(Icons.image,size: 50,),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    )),
 
 
 
