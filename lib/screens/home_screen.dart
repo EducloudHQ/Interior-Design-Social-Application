@@ -167,14 +167,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ),
                 ListTile(
-                  title: const Text('Item 1'),
+                  title: const Text('Home'),
                   onTap: () {
                     // Update the state of the app.
                     // ...
                   },
                 ),
                 ListTile(
-                  title: const Text('Item 2'),
+                  title: const Text('Bed Rooms'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: const Text('Living Rooms'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: const Text('Kitchens'),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                  },
+                ),
+                ListTile(
+                  title: const Text('Bedrooms'),
                   onTap: () {
                     // Update the state of the app.
                     // ...
