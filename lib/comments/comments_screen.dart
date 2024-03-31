@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../models/Post.dart';
-import '../repositories/profile_repository.dart';
+
 import 'comment_item.dart';
 import 'comments_repository.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
+
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({required this.userId,required this.postItem});
   final String userId;
@@ -169,7 +169,7 @@ void dispose(){
 
                                       decoration: BoxDecoration(
 
-                                          border: Border.all(width: 2,color: Color(0xFFFF5ACD),),
+                                          border: Border.all(width: 2,color: const Color(0xFFFF5ACD),),
                                           borderRadius: BorderRadius.circular(100)
                                       ),
                                       child: ClipOval(
@@ -340,8 +340,8 @@ void dispose(){
                     );
                   }else{
                     index -= 1;
-
-                 return CommentItem(commentsRepo.comments[index]);
+                return Container();
+                // return CommentItem(commentItem:commentsRepo.comments[index]);
                   }
 
                 },itemCount: 101,),
