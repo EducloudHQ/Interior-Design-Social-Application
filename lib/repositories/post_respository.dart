@@ -307,7 +307,7 @@ class PostRepository extends ChangeNotifier{
             print("image length is ${postImageUrls.length}");
           }
           loading = false;
-         savePostDetails(contentController.text, userId);
+         savePostDetails(promptController.text, userId);
         }
       });
 

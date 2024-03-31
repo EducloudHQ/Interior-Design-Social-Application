@@ -61,41 +61,7 @@ Size size = MediaQuery.of(context).size;
                     autovalidateMode: AutovalidateMode.always,
                     child:Column(
                       children: [
-                        Container(
 
-                          margin: const EdgeInsets.only(top: 20),
-                          child: TextFormField(
-
-                            maxLines: null,
-                            controller: postRepo.contentController,
-                           // style: const TextStyle(color: Colors.white),
-                            decoration: InputDecoration(
-
-                              filled: false,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsetsDirectional.only(start: 10.0),
-
-
-
-                              labelText: "What's on your mind today ?",
-
-                              hintText: "What's on your mind today ?",
-                              hintStyle: TextStyle(
-                                color: Colors.grey[600],
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "What's on your mind today ?";
-                              }
-                              return null;
-                            },
-                          ),
-
-                        ),
 
                         Container(
 
@@ -119,7 +85,7 @@ Size size = MediaQuery.of(context).size;
                               },
 
 
-                              maxLines:2,
+                              maxLines:4,
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: "write a prompt",
