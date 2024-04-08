@@ -85,27 +85,31 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
       Expanded(
         child: InkWell(
           onTap: ()=>context.push('/post/${widget.email}'),
-          child: SizedBox(
-            height: 100,
-            width: 100,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+          child:
                 Container(
 
-                  padding:const EdgeInsets.all(15),
-                  decoration: BoxDecoration(
+                  padding:const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                      color: Theme.of(context).colorScheme.secondary),
+
+                    gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment(0.8, 1),
+                        colors: [
+                          Color(0xFFFBDA61),
+                          Color(0xFFFF5ACD),
+
+                        ]
+
+                    )),
 
 
-                  child: Image.asset('assets/bedrock.png',height: 35,width: 35,),
+                  child: Image.asset('assets/bedrock.png',height: 40,width: 40,),
                 ),
 
-              ],
-            ),
-          ),
+
+
+
         ),
 
       );
