@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_media/models/ModelProvider.dart';
@@ -12,6 +11,8 @@ import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import '../repositories/post_respository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import '../utils/FABBottomAppBarItem.dart';
 class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -55,6 +56,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 */
 
+  int _selectedTabIndex = 0;
+
+  void _selectedTab(int index) {
+
+    if(index == 2)
+    {
+
+    }
+    setState(() {
+      _selectedTabIndex = index;
+
+
+    });
+  }
 
   @override
   void initState() {
@@ -99,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: EdgeInsets.zero,
               children: [
                 DrawerHeader(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment(0.8, 1),
@@ -131,8 +146,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       Container(
 
-                        child: Text(" Rosius Ndimofor" ,
-                          style: const TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                        child: const Text(" Rosius Ndimofor" ,
+                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
                       ),
                       Expanded(
                         child: Container(
@@ -251,14 +266,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),),
 
+          bottomNavigationBar: FABBottomAppBar(
+            centerItemText: '',
+            color: Colors.grey,
+            selectedColor: Theme.of(context).colorScheme.secondary,
 
-                floatingActionButton: FloatingActionButton(
+            onTabSelected: _selectedTab,
 
-                  onPressed: () {
-                   context.push('/post/$email');
-                  },
-                  child: const Icon(Icons.edit),
-                ),
+
+
+            items: [
+              FABBottomAppBarItem(iconName:'assets/home.svg', text: 'home',),
+              FABBottomAppBarItem(iconName:'assets/search.svg', text: 'search'),
+              FABBottomAppBarItem(iconName:'assets/notification.svg', text: 'notification'),
+              FABBottomAppBarItem(iconName:'assets/profile.svg', text: 'profile'),
+            ], email: email,
+          ),
+
               );
       }),
     );
