@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:provider/provider.dart';
 
+import '../models/dimensions.dart';
 import '../repositories/post_respository.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -230,7 +231,48 @@ Size size = MediaQuery.of(context).size;
 
 
                   ),
+       Container(
+         height: 400,
+         child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
+         childAspectRatio: 2.1/1.1),
+             itemCount: imageDimensionList.length,
+             itemBuilder: (context,index){
 
+           return Container(
+             margin: EdgeInsets.all(10),
+
+
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Container(
+                     height:imageDimensionList[index].height/20,
+                     width:imageDimensionList[index].width/20,
+                     decoration: BoxDecoration(
+                       color: Color(0xFFFF5ACD).withOpacity(0.3),
+                       border: Border.all(color: Color(0xFFFBDA61),width: 1)
+                     ),
+
+                   ),
+                   Container(
+                     padding: EdgeInsets.only(left: 10),
+                     child: Column(
+                       mainAxisAlignment: MainAxisAlignment.start,
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         Text(imageDimensionList[index].priceEquivalentTo,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),),
+                         Text('ar ${imageDimensionList[index].aspectRatio}',)
+                       ],
+                     ),
+                   )
+                 ],
+               ),
+           );
+
+       }),
+
+       ),
 
 
                   Row(

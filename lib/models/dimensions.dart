@@ -1,6 +1,6 @@
 class ImageDimension {
-  final int width;
-  final int height;
+  final double width;
+  final double height;
   final String aspectRatio;
   final String priceEquivalentTo;
 
