@@ -94,7 +94,7 @@ class _MyAppState extends State<App> {
   Widget build(BuildContext context) {
 
     return MaterialApp.router(
-      title: 'Social App',
+      title: 'Interior Design Social App',
 
       theme: ThemeData(
         fontFamily: 'Syne-Regular',

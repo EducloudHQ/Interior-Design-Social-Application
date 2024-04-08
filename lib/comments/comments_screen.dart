@@ -33,7 +33,8 @@ void initState(){
 
 
 /*
-  commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()],where:Comment.TASKID.eq(widget.task.id) ).listen((QuerySnapshot<Comment> event) {
+  commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()],where:Comment.TASKID.eq(widget.task.id) )
+      .listen((QuerySnapshot<Comment> event) {
     if (commentsRepo.comments.isNotEmpty) {
       if(commentsRepo.comments[0].id != event.items[0].id){
         commentsRepo.comment = event.items[0];
