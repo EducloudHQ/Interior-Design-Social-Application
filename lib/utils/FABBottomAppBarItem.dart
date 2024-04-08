@@ -70,7 +70,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
     return BottomAppBar(
       height: 100,
       elevation: 0.0,
-      color: Colors.black,
+
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

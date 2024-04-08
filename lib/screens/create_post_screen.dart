@@ -1,7 +1,7 @@
 
 
 import 'dart:convert';
-import 'package:uuid/uuid.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -28,7 +28,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey =  GlobalKey<ScaffoldState>();
 
-
+  static const double _pageBreakpoint = 768.0;
 
   @override
   void initState() {
@@ -36,6 +36,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     super.initState();
 
   }
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -231,48 +233,7 @@ Size size = MediaQuery.of(context).size;
 
 
                   ),
-       Container(
-         height: 400,
-         child: GridView.builder(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-         childAspectRatio: 2.1/1.1),
-             itemCount: imageDimensionList.length,
-             itemBuilder: (context,index){
 
-           return Container(
-             margin: EdgeInsets.all(10),
-
-
-               child: Row(
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                   Container(
-                     height:imageDimensionList[index].height/20,
-                     width:imageDimensionList[index].width/20,
-                     decoration: BoxDecoration(
-                       color: Color(0xFFFF5ACD).withOpacity(0.3),
-                       border: Border.all(color: Color(0xFFFBDA61),width: 1)
-                     ),
-
-                   ),
-                   Container(
-                     padding: EdgeInsets.only(left: 10),
-                     child: Column(
-                       mainAxisAlignment: MainAxisAlignment.start,
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         Text(imageDimensionList[index].priceEquivalentTo,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),),
-                         Text('ar ${imageDimensionList[index].aspectRatio}',)
-                       ],
-                     ),
-                   )
-                 ],
-               ),
-           );
-
-       }),
-
-       ),
 
 
                   Row(
@@ -282,14 +243,83 @@ Size size = MediaQuery.of(context).size;
                         flex: 2,
                         child: InkWell(
                           onTap: (){
-                            final FormState form = formKey.currentState!;
-                            if (!form.validate()) {
 
-                            } else {
-                              form.save();
+                            WoltModalSheet.show<void>(
+                             // pageIndexNotifier: pageIndexNotifier,
+                              context: context,
+                              pageListBuilder: (modalSheetContext) {
+
+                                return [
+                                  SliverWoltModalSheetPage(
+                                    mainContentSlivers: [
+                                      SliverGrid.builder(
+
+                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
+                                          childAspectRatio: 2.1/1.1),
 
 
-                            }},
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return  Container(
+                                            margin: EdgeInsets.all(10),
+
+
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  height:imageDimensionList[index].height/20,
+                                                  width:imageDimensionList[index].width/20,
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xFFFF5ACD).withOpacity(0.3),
+                                                      border: Border.all(color: Color(0xFFFBDA61),width: 1)
+                                                  ),
+
+                                                ),
+                                                Container(
+                                                  padding: EdgeInsets.only(left: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(imageDimensionList[index].priceEquivalentTo,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),),
+                                                      Text('ar ${imageDimensionList[index].aspectRatio}',)
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                          itemCount:imageDimensionList.length
+
+                                      ),
+                                      // Other sliver widgets...
+                                    ],
+                                    // Additional page elements like pageTitle, topBarTitle, etc.
+                                  ),
+
+                                ];
+                              },
+                              modalTypeBuilder: (context) {
+                                final size = MediaQuery.of(context).size.width;
+                                if (size < _pageBreakpoint) {
+                                  return WoltModalType.bottomSheet;
+                                } else {
+                                  return WoltModalType.dialog;
+                                }
+                              },
+                              onModalDismissedWithBarrierTap: () {
+                                debugPrint('Closed modal sheet with barrier tap');
+                                Navigator.of(context).pop();
+                               // pageIndexNotifier.value = 0;
+                              },
+                              maxDialogWidth: 560,
+                              minDialogWidth: 400,
+                              minPageHeight: 0.0,
+                              maxPageHeight: 0.9,
+                            );
+                           },
                           child:  Container(
 
                                 padding: const EdgeInsets.symmetric(vertical: 20),

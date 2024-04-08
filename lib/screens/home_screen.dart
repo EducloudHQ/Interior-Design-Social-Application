@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
           bottomNavigationBar: FABBottomAppBar(
             centerItemText: '',
             color: Colors.grey,
-            selectedColor: Theme.of(context).colorScheme.secondary,
+            selectedColor: Color(0xFFFF5ACD),
 
             onTabSelected: _selectedTab,
 
