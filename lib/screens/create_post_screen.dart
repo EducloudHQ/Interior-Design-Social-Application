@@ -3,7 +3,7 @@ import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../models/dimensions.dart';
@@ -112,86 +112,204 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                     ),
                                   ),
 
-                            Container(
-                              
-                              padding: EdgeInsets.all(10),
-                              margin: EdgeInsets.only(top: 20,bottom: 20),
-                              decoration: BoxDecoration(
+                            InkWell(
+                              onTap: (){
+                                WoltModalSheet.show<void>(
+                                  // pageIndexNotifier: pageIndexNotifier,
+                                  context: context,
+                                  pageListBuilder: (modalSheetContext) {
+                                    return [
+                                      SliverWoltModalSheetPage(
+                                        topBarTitle: const Text(
+                                          'Choose Image Dimension',
+                                          style: TextStyle(fontSize: 20),
+                                        ),
 
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  width: 1,
-                                    color: Color(
-                                    0xFFFF5ACD) ),
-
-                                color: Colors.black.withOpacity(0.4),
-
-                              ),
-
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                  padding:EdgeInsets.only(bottom: 10),
-                                      child: Text("IMAGE DIMENSION",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
-                                  Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height:
-                                        imageDimensionList[
-                                        0]
-                                            .height /
-                                            20,
-                                        width: imageDimensionList[
-                                        0]
-                                            .width /
-                                            20,
-                                        decoration: BoxDecoration(
-                                            color: const Color(
-                                                0xFFFF5ACD)
-                                                .withOpacity(0.3),
-                                            border: Border.all(
-                                                color: const Color(
-                                                    0xFFFBDA61),
-                                                width: 1)),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            left: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .start,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .start,
-                                          children: [
-                                            Text(
-                                              imageDimensionList[
-                                             0]
-                                                  .priceEquivalentTo,
-                                              style: TextStyle(
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .bold,
+                                        mainContentSlivers: [
+                                          SliverGrid.builder(
+                                              gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  childAspectRatio:
+                                                  2.1 / 1.1),
+                                              itemBuilder: (BuildContext context,
+                                                  int index) {
+                                                return Container(
+                                                  margin: EdgeInsets.all(10),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        height:
+                                                        imageDimensionList[
+                                                        index]
+                                                            .height /
+                                                            20,
+                                                        width: imageDimensionList[
+                                                        index]
+                                                            .width /
+                                                            20,
+                                                        decoration: BoxDecoration(
+                                                            color: const Color(
+                                                                0xFFFF5ACD)
+                                                                .withOpacity(0.3),
+                                                            border: Border.all(
+                                                                color: const Color(
+                                                                    0xFFFBDA61),
+                                                                width: 1)),
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.only(
+                                                            left: 10),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                          crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                          children: [
+                                                            Text(
+                                                              imageDimensionList[
+                                                              index]
+                                                                  .priceEquivalentTo,
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                                  fontSize: 12),
+                                                            ),
+                                                            Text(
+                                                              'ar ${imageDimensionList[index].aspectRatio}',
+                                                            )
+                                                          ],
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
+                                                );
+                                              },
+                                              itemCount:
+                                              imageDimensionList.length),
+                                          // Other sliver widgets...
+                                        ],
+                                        // Additional page elements like pageTitle, topBarTitle, etc.
+                                      ),
+                                    ];
+                                  },
+                                  modalTypeBuilder: (context) {
+                                    final size =
+                                        MediaQuery.of(context).size.width;
+                                    if (size < _pageBreakpoint) {
+                                      return WoltModalType.bottomSheet;
+                                    } else {
+                                      return WoltModalType.dialog;
+                                    }
+                                  },
+                                  onModalDismissedWithBarrierTap: () {
+                                    debugPrint(
+                                        'Closed modal sheet with barrier tap');
+                                    Navigator.of(context).pop();
+                                    // pageIndexNotifier.value = 0;
+                                  },
+                                  maxDialogWidth: 560,
+                                  minDialogWidth: 400,
+                                  minPageHeight: 0.0,
+                                  maxPageHeight: 0.9,
+                                );
+                              },
+                              child: Container(
+
+                                padding: EdgeInsets.all(10),
+                                margin: EdgeInsets.only(top: 20,bottom: 20),
+                                decoration: BoxDecoration(
+
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    width: 0.5,
+                                      color: Color(
+                                      0xFFFF5ACD) ),
+
+                                  color: Colors.black.withOpacity(0.4),
+
+                                ),
+
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                        padding:EdgeInsets.only(bottom: 10),
+                                            child: Text("IMAGE DIMENSION",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)),
+                                        Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height:
+                                              imageDimensionList[
+                                              0]
+                                                  .height /
+                                                  20,
+                                              width: imageDimensionList[
+                                              0]
+                                                  .width /
+                                                  20,
+                                              decoration: BoxDecoration(
+                                                  color: const Color(
+                                                      0xFFFF5ACD)
+                                                      .withOpacity(0.3),
+                                                  border: Border.all(
+                                                      color: const Color(
+                                                          0xFFFBDA61),
+                                                      width: 1)),
                                             ),
-                                            Text(
-                                              'aspect ratio ${imageDimensionList[0].aspectRatio}',
+                                            Container(
+                                              padding: EdgeInsets.only(
+                                                  left: 10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .start,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Text(
+                                                    imageDimensionList[
+                                                   0]
+                                                        .priceEquivalentTo,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .bold,
+                                                        ),
+                                                  ),
+                                                  Text(
+                                                    'aspect ratio ${imageDimensionList[0].aspectRatio}',
+                                                  )
+                                                ],
+                                              ),
                                             )
                                           ],
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                    SvgPicture.asset('assets/right_circle.svg',height: 35,width: 35, color: Color(
+                                        0xFFFF5ACD) ),
+
+                                  ],
+                                ),
                               ),
                             ),
 
@@ -262,112 +380,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                           flex: 2,
                           child: InkWell(
                             onTap: () {
-                              WoltModalSheet.show<void>(
-                                // pageIndexNotifier: pageIndexNotifier,
-                                context: context,
-                                pageListBuilder: (modalSheetContext) {
-                                  return [
-                                    SliverWoltModalSheetPage(
-                                      topBarTitle: const Text(
-                                        'Choose Image Dimension',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
 
-                                      mainContentSlivers: [
-                                        SliverGrid.builder(
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount: 2,
-                                                    childAspectRatio:
-                                                        2.1 / 1.1),
-                                            itemBuilder: (BuildContext context,
-                                                int index) {
-                                              return Container(
-                                                margin: EdgeInsets.all(10),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      height:
-                                                          imageDimensionList[
-                                                                      index]
-                                                                  .height /
-                                                              20,
-                                                      width: imageDimensionList[
-                                                                  index]
-                                                              .width /
-                                                          20,
-                                                      decoration: BoxDecoration(
-                                                          color: const Color(
-                                                                  0xFFFF5ACD)
-                                                              .withOpacity(0.3),
-                                                          border: Border.all(
-                                                              color: const Color(
-                                                                  0xFFFBDA61),
-                                                              width: 1)),
-                                                    ),
-                                                    Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 10),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Text(
-                                                            imageDimensionList[
-                                                                    index]
-                                                                .priceEquivalentTo,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 12),
-                                                          ),
-                                                          Text(
-                                                            'ar ${imageDimensionList[index].aspectRatio}',
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                            itemCount:
-                                                imageDimensionList.length),
-                                        // Other sliver widgets...
-                                      ],
-                                      // Additional page elements like pageTitle, topBarTitle, etc.
-                                    ),
-                                  ];
-                                },
-                                modalTypeBuilder: (context) {
-                                  final size =
-                                      MediaQuery.of(context).size.width;
-                                  if (size < _pageBreakpoint) {
-                                    return WoltModalType.bottomSheet;
-                                  } else {
-                                    return WoltModalType.dialog;
-                                  }
-                                },
-                                onModalDismissedWithBarrierTap: () {
-                                  debugPrint(
-                                      'Closed modal sheet with barrier tap');
-                                  Navigator.of(context).pop();
-                                  // pageIndexNotifier.value = 0;
-                                },
-                                maxDialogWidth: 560,
-                                minDialogWidth: 400,
-                                minPageHeight: 0.0,
-                                maxPageHeight: 0.9,
-                              );
                             },
                             child: Container(
                                 padding:

@@ -162,9 +162,9 @@ class PostRepository extends ChangeNotifier{
 
   Future<List<String>> generateImage(String prompt) async {
     isLoadingGeneratedImage = true;
-    String graphQLDocument = '''query  generatePostImage(\$prompt: String!) {
+    String graphQLDocument = '''query  generatePostImages(\$prompt: String!) {
 
-   generatePostImage(prompt: \$prompt)
+   generatePostImages(prompt: \$prompt)
 }''';
 
     var operation = Amplify.API.query(
@@ -178,13 +178,14 @@ class PostRepository extends ChangeNotifier{
         ));
 
     var response = await operation.response;
+    print("$response");
 
     final responseJson = json.decode(response.data!);
     isLoadingGeneratedImage = false;
 
 
 
-    GeneratePostImage generatePostImageModel = GeneratePostImage.fromJson(json.decode(responseJson['generatePostImage']));
+    GeneratePostImage generatePostImageModel = GeneratePostImage.fromJson(json.decode(responseJson['generatePostImages']));
     if (kDebugMode) {
       print("returning ${generatePostImageModel.images!}");
     }
