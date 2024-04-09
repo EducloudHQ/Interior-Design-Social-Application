@@ -100,7 +100,7 @@ class _MyAppState extends State<App> {
         fontFamily: 'Syne-Regular',
       ),
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.light(),
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
@@ -158,23 +158,7 @@ class _MyAppState extends State<App> {
 
          ])
 
-/*
-     home:_router
 
-    // loginRepo.loadingAmplify ? const Center(child: CircularProgressIndicator(),) :
-     MultiProvider(
-       providers: [
-         ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
-         ChangeNotifierProvider(create: (BuildContext context) => LoginRepository.instance(),),
-         ChangeNotifierProvider(create: (BuildContext context) => TaskRepository.instance(),
-
-         ),
-       ],
-
-       child: WelcomeScreen(),
-
-     ),
-*/
 
 
     );

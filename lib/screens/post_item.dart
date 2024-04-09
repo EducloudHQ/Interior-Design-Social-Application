@@ -88,28 +88,29 @@ Size size = MediaQuery.of(context).size;
             Container(
                 width: size.width,
 
-                height: size.height/2.5,
+                height: size.height/3.5,
                 padding: EdgeInsets.only(top: 20),
                 child: Row(
                   children: [
                     Flexible(
                       flex:1,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          margin: EdgeInsets.only(right: 5),
+                      child: Container(
+                        margin: EdgeInsets.only(right: 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
                           child: CachedNetworkImage(
-                            width: size.width/2,
-                            height: size.height/2.5,
-                        
-                            fit: BoxFit.cover,
-                            imageUrl:postItem.imageUrls[0],
-                            placeholder: (context, url) => CircularProgressIndicator(),
-                            errorWidget: (context, url, error) => ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Icon(Icons.image,),
+                              width: size.width/2,
+                              height: size.height/3.5,
+
+                              fit: BoxFit.cover,
+                              imageUrl:postItem.imageUrls[0],
+                              placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Icon(Icons.image,),
+                              ),
                             ),
-                          ),
+
                         ),
                       ),
                     ),
@@ -117,7 +118,7 @@ Size size = MediaQuery.of(context).size;
                       flex:1,
                       child: Container(
                         width: size.width/2,
-height: size.height/2.5,
+height: size.height/3.5,
                         child: Column(
                           children: [
                             Container(
@@ -128,7 +129,7 @@ height: size.height/2.5,
                                 child: CachedNetworkImage(
                                   width: size.width/2,
 
-                                  height: size.height/5,
+                                  height: size.height/7.5,
                                   fit: BoxFit.cover,
                                   imageUrl:postItem.imageUrls[1],
                                   placeholder: (context, url) => CircularProgressIndicator(),
@@ -143,7 +144,7 @@ height: size.height/2.5,
                               borderRadius: BorderRadius.circular(10),
                               child: CachedNetworkImage(
                                 width: size.width/2,
-                              height: size.height/6,
+                              height: size.height/8,
                                 fit: BoxFit.cover,
                                 imageUrl:postItem.imageUrls[2],
                                 placeholder: (context, url) => CircularProgressIndicator(),
