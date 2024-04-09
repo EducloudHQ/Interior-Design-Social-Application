@@ -6,7 +6,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
-import 'package:social_media/screens/post_item.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_media/screens/shimmer_post_item.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
@@ -114,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 AppBar(
 
+
                   title: InkWell(
                     onTap: (){
                       context.push('/profile/$email');
@@ -136,11 +137,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   centerTitle: true,
 
                   actions: [
-                    IconButton(onPressed: (){
-                      signOutCurrentUser();
-                      sharedPrefs.deleteAllKeys();
 
-                    }, icon: const Icon(Icons.logout_outlined))
+                    InkWell(
+                      onTap: (){
+                       // signOutCurrentUser();
+                       // sharedPrefs.deleteAllKeys();
+
+                      },
+                        child: SvgPicture.asset('assets/off.svg',height: 35,width: 35,color: Colors.white,))
+
+
+
                   ],
                 ),
                 body:FutureProvider<PostsResult?>(create: (context)=>PostRepository.instance().getAllPosts(10),
