@@ -177,18 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
 
-                  const Row(
-                    children: [
-                      Text("Posts"),
-                      Row(
-
-                        children: [
-                          Icon(Icons.view_list_sharp),
-                          Icon(Icons.grid_view_sharp)
-                        ],
-                      )
-                    ],
-                  )
+           
                 ],
               ),
             ),

@@ -134,61 +134,66 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                                   2.1 / 1.1),
                                               itemBuilder: (BuildContext context,
                                                   int index) {
-                                                return Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                    children: [
-                                                      Container(
-                                                        height:
-                                                        imageDimensionList[
-                                                        index]
-                                                            .height /
-                                                            20,
-                                                        width: imageDimensionList[
-                                                        index]
-                                                            .width /
-                                                            20,
-                                                        decoration: BoxDecoration(
-                                                            color: const Color(
-                                                                0xFFFF5ACD)
-                                                                .withOpacity(0.3),
-                                                            border: Border.all(
-                                                                color: const Color(
-                                                                    0xFFFBDA61),
-                                                                width: 1)),
-                                                      ),
-                                                      Container(
-                                                        padding: EdgeInsets.only(
-                                                            left: 10),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                          crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                          children: [
-                                                            Text(
-                                                              imageDimensionList[
-                                                              index]
-                                                                  .priceEquivalentTo,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                                  fontSize: 12),
-                                                            ),
-                                                            Text(
-                                                              'ar ${imageDimensionList[index].aspectRatio}',
-                                                            )
-                                                          ],
+                                                return InkWell(
+                                                  onTap: (){
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: Container(
+                                                    margin: EdgeInsets.all(10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                      children: [
+                                                        Container(
+                                                          height:
+                                                          imageDimensionList[
+                                                          index]
+                                                              .height /
+                                                              20,
+                                                          width: imageDimensionList[
+                                                          index]
+                                                              .width /
+                                                              20,
+                                                          decoration: BoxDecoration(
+                                                              color: const Color(
+                                                                  0xFFFF5ACD)
+                                                                  .withOpacity(0.3),
+                                                              border: Border.all(
+                                                                  color: const Color(
+                                                                      0xFFFBDA61),
+                                                                  width: 1)),
                                                         ),
-                                                      )
-                                                    ],
+                                                        Container(
+                                                          padding: EdgeInsets.only(
+                                                              left: 10),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                            children: [
+                                                              Text(
+                                                                imageDimensionList[
+                                                                index]
+                                                                    .priceEquivalentTo,
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                    fontSize: 12),
+                                                              ),
+                                                              Text(
+                                                                'ar ${imageDimensionList[index].aspectRatio}',
+                                                              )
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -396,7 +401,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   children: [
                                     Container(
                                         padding: EdgeInsets.only(right: 5),
-                                        child: Icon(Icons.cancel,
+                                        child: const Icon(Icons.cancel,
                                             color: Colors.white)),
                                     const Text(
                                       "clear",
