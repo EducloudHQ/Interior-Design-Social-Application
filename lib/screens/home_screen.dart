@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -26,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? userId;
   int count = 0;
+  late final Stream<GraphQLResponse<String>> getPostStream;
   Future<void> signOutCurrentUser() async {
     try {
       await Amplify.Auth.signOut();
@@ -34,6 +37,108 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e.message);
     }
   }
+  Future<void> subscribeToPosts(int limit) async {
+
+    var postRepo = context.read<PostRepository>();
+    String graphQLDocument = '''
+    query getAllPosts(\$limit:Int!, \$nextToken:String) {
+  getAllPosts(limit: \$limit, nextToken: \$nextToken) {
+   items {
+      content
+      createdOn
+      id
+      imageKeys
+      imageUrls
+      updatedOn
+      userId
+      comments {
+        comment
+        createdOn
+        id
+        postId
+        updatedOn
+        userId
+        user {
+          about
+          address {
+            city
+            country
+            street
+            zip
+          }
+          createdOn
+          email
+          firstName
+          id
+          lastName
+          profilePicUrl
+          updatedOn
+          userType
+          username
+        }
+      }
+      user {
+        about
+        createdOn
+        email
+        firstName
+        id
+        updatedOn
+        userType
+        username
+        profilePicUrl
+        lastName
+      }
+    }
+    nextToken
+  }
+}
+''';
+
+    getPostStream = Amplify.API.subscribe(
+         GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+            "limit": limit,
+            "nextToken":null,
+
+          },
+        ),
+      onEstablished: () => print('Subscription established'),
+    );
+
+    try {
+      await for (var event in getPostStream) {
+        Post postItem =  Post.fromJson(json.decode(event.data!));
+
+        if (kDebugMode) {
+          print("event message data is ${postItem.content}");
+        }
+        if (postRepo.postList.isNotEmpty) {
+          if (postRepo.postList[0].id != postItem.id) {
+
+            postRepo.singlePost =  postItem;
+
+
+          }
+        } else {
+
+          postRepo.singlePost =  postItem;
+
+        }
+        if (kDebugMode) {
+          //  print("all list messages are $chatMessagesList");
+          print('Subscription event data received: ${event.data}');
+        }
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print('Error in subscription stream: $e');
+      }
+    }
+  }
+
 
 /*
   late StreamSubscription<QuerySnapshot<Task>> tasksStream;
@@ -78,10 +183,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-   // _getAllTasks();
 
     super.initState();
+
+    subscribeToPosts(10);
 
   }
 

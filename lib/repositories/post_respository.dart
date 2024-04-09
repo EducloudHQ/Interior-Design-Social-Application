@@ -11,7 +11,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 
-import '../models/Post.dart';
 import '../models/generate_post_image_model.dart';
 
 
@@ -31,6 +30,21 @@ class PostRepository extends ChangeNotifier{
   List<String> _postImageKeys =[];
   List<String>_postImageUrls =[];
 
+  List<Post> _postList = [];
+
+
+  List<Post> get postList => _postList;
+
+  set postList(List<Post> value) {
+    _postList = value;
+    notifyListeners();
+  }
+
+  set singlePost(Post post) {
+
+    _postList.insert(0, post);
+    notifyListeners();
+  }
 
   List<String> get postImageKeys => _postImageKeys;
 

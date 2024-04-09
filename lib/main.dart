@@ -100,7 +100,7 @@ class _MyAppState extends State<App> {
         fontFamily: 'Syne-Regular',
       ),
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
