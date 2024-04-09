@@ -347,12 +347,24 @@ class PostRepository extends ChangeNotifier{
        imageKeys: \$imageKeys
     }
   ) {
-    content
+ user {
+      createdOn
+      email
+      firstName
+      about
+      id
+      lastName
+      userType
+      updatedOn
+      profilePicUrl
+      username
+    }
+    updatedOn
+    imageKeys
     createdOn
+    content
     id
     imageUrls
-    imageKeys
-    updatedOn
     userId
   }
 }

@@ -100,6 +100,11 @@ flutter:
     - family: Syne-Regular
       fonts:
         - asset: assets/fonts/Syne-Regular.ttf
+
+    - family: BungeeShade-Regular
+      fonts:
+        - asset: assets/fonts/BungeeShade-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

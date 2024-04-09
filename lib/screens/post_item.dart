@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
 
-
+import 'package:flutter_svg/flutter_svg.dart';
 import '../models/Post.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../utils/expandable_text.dart';
 
 
 class PostItem extends StatelessWidget {
@@ -162,6 +164,14 @@ height: size.height/3.5,
                 )),
 
           Container(
+            child: Row(
+              children: [
+                Text("#interior")
+              ],
+            ),
+
+          ),
+          Container(
             padding: EdgeInsets.only(top: 10),
             child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -171,10 +181,9 @@ height: size.height/3.5,
 
                     Text("Prompt",style: TextStyle(color: Color(0xFFFF5ACD),),),
                     Container(
+                      height: 100,
 
-                        child: Text(postItem.content,style: const TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontWeight: FontWeight.bold),)),
+                        child: ExpandableText(postItem.content,trimLines: 3)),
 
 
 
@@ -194,14 +203,15 @@ height: size.height/3.5,
 
                 }, icon:  Icon(Icons.favorite_outline_rounded,size: 30,color: Theme.of(context).colorScheme.secondary)),
 
-                TextButton.icon(
+                Row(
+                  children: [
 
-                  onPressed: (){
+                    SvgPicture.asset('assets/comment.svg',height: 35,width: 35,color: Color(0xFFFF5ACD)),
+                    Text('56 comments',style: TextStyle(fontSize: 15,color: Color(0xFFFF5ACD) ))
 
-                  },
-                  icon:  Icon(Icons.comment,color: Theme.of(context).colorScheme.secondary),
-                  label: Text('comment',style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
-                )
+                  ],
+                ),
+
               ],
             ),
 

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../utils/FABBottomAppBarItem.dart';
+import '../utils/gradient_text.dart';
 import 'drawer_screen.dart';
 class HomeScreen extends StatefulWidget {
   @override
@@ -213,21 +215,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   title: InkWell(
                     onTap: (){
-                      context.push('/profile/$email');
+
                     },
-                    child: ClipRRect(
-
-                      borderRadius: BorderRadius.circular(1000),
-                      child:  CachedNetworkImage(
-                        width: 40,
-                        height: 40,
-                        imageUrl:" profileModel.profilePicUrl",
-                        placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Image.asset("assets/avatars/Image-71.jpg",fit: BoxFit.cover,
-                          width: 40,height: 40,),
-
-                      ),
-
+                    child: const GradientText(
+                      'INTERIOR.AI',
+                      style: TextStyle(fontSize: 20,fontFamily: 'BungeeShade-Regular',
+                          fontWeight: FontWeight.bold),
+                      gradient: LinearGradient(colors: [
+                        Color(0xFFFBDA61),
+                        Color(0xFFFF5ACD),
+                      ]),
                     ),
                   ),
                   centerTitle: true,
