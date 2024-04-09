@@ -146,7 +146,7 @@ height: size.height/3.5,
                               borderRadius: BorderRadius.circular(10),
                               child: CachedNetworkImage(
                                 width: size.width/2,
-                              height: size.height/8,
+                              height: size.height/8.4,
                                 fit: BoxFit.cover,
                                 imageUrl:postItem.imageUrls[2],
                                 placeholder: (context, url) => CircularProgressIndicator(),

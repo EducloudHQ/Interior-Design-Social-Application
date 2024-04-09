@@ -7,11 +7,6 @@ class CommentItem  extends StatelessWidget {
    final Comment commentItem;
 
 
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement buildCommentItem
@@ -83,7 +78,7 @@ class CommentItem  extends StatelessWidget {
                       Text(commentItem.user!.firstName,style: const TextStyle()),
                       Container(
                           padding: const EdgeInsets.only(left: 5),
-                          child: Text('@${commentItem.user!.username}',style:  TextStyle(fontSize: 12,color:Theme.of(context).colorScheme.secondary,fontWeight: FontWeight.bold))),
+                          child: Text('@${commentItem.user!.username}',style:  TextStyle(fontSize: 12,color:Colors.white,fontWeight: FontWeight.bold))),
                     ],
                   ),
 

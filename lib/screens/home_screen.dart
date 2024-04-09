@@ -6,19 +6,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_media/screens/post_item.dart';
+import 'package:social_media/screens/profile_screen.dart';
 import 'package:social_media/screens/shimmer_post_item.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import '../repositories/post_respository.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:shimmer/shimmer.dart';
-
 import '../utils/FABBottomAppBarItem.dart';
 import '../utils/gradient_text.dart';
 import 'drawer_screen.dart';
@@ -126,31 +123,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-/*
-  late StreamSubscription<QuerySnapshot<Task>> tasksStream;
-
-  Future<void> _getAllTasks() async {
-
-
-       var taskRepo = context.read<TaskRepository>();
-       tasksStream = Amplify.DataStore.observeQuery(Task.classType,sortBy: [Task.CREATEDON.descending()]).listen((QuerySnapshot<Task> event) {
-
-         if(taskRepo.tasks.isNotEmpty) {
-           if (taskRepo.tasks[0].id != event.items[0].id) {
-             taskRepo.setTask = event.items[0];
-           }
-         }else{
-           taskRepo.setTasks = event.items;
-
-           if (kDebugMode) {
-             print('Received post ${event.items}');
-           }
-         }
-       });
-
-
-  }
-*/
 
   int _selectedTabIndex = 0;
 
@@ -243,7 +215,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   ],
                 ),
-                body:
+                body: _selectedTabIndex == 3 ?
+                ProfileScreen(email: email,) :
 
                 postRepo.postList.isEmpty ? Container(
 

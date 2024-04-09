@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
-
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 
@@ -10,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../models/Comment.dart';
 import '../models/Post.dart';
 
+import '../utils/gradient_text.dart';
 import 'comment_item.dart';
 import 'comments_repository.dart';
 
@@ -25,42 +28,99 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
 
- late StreamSubscription commentStream;
-@override
+  late final Stream<GraphQLResponse<String>> commentStream;
+
+  Future<void> subscribeToComments(CommentsRepository commentsRepo) async {
+
+    String graphQLDocument = '''
+  subscription createdComment {
+  createdComment {
+    comment
+    createdOn
+    id
+    postId
+    updatedOn
+    user {
+      about
+      createdOn
+      email
+      firstName
+      id
+      lastName
+      profilePicUrl
+      updatedOn
+      userType
+      username
+    }
+    userId
+  }
+}
+
+
+''';
+
+    commentStream= Amplify.API.subscribe(
+      GraphQLRequest<String>(
+        document: graphQLDocument,
+        apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+
+      ),
+      onEstablished: () => print('Subscription established'),
+    );
+
+
+
+    try {
+      await for (var event in commentStream) {
+        print("comment stream $event");
+        Comment commentItem =  Comment.fromJson(json.decode(event.data!));
+
+        if (kDebugMode) {
+          print("event message data is ${commentItem.comment}");
+        }
+        if (commentsRepo.comments.isNotEmpty) {
+          if (commentsRepo.comments[0].id != commentItem.id) {
+
+            commentsRepo.comment =  commentItem;
+
+
+          }
+        } else {
+
+          commentsRepo.comment =  commentItem;
+
+        }
+        if (kDebugMode) {
+          //  print("all list messages are $chatMessagesList");
+          print('Subscription event data received: ${event.data}');
+        }
+      }
+    } on Exception catch (e) {
+      if (kDebugMode) {
+        print('Error in subscription stream: $e');
+      }
+    }
+  }
+
+  @override
 void initState(){
   var commentsRepo = context.read<CommentsRepository>();
 
   Future.delayed(Duration.zero).then((_) async {
-  //  subscribeToPosts(postRepo);
+
+    subscribeToComments(commentsRepo);
     commentsRepo.getAllComments(widget.postItem.id,10, "null");
   });
 
-/*
-  commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()],where:Comment.TASKID.eq(widget.task.id) )
-      .listen((QuerySnapshot<Comment> event) {
-    if (commentsRepo.comments.isNotEmpty) {
-      if(commentsRepo.comments[0].id != event.items[0].id){
-        commentsRepo.comment = event.items[0];
-
-      }
 
 
-    }else{
-      commentsRepo.comments =event.items;
-      if (kDebugMode) {
-        print('Received post ${event.items}');
-      }
-    }
-
-  });
-*/
-    super.initState();
+  super.initState();
 
   }
 @override
 void dispose(){
   super.dispose();
-  commentStream.cancel();
+
 }
 
   Widget buildInput(CommentsRepository commentsRepository) {
@@ -113,17 +173,28 @@ void dispose(){
                 ),
               ),
 
-              // Button send message
+             commentsRepository.loading ? Container(
+               margin: const EdgeInsets.symmetric(horizontal: 8.0),
+               child: const CircularProgressIndicator(),
+             ):
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                decoration: BoxDecoration(
-                    color:Theme.of(context).colorScheme.secondary,
-                    shape: BoxShape.circle),
+
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                          begin:
+                          Alignment.topLeft,
+                          end: Alignment(0.8, 1),
+                          colors: [
+                            Color(0xFFFBDA61),
+                            Color(0xFFFF5ACD),
+                          ])),
                 child: Center(
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward),
                     onPressed: () {
-
+                      commentsRepository.createComment(widget.postItem.id,widget.postItem.userId, commentsRepository.commentController.text);
                     },
                     color: Colors.white,
                   ),
@@ -143,7 +214,15 @@ void dispose(){
     var commentsRepo = context.watch<CommentsRepository>();
     return Scaffold(
 
-        appBar: AppBar(title: const Text("Comments",),centerTitle: true,),
+        appBar: AppBar(title: const GradientText(
+          'Comments',
+          style: TextStyle(fontSize: 20,fontFamily: 'BungeeShade-Regular',
+              fontWeight: FontWeight.bold),
+          gradient: LinearGradient(colors: [
+            Color(0xFFFBDA61),
+            Color(0xFFFF5ACD),
+          ]),
+        ),centerTitle: true,),
         body: Column(
           children: [
             Flexible(
@@ -338,14 +417,16 @@ void dispose(){
                     );
                   }else{
                     index -= 1;
-                //return Container();
-              return commentsRepo.comments.isEmpty ?  Container():
+
+              return commentsRepo.comments.isEmpty ?  Container(color: Colors.red,):
                 CommentItem(commentItem:commentsRepo.comments[index]);
                   }
 
-                },itemCount: 101,),
+                },itemCount:commentsRepo.comments.length ,),
             ),
-            buildInput(commentsRepo)
+            Container(
+              padding: EdgeInsets.only(bottom: 30),
+                child: buildInput(commentsRepo))
           ],
         )
     );

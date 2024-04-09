@@ -177,4 +177,74 @@ query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
 
   }
 
+
+  Future<void> createComment(String postId,String userId, String comment) async{
+    loading = true;
+    try {
+      String graphQLDocument =
+   '''
+   mutation createComment(\$userId:String!,\$postId:String!,\$comment:String!) {
+  createComment(
+    commentInput: { userId: \$userId, postId: \$postId, comment: \$comment }
+  ) {
+    comment
+    createdOn
+    id
+    postId
+    updatedOn
+    user {
+      about
+      createdOn
+      email
+      firstName
+      lastName
+      id
+      profilePicUrl
+      updatedOn
+      userType
+      username
+    }
+    userId
+  }
+}
+
+   ''';
+
+      var operation = Amplify.API.mutate(
+
+
+          request: GraphQLRequest<String>(
+            document: graphQLDocument, apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+            variables: {
+              "comment": comment,
+              "postId":postId,
+              "userId": userId
+            },));
+
+
+      var response = await operation.response;
+      if(response.data != null){
+        final responseJson = json.decode(response.data!);
+        if (kDebugMode) {
+          print("here${responseJson['createComment']}");
+        }
+        loading = false;
+
+      }else{
+        print("something happened");
+        loading = false;
+
+      }
+
+
+    } catch (ex) {
+      if (kDebugMode) {
+        print(ex.toString());
+      }
+      loading = false;
+
+    }
+  }
+
+
 }

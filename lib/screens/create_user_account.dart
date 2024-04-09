@@ -380,7 +380,9 @@ maxLines: 3,
                             if (kDebugMode) {
                               print(profileRepo.profilePic);
                             }
-                            print("email is ${widget.email}");
+                            if (kDebugMode) {
+                              print("email is ${widget.email}");
+                            }
                            profileRepo.saveUserDetails(widget.email);
 
                           }
