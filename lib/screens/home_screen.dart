@@ -37,79 +37,63 @@ class _HomeScreenState extends State<HomeScreen> {
       print(e.message);
     }
   }
-  Future<void> subscribeToPosts(int limit) async {
+  Future<void> subscribeToPosts(PostRepository postRepo) async {
 
-    var postRepo = context.read<PostRepository>();
     String graphQLDocument = '''
-    query getAllPosts(\$limit:Int!, \$nextToken:String) {
-  getAllPosts(limit: \$limit, nextToken: \$nextToken) {
-   items {
-      content
+  subscription createdPost {
+  createdPost {
+    content
+    createdOn
+    id
+    imageKeys
+    imageUrls
+    updatedOn
+    userId
+    user {
+      about
+      address {
+        city
+        country
+        street
+        zip
+      }
+      createdOn
+      email
+      firstName
+      id
+      lastName
+      profilePicUrl
+      updatedOn
+      username
+      userType
+    }
+    comments {
+      comment
       createdOn
       id
-      imageKeys
-      imageUrls
+      postId
       updatedOn
       userId
-      comments {
-        comment
-        createdOn
-        id
-        postId
-        updatedOn
-        userId
-        user {
-          about
-          address {
-            city
-            country
-            street
-            zip
-          }
-          createdOn
-          email
-          firstName
-          id
-          lastName
-          profilePicUrl
-          updatedOn
-          userType
-          username
-        }
-      }
-      user {
-        about
-        createdOn
-        email
-        firstName
-        id
-        updatedOn
-        userType
-        username
-        profilePicUrl
-        lastName
-      }
     }
-    nextToken
   }
 }
+
 ''';
 
     getPostStream = Amplify.API.subscribe(
          GraphQLRequest<String>(
           document: graphQLDocument,
           apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
-          variables: {
-            "limit": limit,
-            "nextToken":null,
 
-          },
         ),
       onEstablished: () => print('Subscription established'),
     );
 
+
+
     try {
       await for (var event in getPostStream) {
+        print("post stream $event");
         Post postItem =  Post.fromJson(json.decode(event.data!));
 
         if (kDebugMode) {
@@ -185,8 +169,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
 
     super.initState();
+    var postRepo = context.read<PostRepository>();
 
-    subscribeToPosts(10);
+    Future.delayed(Duration.zero).then((_) async {
+      subscribeToPosts(postRepo);
+      postRepo.getAllPosts(10);
+    });
+
+
 
   }
 
@@ -194,14 +184,14 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-  //  tasksStream.cancel();
+
   }
 
   @override
   Widget build(BuildContext context) {
 
     var sharedPrefs = context.watch<SharedPrefsUtils>();
-
+    var postRepo = context.watch<PostRepository>();
 
     return FutureProvider<String?>(
       create: (BuildContext context) {
@@ -256,41 +246,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   ],
                 ),
-                body:FutureProvider<PostsResult?>(create: (context)=>PostRepository.instance().getAllPosts(10),
-                initialData: null,
-                catchError: (context,error){
-                  throw error!;
-                },
-                child: Consumer(
-                  builder: (_,PostsResult? postsResult,child){
-                   return
+                body:
 
-                     postsResult != null ?
-                   ListView.builder(itemBuilder: (context,index){
-                      return PostItem(postsResult.items[index]);
-                   },itemCount: postsResult.items.length,):
+                postRepo.postList.isEmpty ? Container(
 
-                     Container(
+                  child: Shimmer.fromColors(
+                      baseColor: Colors.grey.shade300,
+                      highlightColor: Colors.grey.shade100,
+                      enabled: true,
+                      child: SingleChildScrollView(
+                        physics: NeverScrollableScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            ShimmerPostItem(),
+                            ShimmerPostItem(),
 
-                     child: Shimmer.fromColors(
-                         baseColor: Colors.grey.shade300,
-                         highlightColor: Colors.grey.shade100,
-                         enabled: true,
-                         child: SingleChildScrollView(
-                           physics: NeverScrollableScrollPhysics(),
-                           child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
-                             mainAxisSize: MainAxisSize.max,
-                             children: [
-                               ShimmerPostItem(),
-                               ShimmerPostItem(),
+                          ],
+                        ),
+                      )),
+                ) :
+                ListView.builder(itemBuilder: (context,index){
+                  return PostItem(postRepo.postList[index]);
+                },itemCount: postRepo.postList.length,),
 
-                             ],
-                           ),
-                         )),
-                   );
-                  },
-                ),),
+
 
           bottomNavigationBar: FABBottomAppBar(
             centerItemText: '',

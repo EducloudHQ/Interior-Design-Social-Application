@@ -207,7 +207,7 @@ class PostRepository extends ChangeNotifier{
     return generatePostImageModel.images!;
   }
 
-  Future<PostsResult> getAllPosts(int limit) async {
+  Future<void> getAllPosts(int limit) async {
    loading = true;
     String graphQLDocument = '''
     query getAllPosts(\$limit:Int!, \$nextToken:String) {
@@ -292,8 +292,8 @@ class PostRepository extends ChangeNotifier{
    if (kDebugMode) {
      print("returning ${postsResults.items[0]}");
    }
-
-    return postsResults;
+   postList = postsResults.items;
+   // return postsResults;
   }
 
   void showInSnackBar(BuildContext context,String value) {
