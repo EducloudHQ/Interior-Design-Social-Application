@@ -30,7 +30,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
 void initState(){
   var commentsRepo = context.read<CommentsRepository>();
 
-
+  Future.delayed(Duration.zero).then((_) async {
+  //  subscribeToPosts(postRepo);
+    commentsRepo.getAllComments(widget.postItem.id,10, "null");
+  });
 
 /*
   commentStream = Amplify.DataStore.observeQuery(Comment.classType,sortBy: [Task.CREATEDON.descending()],where:Comment.TASKID.eq(widget.task.id) )
@@ -149,142 +152,122 @@ void dispose(){
                 itemBuilder: (context,index){
 
                   if(index == 0){
-                    return Card(
+                    return Container(
+                      padding: const EdgeInsets.all(10),
+                      child:  Column(
+                        children: [
 
-                      child:  Container(
-                        padding: const EdgeInsets.all(10),
-                        child:  Column(
-                          children: [
-                        Container(
-                        padding: const EdgeInsets.all(10),
-                        child:  Column(
-                          children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
 
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
+                                  Container(
 
-                                    Container(
+                                    decoration: BoxDecoration(
 
-                                      decoration: BoxDecoration(
-
-                                          border: Border.all(width: 2,color: const Color(0xFFFF5ACD),),
-                                          borderRadius: BorderRadius.circular(100)
-                                      ),
-                                      child: ClipOval(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                30),
-                                            child:  CachedNetworkImage(
-                                                width: 40.0,
-                                                height: 40.0,
-                                                fit: BoxFit.cover,
-                                                imageUrl:widget.postItem.user.profilePicUrl??'',
-                                                placeholder: (context,
-                                                    url) =>
-                                                const CircularProgressIndicator(),
-                                                errorWidget: (context,
-                                                    url, ex) =>
-                                                    CircleAvatar(
-                                                      backgroundColor:
-                                                      Theme.of(
-                                                          context)
-                                                          .colorScheme.secondary,
-
-                                                      child: const Icon(
-                                                        Icons
-                                                            .account_circle,
-
-
-                                                      ),
-                                                    )),
-                                          )),
+                                        border: Border.all(width: 2,color: Color(0xFFFF5ACD),),
+                                        borderRadius: BorderRadius.circular(100)
                                     ),
-                                    Container(
+                                    child: ClipOval(
+                                        child: ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              30),
+                                          child:  CachedNetworkImage(
+                                              width: 40.0,
+                                              height: 40.0,
+                                              fit: BoxFit.cover,
+                                              imageUrl:widget.postItem.user.profilePicUrl??'',
+                                              placeholder: (context,
+                                                  url) =>
+                                              const CircularProgressIndicator(),
+                                              errorWidget: (context,
+                                                  url, ex) =>
+                                                  CircleAvatar(
+                                                    backgroundColor:
+                                                    Theme.of(
+                                                        context)
+                                                        .colorScheme.secondary,
 
-                                      margin: const EdgeInsets.only(left: 10),
-                                      child: Row(
-                                        children: [
-                                          Text(widget.postItem.user.firstName,style: const TextStyle(fontSize: 16)),
-                                          Container(
-                                              padding: const EdgeInsets.only(left: 5),
-                                              child: Text('@${widget.postItem.user.username}',style:  TextStyle(fontSize: 12,color:Color(0xFFFBDA61),fontWeight: FontWeight.bold))),
-                                        ],
-                                      ),
+                                                    child: const Icon(
+                                                      Icons
+                                                          .account_circle,
+
+
+                                                    ),
+                                                  )),
+                                        )),
+                                  ),
+                                  Container(
+
+                                    margin: const EdgeInsets.only(left: 10),
+                                    child: Row(
+                                      children: [
+                                        Text(widget.postItem.user.firstName,style: const TextStyle(fontSize: 16)),
+                                        Container(
+                                            padding: const EdgeInsets.only(left: 5),
+                                            child: Text('@${widget.postItem.user.username}',style:  TextStyle(fontSize: 12,color:Color(0xFFFBDA61),fontWeight: FontWeight.bold))),
+                                      ],
                                     ),
+                                  ),
 
 
-                                  ],
-                                ),
-                                Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.postItem.createdOn.toString()))),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
+                                ],
+                              ),
+                              Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.postItem.createdOn.toString()))),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
 
-                              ],
-                            ),
+                            ],
+                          ),
 
-                            Container(
-                                width: size.width,
+                          Container(
+                              width: size.width,
 
-                                height: size.height/2.5,
-                                padding: EdgeInsets.only(top: 20),
-                                child: Row(
-                                  children: [
-                                    Flexible(
-                                      flex:1,
+                              height: size.height/3.5,
+                              padding: EdgeInsets.only(top: 20),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    flex:1,
+                                    child: Container(
+                                      margin: EdgeInsets.only(right: 5),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
-                                        child: Container(
-                                          margin: EdgeInsets.only(right: 5),
-                                          child: CachedNetworkImage(
-                                            width: size.width/2,
-                                            height: size.height/2.5,
+                                        child: CachedNetworkImage(
+                                          width: size.width/2,
+                                          height: size.height/3.5,
 
-                                            fit: BoxFit.cover,
-                                            imageUrl:widget.postItem.imageUrls[0],
-                                            placeholder: (context, url) => CircularProgressIndicator(),
-                                            errorWidget: (context, url, error) => ClipRRect(
-                                              borderRadius: BorderRadius.circular(10),
-                                              child: Icon(Icons.image,),
-                                            ),
+                                          fit: BoxFit.cover,
+                                          imageUrl:widget.postItem.imageUrls[0],
+                                          placeholder: (context, url) => CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) => ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: Icon(Icons.image,),
                                           ),
                                         ),
+
                                       ),
                                     ),
-                                    Flexible(
-                                      flex:1,
-                                      child: Container(
-                                        width: size.width/2,
-                                        height: size.height/2.5,
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.only(bottom: 5),
-                                              child: ClipRRect(
+                                  ),
+                                  Flexible(
+                                    flex:1,
+                                    child: Container(
+                                      width: size.width/2,
+                                      height: size.height/3.5,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(bottom: 5),
+                                            child: ClipRRect(
 
-                                                borderRadius: BorderRadius.circular(10),
-                                                child: CachedNetworkImage(
-                                                  width: size.width/2,
-
-                                                  height: size.height/5,
-                                                  fit: BoxFit.cover,
-                                                  imageUrl:widget.postItem.imageUrls[1],
-                                                  placeholder: (context, url) => CircularProgressIndicator(),
-                                                  errorWidget: (context, url, error) => ClipRRect(
-                                                    borderRadius: BorderRadius.circular(1000),
-                                                    child: Icon(Icons.image,size: 50,),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            ClipRRect(
                                               borderRadius: BorderRadius.circular(10),
                                               child: CachedNetworkImage(
                                                 width: size.width/2,
-                                                height: size.height/6,
+
+                                                height: size.height/7.5,
                                                 fit: BoxFit.cover,
-                                                imageUrl:widget.postItem.imageUrls[2],
+                                                imageUrl:widget.postItem.imageUrls[1],
                                                 placeholder: (context, url) => CircularProgressIndicator(),
                                                 errorWidget: (context, url, error) => ClipRRect(
                                                   borderRadius: BorderRadius.circular(1000),
@@ -292,57 +275,72 @@ void dispose(){
                                                 ),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              width: size.width/2,
+                                              height: size.height/8,
+                                              fit: BoxFit.cover,
+                                              imageUrl:widget.postItem.imageUrls[2],
+                                              placeholder: (context, url) => CircularProgressIndicator(),
+                                              errorWidget: (context, url, error) => ClipRRect(
+                                                borderRadius: BorderRadius.circular(1000),
+                                                child: Icon(Icons.image,size: 50,),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                )),
-
-                            Container(
-                              padding: EdgeInsets.only(top: 10),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-
-                                  Text("Prompt",style: TextStyle(color: Color(0xFFFF5ACD),),),
-                                  Container(
-
-                                      child: Text(widget.postItem.content,style: const TextStyle(
-                                          overflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.bold),)),
-
-
-
-
-
-
-
+                                    ),
+                                  )
                                 ],
-                              ),
+                              )),
+
+                          Container(
+                            child: const Row(
+                              children: [
+                                Text("#interior")
+                              ],
                             ),
 
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+
+
+                                Text("Prompt",style: TextStyle(color: Color(0xFFFF5ACD),),),
+                                Container(
+                                    height: 100,
+
+                                    child: Text(widget.postItem.content,style: TextStyle(fontSize: 17),)),
 
 
 
 
 
-                          ],
-                        ),
 
-                      )
-                          ],
-                        ),
 
+                              ],
+                            ),
+                          ),
+
+
+
+
+                        ],
                       ),
 
                     );
                   }else{
                     index -= 1;
-                return Container();
-                // return CommentItem(commentItem:commentsRepo.comments[index]);
+                //return Container();
+              return commentsRepo.comments.isEmpty ?  Container():
+                CommentItem(commentItem:commentsRepo.comments[index]);
                   }
 
                 },itemCount: 101,),

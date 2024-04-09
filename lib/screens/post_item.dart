@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../models/Post.dart';
 
@@ -203,13 +203,19 @@ height: size.height/3.5,
 
                 }, icon:  Icon(Icons.favorite_outline_rounded,size: 30,color: Theme.of(context).colorScheme.secondary)),
 
-                Row(
-                  children: [
+                InkWell(
+                  onTap: ()=>
+                    context.push('/post/${postItem.userId}/comments',extra: postItem),
 
-                    SvgPicture.asset('assets/comment.svg',height: 35,width: 35,color: Color(0xFFFF5ACD)),
-                    Text('56 comments',style: TextStyle(fontSize: 15,color: Color(0xFFFF5ACD) ))
 
-                  ],
+                  child: Row(
+                    children: [
+
+                      SvgPicture.asset('assets/comment.svg',height: 35,width: 35,color: Color(0xFFFF5ACD)),
+                      Text('56 comments',style: TextStyle(fontSize: 15,color: Color(0xFFFF5ACD) ))
+
+                    ],
+                  ),
                 ),
 
               ],

@@ -1,16 +1,18 @@
 import 'dart:async';
-
-import 'package:amplify_datastore/amplify_datastore.dart';
+import 'dart:convert';
 
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-
-
-
-
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'package:flutter/foundation.dart';
+
+import 'package:amplify_flutter/amplify_flutter.dart';
+
+import 'package:flutter/foundation.dart';
+
+import '../models/Comment.dart';
+import '../models/PostCommentsResult.dart';
 
 class CommentsRepository extends ChangeNotifier {
 
@@ -22,14 +24,14 @@ class CommentsRepository extends ChangeNotifier {
 
 
 
-  S3UploadFileOptions? options;
+
   bool _loading = false;
   String? _userId;
- // List<Comment> _comments = [];
+List<Comment> _comments = [];
 
-  late StreamSubscription commentsStream;
- // List<Comment> get comments => _comments;
-/*
+
+ List<Comment> get comments => _comments;
+
   set comments(List<Comment> value) {
     _comments = value;
     notifyListeners();
@@ -40,7 +42,7 @@ class CommentsRepository extends ChangeNotifier {
     notifyListeners();
 
   }
-*/
+
   String? get userId => _userId;
 
   set userId(String? value) {
@@ -96,43 +98,83 @@ class CommentsRepository extends ChangeNotifier {
     // TODO: implement dispose
 
     commentController.dispose();
-    commentsStream.cancel();
+
 
 
 
     super.dispose();
   }
-/*
-  Future<List<Comment>>queryAllCommentsForTask(String taskId) async{
-    List<Comment> comments= await Amplify.DataStore.query(Comment.classType,
-        where: Comment.TASKID.eq(taskId),
-        sortBy: [Comment.CREATEDON.descending()]);
 
-    if (kDebugMode) {
-      print("comments are $comments");
-    }
-    return comments;
-  }
 
-  Future<bool> createComment(String userId,Task task) async{
+  Future<void> getAllComments(String postId,int limit,String nextToken) async {
     loading = true;
 
-    try {
-
-
-      Comment comment = Comment(comment: commentController.text.trim(),userId: userId,
-          taskId:task.id,createdOn: TemporalTimestamp.now(), );
-
-      await Amplify.DataStore.save(comment);
-      loading = false;
-      return true;
-    }catch(ex){
-      print(ex.toString());
-      loading = false;
-      return false;
+    String graphQLDocument = '''
+  
+query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
+  getCommentsPerPost(
+    postId: \$postId
+    limit: \$limit
+    nextToken: \$nextToken
+  ) {
+    nextToken
+    items {
+      comment
+      createdOn
+      id
+      postId
+      updatedOn
+      user {
+        about
+        createdOn
+        email
+        firstName
+        id
+        lastName
+        profilePicUrl
+        updatedOn
+        userType
+        username
+      }
+      userId
     }
   }
+}
 
-*/
+  ''';
+
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+          document: graphQLDocument,
+          apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+          variables: {
+             "postId":postId,
+            "limit": limit,
+            "nextToken":null,
+
+          },
+        ));
+
+    var response = await operation.response;
+    if (kDebugMode) {
+      print("returning ${response}");
+    }
+
+    final responseJson = json.decode(response.data!);
+    loading = false;
+
+    if (kDebugMode) {
+      print("returning ${responseJson['getCommentsPerPost']}");
+    }
+
+    PostCommentsResult postCommentsResults = PostCommentsResult.fromJson(responseJson['getCommentsPerPost']);
+
+    if (kDebugMode) {
+      print("returning ${postCommentsResults}");
+    }
+    comments = postCommentsResults.items;
+
+  }
 
 }

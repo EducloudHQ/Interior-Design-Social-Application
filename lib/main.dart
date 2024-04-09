@@ -19,6 +19,10 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 
+import 'comments/comments_repository.dart';
+import 'comments/comments_screen.dart';
+import 'models/Post.dart';
+
 
 
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
@@ -155,6 +159,20 @@ class _MyAppState extends State<App> {
 
 
                }),
+
+
+
+        GoRoute(
+            name: 'commentsScreen',
+            path: '/post/:userId/comments',
+            builder: (context,state){
+              Post postItem= state.extra as Post;
+              return ChangeNotifierProvider(create: (context) => CommentsRepository.instance(),
+                child: CommentsScreen(postItem: postItem,userId: state.pathParameters['userId']!,),
+              );
+            }),
+
+
 
          ])
 
