@@ -7,10 +7,13 @@ import 'package:go_router/go_router.dart';
 import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:social_media/screens/post_item.dart';
+import 'package:social_media/screens/shimmer_post_item.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import '../repositories/post_respository.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import 'package:shimmer/shimmer.dart';
 
 import '../utils/FABBottomAppBarItem.dart';
 import 'drawer_screen.dart';
@@ -147,10 +150,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: Consumer(
                   builder: (_,PostsResult? postsResult,child){
-                   return postsResult != null ?
+                   return
+                   /*
+                     postsResult != null ?
                    ListView.builder(itemBuilder: (context,index){
                       return PostItem(postsResult.items[index]);
-                   },itemCount: postsResult.items.length,): Container();
+                   },itemCount: postsResult.items.length,):
+                   */
+                     Container(
+
+                     child: Shimmer.fromColors(
+                         baseColor: Colors.grey.shade300,
+                         highlightColor: Colors.grey.shade100,
+                         enabled: true,
+                         child: SingleChildScrollView(
+                           physics: NeverScrollableScrollPhysics(),
+                           child: Column(
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             mainAxisSize: MainAxisSize.max,
+                             children: [
+                               ShimmerPostItem(),
+                               ShimmerPostItem(),
+
+                             ],
+                           ),
+                         )),
+                   );
                   },
                 ),),
 
