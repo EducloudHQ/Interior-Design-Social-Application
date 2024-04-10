@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../models/generate_post_image_model.dart';
+import '../utils/validations.dart';
 
 
 
@@ -109,7 +110,7 @@ class PostRepository extends ChangeNotifier{
 
       postImageKeys.add(uploadResult.uploadedItem.key);
       final resultDownload =
-      await getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
+      await Validations.getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
       if (kDebugMode) {
         print(resultDownload);
       }
@@ -139,7 +140,7 @@ class PostRepository extends ChangeNotifier{
 
       postImageKeys.add(uploadResult.uploadedItem.key);
       final resultDownload =
-      await getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
+      await Validations.getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
       if (kDebugMode) {
         print(resultDownload);
       }
@@ -153,26 +154,7 @@ class PostRepository extends ChangeNotifier{
     }
   }
 
-  Future<String> getProfilePicDownloadUrl({
-    required String key,
-  }) async {
-    try {
-      final result = await Amplify.Storage.getUrl(
-        key: key,
-        options: const StorageGetUrlOptions(
-          accessLevel: StorageAccessLevel.guest,
-          pluginOptions: S3GetUrlPluginOptions(
-            validateObjectExistence: true,
-            expiresIn: Duration(days: 1),
-          ),
-        ),
-      ).result;
-      return result.url.toString();
-    } on StorageException catch (e) {
-      safePrint('Could not get a downloadable URL: ${e.message}');
-      rethrow;
-    }
-  }
+
 
   Future<List<String>> generateImage(String prompt) async {
     isLoadingGeneratedImage = true;
@@ -241,6 +223,7 @@ class PostRepository extends ChangeNotifier{
           id
           lastName
           profilePicUrl
+          profilePicKey
           updatedOn
           userType
           username
@@ -357,6 +340,7 @@ class PostRepository extends ChangeNotifier{
       userType
       updatedOn
       profilePicUrl
+       profilePicKey
       username
     }
     updatedOn

@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:social_media/repositories/post_respository.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/Comment.dart';
+import 'package:provider/provider.dart';
+
+import '../utils/validations.dart';
 class CommentItem  extends StatelessWidget {
    CommentItem({required this.commentItem});
    final Comment commentItem;
@@ -35,37 +39,45 @@ class CommentItem  extends StatelessWidget {
                       border: Border.all(width: 2,color: Color(0xFFFF5ACD)),
                       borderRadius: BorderRadius.circular(100)
                   ),
-                  child: ClipOval(
-                      child: ClipRRect(
-                        borderRadius:
-                        BorderRadius.circular(
-                            30),
-                        child:  CachedNetworkImage(
-                            width: 30.0,
-                            height: 30.0,
-                            fit: BoxFit.cover,
-                            imageUrl: commentItem.user!.profilePicUrl,
-                            placeholder: (context,
-                                url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context,
-                                url, ex) =>
-                                CircleAvatar(
-                                  backgroundColor:
-                                  Theme.of(
-                                      context)
-                                      .colorScheme.secondary,
+                  child:  FutureProvider<String?>.value(
+    value: Validations.getProfilePicDownloadUrl(
+    key: commentItem.user!.profilePicKey),
+    initialData: '',
+    child: Consumer(builder: (BuildContext context,
+    String? imagePicUrl, child) {
+      return  ClipRRect(
+        borderRadius:
+        BorderRadius.circular(
+            30),
+        child:  CachedNetworkImage(
+            width: 30.0,
+            height: 30.0,
+            fit: BoxFit.cover,
+            imageUrl: commentItem.user!.profilePicUrl,
+            placeholder: (context,
+                url) =>
+            const CircularProgressIndicator(),
+            errorWidget: (context,
+                url, ex) =>
+                CircleAvatar(
+                  backgroundColor:
+                  Theme.of(
+                      context)
+                      .colorScheme.secondary,
 
-                                  child: const Icon(
-                                    Icons
-                                        .account_circle,
-                                    color:
-                                    Colors.white,
+                  child: const Icon(
+                    Icons
+                        .account_circle,
+                    color:
+                    Colors.white,
 
-                                  ),
-                                )),
-                      )),
-                ),
+                  ),
+                )),
+      );
+    }))
+
+                 ),
+
 
                 Container(
 

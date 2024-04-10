@@ -294,6 +294,7 @@ class User {
     'id': id,
     'lastName': _lastName,
     'profilePicUrl': _profilePicUrl,
+    'profilePicKey': _profilePicKey,
     'updatedOn': _updatedOn,
     'userType': _userType,
     'username': _username

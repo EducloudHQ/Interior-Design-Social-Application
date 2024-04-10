@@ -9,6 +9,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:social_media/repositories/profile_repository.dart';
 import 'package:social_media/screens/post_item.dart';
 import 'package:social_media/screens/profile_screen.dart';
 import 'package:social_media/screens/shimmer_post_item.dart';
@@ -216,7 +217,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 body: _selectedTabIndex == 3 ?
-                ProfileScreen(email: email,) :
+                ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
+                child: ProfileScreen(email: email,),) :
 
                 postRepo.postList.isEmpty ? Container(
 
