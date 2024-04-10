@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
       id
       lastName
       profilePicUrl
+      profilePicKey
       updatedOn
       username
       userType

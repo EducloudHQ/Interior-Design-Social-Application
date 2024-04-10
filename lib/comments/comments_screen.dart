@@ -15,6 +15,7 @@ import '../models/Comment.dart';
 import '../models/Post.dart';
 
 import '../utils/gradient_text.dart';
+import '../utils/validations.dart';
 import 'comment_item.dart';
 import 'comments_repository.dart';
 
@@ -48,6 +49,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
       id
       lastName
       profilePicUrl
+      profilePicKey
       updatedOn
       userType
       username
@@ -234,158 +236,186 @@ void dispose(){
                 itemBuilder: (context,index){
 
                   if(index == 0){
-                    return Container(
+                    return  Container(
                       padding: const EdgeInsets.all(10),
-                      child:  Column(
+                      child: Column(
                         children: [
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
                                 children: [
-
                                   Container(
-
-                                    decoration: BoxDecoration(
-
-                                        border: Border.all(width: 2,color: Color(0xFFFF5ACD),),
-                                        borderRadius: BorderRadius.circular(100)
-                                    ),
-                                    child: ClipOval(
-                                        child: ClipRRect(
-                                          borderRadius:
-                                          BorderRadius.circular(
-                                              30),
-                                          child:  CachedNetworkImage(
-                                              width: 40.0,
-                                              height: 40.0,
-                                              fit: BoxFit.cover,
-                                              imageUrl:widget.postItem.user.profilePicUrl??'',
-                                              placeholder: (context,
-                                                  url) =>
-                                              const CircularProgressIndicator(),
-                                              errorWidget: (context,
-                                                  url, ex) =>
-                                                  CircleAvatar(
-                                                    backgroundColor:
-                                                    Theme.of(
-                                                        context)
-                                                        .colorScheme.secondary,
-
-                                                    child: const Icon(
-                                                      Icons
-                                                          .account_circle,
-
-
-                                                    ),
-                                                  )),
-                                        )),
-                                  ),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 2,
+                                            color: const Color(0xFFFF5ACD),
+                                          ),
+                                          borderRadius: BorderRadius.circular(100)),
+                                      child: FutureProvider<String?>.value(
+                                          value: Validations.getProfilePicDownloadUrl(
+                                              key: widget.postItem.user.profilePicKey),
+                                          initialData: '',
+                                          child: Consumer(builder: (BuildContext context,
+                                              String? profilePicUrl, child) {
+                                            return ClipRRect(
+                                              borderRadius: BorderRadius.circular(30),
+                                              child: CachedNetworkImage(
+                                                  width: 40.0,
+                                                  height: 40.0,
+                                                  fit: BoxFit.cover,
+                                                  imageUrl: profilePicUrl ?? '',
+                                                  placeholder: (context, url) =>
+                                                  const CircularProgressIndicator(),
+                                                  errorWidget: (context, url, ex) =>
+                                                      CircleAvatar(
+                                                        backgroundColor: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        child: const Icon(
+                                                          Icons.account_circle,
+                                                        ),
+                                                      )),
+                                            );
+                                          }))),
                                   Container(
-
                                     margin: const EdgeInsets.only(left: 10),
                                     child: Row(
                                       children: [
-                                        Text(widget.postItem.user.firstName,style: const TextStyle(fontSize: 16)),
+                                        Text(widget.postItem.user.firstName,
+                                            style: const TextStyle(fontSize: 16)),
                                         Container(
                                             padding: const EdgeInsets.only(left: 5),
-                                            child: Text('@${widget.postItem.user.username}',style:  TextStyle(fontSize: 12,color:Color(0xFFFBDA61),fontWeight: FontWeight.bold))),
+                                            child: Text('@${widget.postItem.user.username}',
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFFFBDA61),
+                                                    fontWeight: FontWeight.bold))),
                                       ],
                                     ),
                                   ),
-
-
                                 ],
                               ),
-                              Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(int.parse(widget.postItem.createdOn.toString()))),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
-
+                              Text(
+                                timeago.format(DateTime.fromMillisecondsSinceEpoch(
+                                    int.parse(widget.postItem.createdOn.toString()))),
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              )
                             ],
                           ),
-
                           Container(
                               width: size.width,
-
-                              height: size.height/3.5,
+                              height: size.height / 3.5,
                               padding: EdgeInsets.only(top: 20),
                               child: Row(
                                 children: [
                                   Flexible(
-                                    flex:1,
+                                    flex: 1,
                                     child: Container(
-                                      margin: EdgeInsets.only(right: 5),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(10),
-                                        child: CachedNetworkImage(
-                                          width: size.width/2,
-                                          height: size.height/3.5,
-
-                                          fit: BoxFit.cover,
-                                          imageUrl:widget.postItem.imageUrls[0],
-                                          placeholder: (context, url) => CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) => ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: Icon(Icons.image,),
-                                          ),
-                                        ),
-
-                                      ),
-                                    ),
+                                        margin: EdgeInsets.only(right: 5),
+                                        child: FutureProvider<String?>.value(
+                                            value: Validations.getProfilePicDownloadUrl(
+                                                key: widget.postItem.imageKeys[0]),
+                                            initialData: '',
+                                            child: Consumer(builder: (BuildContext context,
+                                                String? imagePicUrl, child) {
+                                              return ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: CachedNetworkImage(
+                                                  width: size.width / 2,
+                                                  height: size.height / 3.5,
+                                                  fit: BoxFit.cover,
+                                                  imageUrl: imagePicUrl!,
+                                                  placeholder: (context, url) =>
+                                                      CircularProgressIndicator(),
+                                                  errorWidget: (context, url, error) =>
+                                                      ClipRRect(
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        child: Icon(
+                                                          Icons.image,
+                                                        ),
+                                                      ),
+                                                ),
+                                              );
+                                            }))),
                                   ),
                                   Flexible(
-                                    flex:1,
+                                    flex: 1,
                                     child: Container(
-                                      width: size.width/2,
-                                      height: size.height/3.5,
+                                      width: size.width / 2,
+                                      height: size.height / 3.5,
                                       child: Column(
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(bottom: 5),
-                                            child: ClipRRect(
-
-                                              borderRadius: BorderRadius.circular(10),
-                                              child: CachedNetworkImage(
-                                                width: size.width/2,
-
-                                                height: size.height/7.5,
-                                                fit: BoxFit.cover,
-                                                imageUrl:widget.postItem.imageUrls[1],
-                                                placeholder: (context, url) => CircularProgressIndicator(),
-                                                errorWidget: (context, url, error) => ClipRRect(
-                                                  borderRadius: BorderRadius.circular(1000),
-                                                  child: Icon(Icons.image,size: 50,),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              width: size.width/2,
-                                              height: size.height/8,
-                                              fit: BoxFit.cover,
-                                              imageUrl:widget.postItem.imageUrls[2],
-                                              placeholder: (context, url) => CircularProgressIndicator(),
-                                              errorWidget: (context, url, error) => ClipRRect(
-                                                borderRadius: BorderRadius.circular(1000),
-                                                child: Icon(Icons.image,size: 50,),
-                                              ),
-                                            ),
-                                          ),
+                                              margin: EdgeInsets.only(bottom: 5),
+                                              child: FutureProvider<String?>.value(
+                                                  value:
+                                                  Validations.getProfilePicDownloadUrl(
+                                                      key: widget.postItem.imageKeys[1]),
+                                                  initialData: '',
+                                                  child: Consumer(builder:
+                                                      (BuildContext context,
+                                                      String? imagePicUrl, child) {
+                                                    return ClipRRect(
+                                                      borderRadius: BorderRadius.circular(10),
+                                                      child: CachedNetworkImage(
+                                                        width: size.width / 2,
+                                                        height: size.height / 7.5,
+                                                        fit: BoxFit.cover,
+                                                        imageUrl: imagePicUrl!,
+                                                        placeholder: (context, url) =>
+                                                            CircularProgressIndicator(),
+                                                        errorWidget: (context, url, error) =>
+                                                            ClipRRect(
+                                                              borderRadius:
+                                                              BorderRadius.circular(1000),
+                                                              child: Icon(
+                                                                Icons.image,
+                                                                size: 50,
+                                                              ),
+                                                            ),
+                                                      ),
+                                                    );
+                                                  }))),
+                                          FutureProvider<String?>.value(
+                                              value: Validations.getProfilePicDownloadUrl(
+                                                  key: widget.postItem.imageKeys[2]),
+                                              initialData: '',
+                                              child: Consumer(builder: (BuildContext context,
+                                                  String? imagePicUrl, child) {
+                                                return ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10),
+                                                  child: CachedNetworkImage(
+                                                    width: size.width / 2,
+                                                    height: size.height / 8.4,
+                                                    fit: BoxFit.cover,
+                                                    imageUrl: imagePicUrl!,
+                                                    placeholder: (context, url) =>
+                                                        CircularProgressIndicator(),
+                                                    errorWidget: (context, url, error) =>
+                                                        ClipRRect(
+                                                          borderRadius: BorderRadius.circular(1000),
+                                                          child: Icon(
+                                                            Icons.image,
+                                                            size: 50,
+                                                          ),
+                                                        ),
+                                                  ),
+                                                );
+                                              })),
                                         ],
                                       ),
                                     ),
                                   )
                                 ],
                               )),
-
                           Container(
-                            child: const Row(
-                              children: [
-                                Text("#interior")
-                              ],
+                            child: Row(
+                              children: [Text("#interior")],
                             ),
-
                           ),
                           Container(
                             padding: EdgeInsets.only(top: 10),
@@ -393,30 +423,21 @@ void dispose(){
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-
-                                Text("Prompt",style: TextStyle(color: Color(0xFFFF5ACD),),),
+                                Text(
+                                  "Prompt",
+                                  style: TextStyle(
+                                    color: Color(0xFFFF5ACD),
+                                  ),
+                                ),
                                 Container(
                                     height: 100,
-
-                                    child: Text(widget.postItem.content,style: TextStyle(fontSize: 17),)),
-
-
-
-
-
-
-
+                                    child: Text(widget.postItem.content, style: TextStyle(fontSize: 15),)),
                               ],
                             ),
                           ),
 
-
-
-
                         ],
                       ),
-
                     );
                   }else{
                     index -= 1;

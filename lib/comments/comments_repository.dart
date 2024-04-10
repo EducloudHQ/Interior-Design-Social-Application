@@ -126,6 +126,7 @@ query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
         id
         lastName
         profilePicUrl
+        profilePicKey
         updatedOn
         userType
         username
@@ -194,6 +195,7 @@ query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
       lastName
       id
       profilePicUrl
+      profilePicKey
       updatedOn
       userType
       username

@@ -239,6 +239,7 @@ class PostRepository extends ChangeNotifier{
         userType
         username
         profilePicUrl
+         profilePicKey
         lastName
       }
     }
