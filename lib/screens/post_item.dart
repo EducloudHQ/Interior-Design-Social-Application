@@ -212,7 +212,7 @@ height: size.height/3.5,
                     children: [
 
                       SvgPicture.asset('assets/comment.svg',height: 35,width: 35,color: Color(0xFFFF5ACD)),
-                      Text('56 comments',style: TextStyle(fontSize: 15,color: Color(0xFFFF5ACD) ))
+                      const Text('comments',style: TextStyle(fontSize: 15,color: Color(0xFFFF5ACD) ))
 
                     ],
                   ),

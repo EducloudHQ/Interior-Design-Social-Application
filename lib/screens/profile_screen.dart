@@ -23,6 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    ProfileRepository profileRepository = context.watch<ProfileRepository>();
     return  Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -56,21 +57,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        child:  CachedNetworkImage(
-                          width: 60,
-                          height: 60,
-                          fit: BoxFit.cover,
-                          imageUrl:userModel.profilePicUrl,
-                          placeholder: (context, url) => CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => ClipRRect(
-                            borderRadius: BorderRadius.circular(1000),
-                            child: Image.asset("assets/avatars/Image-71.jpg",width: 60,height: 60,fit: BoxFit.cover,),
-                          ),
-                        ),
+    FutureProvider<String?>.value(
+    value: profileRepository.getProfilePicDownloadUrl(
+    key: userModel.profilePicKey),
+    initialData: '',
+    child: Consumer(builder:
+    (BuildContext context,
+    String? profilePicUrl, child) {
+      return  ClipRRect(
+        borderRadius: BorderRadius.circular(1000),
+        child:  CachedNetworkImage(
+          width: 60,
+          height: 60,
+          fit: BoxFit.cover,
+          imageUrl:userModel.profilePicUrl,
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => ClipRRect(
+            borderRadius: BorderRadius.circular(1000),
+            child: Image.asset("assets/avatars/Image-71.jpg",width: 60,height: 60,fit: BoxFit.cover,),
+          ),
+        ),
 
-                      ),
+      );
+
+    })),
+
 
                       Expanded(
                         child: Container(

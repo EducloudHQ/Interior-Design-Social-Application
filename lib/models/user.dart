@@ -33,6 +33,7 @@ class User {
   final String id;
   final String? _lastName;
   final String? _profilePicUrl;
+  final String? _profilePicKey;
   final amplify_core.TemporalTimestamp? _updatedOn;
   final USERTYPE? _userType;
   final String? _username;
@@ -109,6 +110,19 @@ class User {
           );
     }
   }
+
+  String get profilePicKey {
+    try {
+      return _profilePicKey!;
+    } catch(e) {
+      throw amplify_core.AmplifyCodeGenModelException(
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+          recoverySuggestion:
+          amplify_core.AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+          underlyingException: e.toString()
+      );
+    }
+  }
   
   amplify_core.TemporalTimestamp? get updatedOn {
     return _updatedOn;
@@ -140,9 +154,9 @@ class User {
     }
   }
   
-  const User._internal({required about, address, createdOn, required email, required firstName, required this.id, required lastName, required profilePicUrl, updatedOn, required userType, required username}): _about = about, _address = address, _createdOn = createdOn, _email = email, _firstName = firstName, _lastName = lastName, _profilePicUrl = profilePicUrl, _updatedOn = updatedOn, _userType = userType, _username = username;
+  const User._internal({required about, address, createdOn, required email, required firstName, required this.id, required lastName, required profilePicUrl,required profilePicKey, updatedOn, required userType, required username}): _about = about, _address = address, _createdOn = createdOn, _email = email, _firstName = firstName, _lastName = lastName, _profilePicUrl = profilePicUrl,_profilePicKey = profilePicKey, _updatedOn = updatedOn, _userType = userType, _username = username;
   
-  factory User({required String about, Address? address, amplify_core.TemporalTimestamp? createdOn, required String email, required String firstName, String? id, required String lastName, required String profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, required USERTYPE userType, required String username}) {
+  factory User({required String about, Address? address, amplify_core.TemporalTimestamp? createdOn, required String email, required String firstName, String? id, required String lastName, required String profilePicKey, required String profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, required USERTYPE userType, required String username}) {
     return User._internal(
       about: about,
       address: address,
@@ -152,6 +166,7 @@ class User {
       id: id == null ? amplify_core.UUID.getUUID() : id,
       lastName: lastName,
       profilePicUrl: profilePicUrl,
+      profilePicKey: profilePicKey,
       updatedOn: updatedOn,
       userType: userType,
       username: username);
@@ -173,6 +188,7 @@ class User {
       id == other.id &&
       _lastName == other._lastName &&
       _profilePicUrl == other._profilePicUrl &&
+      _profilePicKey == other._profilePicKey &&
       _updatedOn == other._updatedOn &&
       _userType == other._userType &&
       _username == other._username;
@@ -194,6 +210,7 @@ class User {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("lastName=" + "$_lastName" + ", ");
     buffer.write("profilePicUrl=" + "$_profilePicUrl" + ", ");
+    buffer.write("profilePicKey=" + "$_profilePicKey" + ", ");
     buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.toString() : "null") + ", ");
     buffer.write("userType=" + (_userType != null ? amplify_core.enumToString(_userType)! : "null") + ", ");
     buffer.write("username=" + "$_username");
@@ -202,7 +219,7 @@ class User {
     return buffer.toString();
   }
   
-  User copyWith({String? about, Address? address, amplify_core.TemporalTimestamp? createdOn, String? email, String? firstName, String? id, String? lastName, String? profilePicUrl, amplify_core.TemporalTimestamp? updatedOn, USERTYPE? userType, String? username}) {
+  User copyWith({String? about, Address? address, amplify_core.TemporalTimestamp? createdOn, String? email, String? firstName, String? id, String? lastName, String? profilePicUrl, String? profilePicKey, amplify_core.TemporalTimestamp? updatedOn, USERTYPE? userType, String? username}) {
     return User._internal(
       about: about ?? this.about,
       address: address ?? this.address,
@@ -212,6 +229,7 @@ class User {
       id: id ?? this.id,
       lastName: lastName ?? this.lastName,
       profilePicUrl: profilePicUrl ?? this.profilePicUrl,
+      profilePicKey: profilePicKey ?? this.profilePicKey,
       updatedOn: updatedOn ?? this.updatedOn,
       userType: userType ?? this.userType,
       username: username ?? this.username);
@@ -226,6 +244,7 @@ class User {
     ModelFieldValue<String>? id,
     ModelFieldValue<String>? lastName,
     ModelFieldValue<String>? profilePicUrl,
+    ModelFieldValue<String>? profilePicKey,
     ModelFieldValue<amplify_core.TemporalTimestamp?>? updatedOn,
     ModelFieldValue<USERTYPE>? userType,
     ModelFieldValue<String>? username
@@ -239,6 +258,7 @@ class User {
       id: id == null ? this.id : id.value,
       lastName: lastName == null ? this.lastName : lastName.value,
       profilePicUrl: profilePicUrl == null ? this.profilePicUrl : profilePicUrl.value,
+      profilePicKey: profilePicKey == null ? this.profilePicKey : profilePicKey.value,
       updatedOn: updatedOn == null ? this.updatedOn : updatedOn.value,
       userType: userType == null ? this.userType : userType.value,
       username: username == null ? this.username : username.value
@@ -256,6 +276,7 @@ class User {
       id = json['id'],
       _lastName = json['lastName'],
       _profilePicUrl = json['profilePicUrl'],
+      _profilePicKey = json['profilePicKey'],
       _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['updatedOn']) : null,
       _userType = amplify_core.enumFromString<USERTYPE>(json['userType'], USERTYPE.values),
       _username = json['username'];
@@ -328,6 +349,12 @@ class User {
       fieldName: 'profilePicUrl',
       isRequired: true,
       ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
+    ));
+
+    modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(
+        fieldName: 'profilePicKey',
+        isRequired: true,
+        ofType: amplify_core.ModelFieldType(amplify_core.ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(amplify_core.ModelFieldDefinition.customTypeField(

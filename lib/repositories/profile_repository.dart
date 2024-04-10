@@ -185,7 +185,8 @@ class ProfileRepository extends ChangeNotifier {
 
     try {
       String graphQLDocument = '''
-    mutation createUserAccount(\$username:String!,\$firstName:String!,\$lastName:String!,\$email:AWSEmail!,\$userType:USERTYPE!,\$profilePicUrl:String!,\$about:String!) {
+    mutation createUserAccount(\$username:String!,\$firstName:String!,\$lastName:String!,
+    \$email:AWSEmail!,\$userType:USERTYPE!,\$profilePicUrl:String!,\$about:String!,\$profilePicKey:String!) {
   createUserAccount(
     userInput: {
       username: \$username
@@ -194,6 +195,7 @@ class ProfileRepository extends ChangeNotifier {
       email: \$email
       about:\$about
       userType: \$userType
+      profilePicKey:\$profilePicKey
       profilePicUrl: \$profilePicUrl
     }
   ) {
@@ -203,6 +205,7 @@ class ProfileRepository extends ChangeNotifier {
     id
     about
     lastName
+    profilePicKey
     profilePicUrl
     updatedOn
     userType
@@ -226,12 +229,15 @@ class ProfileRepository extends ChangeNotifier {
               "about":aboutController.text,
               "email": email,
               "userType": "ADMIN",
-              "profilePicUrl": profilePic
+              "profilePicUrl": profilePic,
+              "profilePicKey":profilePicKey
             },));
 
 
       var response = await operation.response;
-      print("response operation ${response}");
+      if (kDebugMode) {
+        print("response operation $response");
+      }
       if(response.data != null){
         final responseJson = json.decode(response.data!);
         if (kDebugMode) {
@@ -240,7 +246,9 @@ class ProfileRepository extends ChangeNotifier {
         loading = false;
 
       }else{
-        print("something happened");
+        if (kDebugMode) {
+          print("something happened");
+        }
         loading = false;
 
       }
@@ -269,6 +277,7 @@ class ProfileRepository extends ChangeNotifier {
   id
   lastName
   profilePicUrl
+  profilePicKey
    userType
     username
   updatedOn
