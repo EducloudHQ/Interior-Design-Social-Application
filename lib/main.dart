@@ -15,8 +15,6 @@ import 'package:go_router/go_router.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-
-import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 
 import 'comments/comments_repository.dart';
@@ -104,7 +102,7 @@ class _MyAppState extends State<App> {
         fontFamily: 'Syne-Regular',
       ),
       themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark(),
+      darkTheme: ThemeData.light(),
 
       //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,

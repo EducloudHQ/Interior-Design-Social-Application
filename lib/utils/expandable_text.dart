@@ -68,7 +68,7 @@ class ExpandableTextState extends State<ExpandableText> {
                 ? widget.text.substring(0, endIndex)
                 : widget.text,
             style: const TextStyle(
-            //  color: widgetColor,
+             // color: Colors.black,
             ),
             children: <TextSpan>[link],
           );

@@ -151,7 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                           Text(' '),
                                           Text(
-                                            'Followers',
+                                            'Designs',
                                             style: TextStyle(),
                                           )
                                         ],
