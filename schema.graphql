@@ -44,7 +44,7 @@ type Message @aws_cognito_user_pools {
 
 type Mutation {
   createComment(commentInput: CreateCommentInput!): Comment! @aws_cognito_user_pools
-  createPost(postInput: CreatePostInput!): Post! @aws_cognito_user_pools
+  createPost(postInput: CreatePostInput!): Post! @aws_api_key @aws_cognito_user_pools
   createUserAccount(userInput: CreateUserInput!): User! @aws_cognito_user_pools
   deletePost(postId: String!, userId: String!): Boolean! @aws_cognito_user_pools
   followUser(followerId: String!, followingId: String!): Follow! @aws_cognito_user_pools
@@ -78,13 +78,13 @@ type PostsResult @aws_api_key @aws_cognito_user_pools {
 }
 
 type Query {
-  generatePostImage(prompt: String!): String! @aws_cognito_user_pools
+  generatePostImages(prompt: String!): String! @aws_cognito_user_pools
   getAllPosts(limit: Int!, nextToken: String): PostsResult! @aws_api_key @aws_cognito_user_pools
-  getAllUserFollowers(limit: Int!, nextToken: String, userId: String): FollowerResult! @aws_cognito_user_pools
   getCommentsPerPost(limit: Int!, nextToken: String, postId: String!): PostCommentsResult! @aws_cognito_user_pools
   getPost(id: String!): Post! @aws_api_key @aws_cognito_user_pools
   getSingleComment(commentId: String!): Comment! @aws_cognito_user_pools
   getUserAccount(id: String!): User! @aws_cognito_user_pools
+  getUserFollowers(limit: Int!, nextToken: String, userId: String): FollowerResult! @aws_cognito_user_pools
 }
 
 type Subscription {
@@ -137,7 +137,7 @@ input CreateCommentInput @aws_cognito_user_pools {
   userId: String!
 }
 
-input CreatePostInput @aws_cognito_user_pools {
+input CreatePostInput @aws_api_key @aws_cognito_user_pools {
   content: String!
   imageKeys: [String!]!
   imageUrls: [String!]!

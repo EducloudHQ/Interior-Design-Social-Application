@@ -180,8 +180,8 @@ class Comment {
       id = json['id'],
       _postId = json['postId'],
       _updatedOn = json['updatedOn'] != null ? amplify_core.TemporalTimestamp.fromSeconds(json['updatedOn']) : null,
-      _user = json['user']?['serializedData'] != null
-        ? User.fromJson(new Map<String, dynamic>.from(json['user']['serializedData']))
+      _user = json['user'] != null
+        ? User.fromJson(new Map<String, dynamic>.from(json['user']))
         : null,
       _userId = json['userId'];
   

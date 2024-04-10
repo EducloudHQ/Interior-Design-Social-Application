@@ -26,13 +26,13 @@ class CommentItem  extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
 
                   margin: EdgeInsets.only(left: 15),
                   decoration: BoxDecoration(
-                      border: Border.all(width: 2,color: Theme.of(context).colorScheme.secondary),
+                      border: Border.all(width: 2,color: Color(0xFFFF5ACD)),
                       borderRadius: BorderRadius.circular(100)
                   ),
                   child: ClipOval(
@@ -71,14 +71,14 @@ class CommentItem  extends StatelessWidget {
 
                   padding: EdgeInsets.only(left: 5),
                   child:
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(commentItem.user!.firstName,style: const TextStyle()),
                       Container(
-                          padding: const EdgeInsets.only(left: 5),
-                          child: Text('@${commentItem.user!.username}',style:  TextStyle(fontSize: 12,color:Colors.white,fontWeight: FontWeight.bold))),
+
+                          child: Text('@${commentItem.user!.username}',style:  TextStyle(fontSize: 12,color:Color(0xFFFF5ACD),fontWeight: FontWeight.bold))),
                     ],
                   ),
 
@@ -101,7 +101,7 @@ class CommentItem  extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(commentItem.createdOn.toSeconds() * 1000)),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
+                  Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(int.parse(commentItem.createdOn.toString()))),style: const TextStyle(color: Colors.grey,fontSize: 12,),)
 
                 ],
               ),

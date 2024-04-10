@@ -1,16 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:amplify_flutter/amplify_flutter.dart';
-
-import 'package:flutter/foundation.dart';
-
 import '../models/Comment.dart';
 import '../models/PostCommentsResult.dart';
 
@@ -109,6 +101,8 @@ List<Comment> _comments = [];
   Future<void> getAllComments(String postId,int limit,String nextToken) async {
     loading = true;
 
+    print("post id is $postId");
+
     String graphQLDocument = '''
   
 query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
@@ -171,7 +165,7 @@ query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
     PostCommentsResult postCommentsResults = PostCommentsResult.fromJson(responseJson['getCommentsPerPost']);
 
     if (kDebugMode) {
-      print("returning ${postCommentsResults}");
+      print("returning $postCommentsResults");
     }
     comments = postCommentsResults.items;
 

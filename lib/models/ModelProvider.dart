@@ -46,7 +46,7 @@ export 'User.dart';
 
 class ModelProvider implements amplify_core.ModelProviderInterface {
   @override
-  String version = "395fbe001d1e3095c705f7df36cac599";
+  String version = "0372d7eef0aba214e30ec11a9cba7c98";
   @override
   List<amplify_core.ModelSchema> modelSchemas = [];
   @override
@@ -60,8 +60,6 @@ class ModelProvider implements amplify_core.ModelProviderInterface {
     // TODO: implement getModelTypeByModelName
     throw UnimplementedError();
   }
-
-
 }
 
 

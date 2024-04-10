@@ -58,7 +58,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
 
 ''';
-
+  
     commentStream= Amplify.API.subscribe(
       GraphQLRequest<String>(
         document: graphQLDocument,
@@ -73,10 +73,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
     try {
       await for (var event in commentStream) {
         print("comment stream $event");
-        Comment commentItem =  Comment.fromJson(json.decode(event.data!));
+       Map jsonComment = json.decode(event.data!);
+      Comment commentItem = Comment.fromJson(jsonComment['createdComment']);
 
         if (kDebugMode) {
-          print("event message data is ${commentItem.comment}");
+          print("event message data is ${event.data}");
         }
         if (commentsRepo.comments.isNotEmpty) {
           if (commentsRepo.comments[0].id != commentItem.id) {
@@ -119,7 +120,9 @@ void initState(){
   }
 @override
 void dispose(){
+    commentStream.drain();
   super.dispose();
+
 
 }
 
@@ -422,7 +425,7 @@ void dispose(){
                 CommentItem(commentItem:commentsRepo.comments[index]);
                   }
 
-                },itemCount:commentsRepo.comments.length ,),
+                },itemCount:commentsRepo.comments.length+1 ,),
             ),
             Container(
               padding: EdgeInsets.only(bottom: 30),
