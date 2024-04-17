@@ -218,8 +218,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 body: _selectedTabIndex == 3 ?
-                ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
-                child: ProfileScreen(email: email,),) :
+                    MultiProvider(providers: [
+                      ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
+                      ), ChangeNotifierProvider(create: (context) => PostRepository.instance(),
+                      )
+                    ],child:ProfileScreen(email: email,) ,):
+
 
                 postRepo.postList.isEmpty ? Container(
 
