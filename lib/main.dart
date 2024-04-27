@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:momento/momento.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -21,13 +21,11 @@ import 'comments/comments_repository.dart';
 import 'comments/comments_screen.dart';
 import 'models/Post.dart';
 
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
-void main() {
-
-  AmplifyLogger().logLevel = LogLevel.verbose;
-
+Future main() async{
+  await dotenv.load(fileName: ".env");
   runApp(
 
       ChangeNotifierProvider(
@@ -52,6 +50,7 @@ class _MyAppState extends State<App> {
   bool _isConfigured = false;
 
   Future<void> _configureAmplify() async {
+
     try {
       await Amplify.addPlugins([
         AmplifyAPI(),

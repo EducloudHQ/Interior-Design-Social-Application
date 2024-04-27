@@ -49,7 +49,8 @@ dev_dependencies:
   amplify_api: ^1.6.2
   amplify_auth_cognito: ^1.6.1
   amplify_storage_s3: ^1.6.1
-  amplify_datastore: ^1.6.0
+  momento: ^0.1.0
+  flutter_dotenv: ^5.0.2
   shimmer: ^3.0.0
   provider: ^6.0.1
   timeago: ^3.1.0
@@ -79,6 +80,7 @@ flutter:
   assets:
    - assets/
    - assets/avatars/
+   - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:momento/src/errors/errors.dart';
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 
@@ -12,14 +14,18 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:aws_common/vm.dart';
 
 import '../models/User.dart';
+import 'package:momento/momento.dart';
 
+import '../screens/Config.dart';
 
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 class ProfileRepository extends ChangeNotifier {
-
-  ProfileRepository.instance();
-
-
+  final CacheClient _cacheClient;
+ //final momento_api_key = dotenv.env['MOMENTO_API_KEY'];
+  ProfileRepository.instance(): _cacheClient = CacheClient(
+      CredentialProvider.fromString(dotenv.env['MOMENTO_API_KEY']!),
+      CacheClientConfigurations.latest(),
+       Duration(seconds: 30));
 
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -29,7 +35,71 @@ class ProfileRepository extends ChangeNotifier {
 
 
 
+  Map _userProfileCache = {};
 
+
+  Map get userProfileCache => _userProfileCache;
+  
+  Future<void> setUserProfileCache(String userId,List<int> userBytes) async{
+
+
+    final SetResponse setResp = await _cacheClient.setBytes(Config.USER_PROFILE_CACHE, userId, userBytes);
+
+    if(setResp is CreateCacheSuccess){
+      print("successfully cached user successful!");
+    }else if(setResp is SetError){
+      print("Set error: ${setResp.errorCode} ${setResp.message}");
+    }
+
+  }
+
+ Future<User?> getUserProfileCache(String userId) async{
+
+    final GetResponse getResp = await _cacheClient.get(Config.USER_PROFILE_CACHE, userId);
+    if(getResp is GetHit){
+      List<int> bytes = getResp.binaryValue;
+
+      String jsonString = utf8.decode(bytes);
+
+      final dynamic responseJson1 = json.decode(jsonString);
+      final responseJson2 = json.decode(responseJson1);
+
+      print("this response json is ${responseJson2['getUserAccount']}");
+      User userModel = User.fromJson(responseJson2['getUserAccount']);
+      return userModel;
+    }else if(getResp is GetHit){
+
+      print("Value was not found in ${Config.USER_PROFILE_CACHE}");
+      return null;
+    }else if(getResp is GetError){
+    print("Got an error: ${getResp.errorCode} ${getResp.message}");
+    //throw getResp.errorCode;
+      return null;
+    }
+    return null;
+
+  }
+
+  Future<void> createCache(String userId,List<int> userBytes) async{
+    final CreateCacheResponse createResp = await _cacheClient.createCache(Config.USER_PROFILE_CACHE);
+    if(createResp is CreateCacheSuccess){
+      setUserProfileCache(userId, userBytes);
+    }else if(createResp is CreateCacheAlreadyExists)
+      {
+        setUserProfileCache(userId, userBytes);
+      }else if(createResp is CreateCacheError)
+        {
+          print(
+              "Cache creation error: ${createResp.errorCode} ${createResp.message}");
+        }
+
+
+  }
+
+  set userProfileCache(Map value) {
+  
+    _userProfileCache = value;
+  }
 
   bool _loading = false;
   String _userId='';
@@ -265,8 +335,18 @@ class ProfileRepository extends ChangeNotifier {
 
 
   Future<User> getUserAccount(String id) async {
+
+
     loading = true;
-    String graphQLDocument = '''
+
+   User? user= await getUserProfileCache(id);
+   if(user != null){
+     print("this is the first");
+     return user;
+   }else {
+
+   print("this is the second ");
+     String graphQLDocument = '''
     
       query getUserAccount(\$id:String!) {
   getUserAccount(id:\$id ) {
@@ -285,29 +365,39 @@ class ProfileRepository extends ChangeNotifier {
 }
     ''';
 
-    var operation = Amplify.API.query(
-        request: GraphQLRequest<String>(
-          document: graphQLDocument,
-          apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
-          variables: {
-            "id": id,
+     var operation = Amplify.API.query(
+         request: GraphQLRequest<String>(
+           document: graphQLDocument,
+           apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+           variables: {
+             "id": id,
 
-          },
-        ));
+           },
+         ));
 
-    var response = await operation.response;
+     var response = await operation.response;
 
-    final responseJson = json.decode(response.data!);
-    loading = false;
+     final responseJson = json.decode(response.data!);
 
-    print("returning ${responseJson['getUserAccount']}");
+     loading = false;
 
-    User userModel = User.fromJson(responseJson['getUserAccount']);
-    if (kDebugMode) {
-      print("returning ${userModel.email}");
-    }
+     print("returning ${responseJson['getUserAccount']}");
 
-    return userModel;
+     User userModel = User.fromJson(responseJson['getUserAccount']);
+     if (kDebugMode) {
+       print("returning ${userModel.email}");
+     }
+
+     //save cache
+     List<int> bytes = utf8.encode(json.encode(response.data!));
+
+     createCache(userModel.id, bytes);
+
+
+     return userModel;
+
+
+   }
   }
 
 
