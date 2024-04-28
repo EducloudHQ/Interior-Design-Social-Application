@@ -27,7 +27,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
 Future main() async{
   await dotenv.load(fileName: ".env");
-  timeDilation = 5.0;
+  //timeDilation = 5.0;
   runApp(
 
       ChangeNotifierProvider(
