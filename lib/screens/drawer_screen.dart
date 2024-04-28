@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import '../models/User.dart';
+import '../repositories/profile_repository.dart';
+import 'Config.dart';
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({super.key});
 
@@ -31,60 +35,71 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
                   )
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(1000),
-                    child:  CachedNetworkImage(
-                      width: 80,
-                      height: 80,
-                      imageUrl:" profileModel.profilePicUrl",
-                      placeholder: (context, url) => CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => ClipRRect(
-                        borderRadius: BorderRadius.circular(1000),
-                        child: Image.asset("assets/avatars/Image-71.jpg",width: 60,height: 60,fit: BoxFit.cover,),
-                      ),
-                    ),
+              child: FutureProvider<User?>(
+              create: (_) => ProfileRepository.instance()
+        .getUserAccount("2euHfh8r1WwhhrjmDiO7UJRRRyc"),
+    initialData: null,
+    catchError: (context, error) {
+    throw error!;
+    },
+    child: Consumer(
+    builder: (_, User? userModel, child) {
+    return userModel == null ? Container():Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(1000),
+          child:  CachedNetworkImage(
+            width: 80,
+            height: 80,
+            imageUrl:"${Config.CLOUD_FRONT_DISTRO}${userModel.profilePicKey}",
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => ClipRRect(
+              borderRadius: BorderRadius.circular(1000),
+              child: Image.asset("assets/avatars/Image-71.jpg",width: 60,height: 60,fit: BoxFit.cover,),
+            ),
+          ),
 
+        ),
+        Container(
+
+          child:  Text( "${userModel.lastName} ${userModel.firstName}" ,
+            style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+        ),
+        Expanded(
+          child: Container(
+
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  child: const Row(
+                    children: [
+                      Text('170',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                      Text(' '),
+                      Text('Followers',style: TextStyle(fontSize: 12),)
+                    ],
                   ),
-                  Container(
-
-                    child: const Text(" Rosius Ndimofor" ,
-                      style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                ),
+                Container(
+                  child: const Row(
+                    children: [
+                      Text('6',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
+                      Text(' '),
+                      Text('Followings',style: TextStyle(fontSize: 12))
+                    ],
                   ),
-                  Expanded(
-                    child: Container(
+                ),
 
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            child: const Row(
-                              children: [
-                                Text('170',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
-                                Text(' '),
-                                Text('Followers',style: TextStyle(fontSize: 12),)
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: const Row(
-                              children: [
-                                Text('6',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
-                                Text(' '),
-                                Text('Followings',style: TextStyle(fontSize: 12))
-                              ],
-                            ),
-                          ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      );}))
 
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
+
           ),
           ListTile(
             title: const Text('Home'),

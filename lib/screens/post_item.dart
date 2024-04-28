@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:social_media/screens/view_image_screen.dart';
 import 'package:social_media/utils/validations.dart';
 import '../models/Post.dart';
 import 'package:provider/provider.dart';
@@ -34,27 +35,24 @@ class PostItem extends StatelessWidget {
                             color: const Color(0xFFFF5ACD),
                           ),
                           borderRadius: BorderRadius.circular(100)),
-                      child:
-                        ClipRRect(
-                              borderRadius: BorderRadius.circular(30),
-                              child: CachedNetworkImage(
-                                  width: 40.0,
-                                  height: 40.0,
-                                  fit: BoxFit.cover,
-                                  imageUrl: "${Config.CLOUD_FRONT_DISTRO}${postItem.user.profilePicKey}",
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(),
-                                  errorWidget: (context, url, ex) =>
-                                      CircleAvatar(
-                                        backgroundColor: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        child: const Icon(
-                                          Icons.account_circle,
-                                        ),
-                                      )),
-                            )),
-
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: CachedNetworkImage(
+                            width: 40.0,
+                            height: 40.0,
+                            fit: BoxFit.cover,
+                            imageUrl:
+                                "${Config.CLOUD_FRONT_DISTRO}${postItem.user.profilePicKey}",
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
+                            errorWidget: (context, url, ex) => CircleAvatar(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.secondary,
+                                  child: const Icon(
+                                    Icons.account_circle,
+                                  ),
+                                )),
+                      )),
                   Container(
                     margin: const EdgeInsets.only(left: 10),
                     child: Row(
@@ -90,28 +88,43 @@ class PostItem extends StatelessWidget {
               child: Row(
                 children: [
                   Flexible(
-                    flex: 1,
-                    child: Container(
-                        margin: EdgeInsets.only(right: 5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: CachedNetworkImage(
-                            width: size.width / 2,
-                            height: size.height / 3.5,
-                            fit: BoxFit.cover,
-                            imageUrl: "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[0]}",
-                            placeholder: (context, url) =>
-                                CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                ClipRRect(
+                      flex: 1,
+                      child: Hero(
+                          tag: postItem.imageKeys[0],
+                          child: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ViewImageScreen(
+                                            postItem.imageKeys[0])));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(right: 5),
+                                child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Icon(
-                                    Icons.image,
+                                  child: CachedNetworkImage(
+                                    width: size.width / 2,
+                                    height: size.height / 3.5,
+                                    fit: BoxFit.cover,
+                                    imageUrl:
+                                        "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[0]}",
+                                    placeholder: (context, url) =>
+                                        CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Icon(
+                                        Icons.image,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                          ),
-                        ),
-                    )),
+                              ),
+                            ),
+                          ))),
                   Flexible(
                     flex: 1,
                     child: Container(
@@ -119,47 +132,78 @@ class PostItem extends StatelessWidget {
                       height: size.height / 3.5,
                       child: Column(
                         children: [
-                          Container(
-                              margin: EdgeInsets.only(bottom: 5),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  width: size.width / 2,
-                                  height: size.height / 7.5,
-                                  fit: BoxFit.cover,
-                                  imageUrl: "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[1]}",
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) =>
-                                      ClipRRect(
-                                        borderRadius:
-                                        BorderRadius.circular(1000),
-                                        child: Icon(
-                                          Icons.image,
-                                          size: 50,
+                          Hero(
+                              tag: postItem.imageKeys[1],
+                              child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewImageScreen(postItem
+                                                        .imageKeys[1])));
+                                      },
+                                      child: Container(
+                                          margin: EdgeInsets.only(bottom: 5),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              width: size.width / 2,
+                                              height: size.height / 7.5,
+                                              fit: BoxFit.cover,
+                                              imageUrl:
+                                                  "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[1]}",
+                                              placeholder: (context, url) =>
+                                                  CircularProgressIndicator(),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(1000),
+                                                child: Icon(
+                                                  Icons.image,
+                                                  size: 50,
+                                                ),
+                                              ),
+                                            ),
+                                          ))))),
+                          Hero(
+                              tag: postItem.imageKeys[2],
+                              child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ViewImageScreen(postItem
+                                                        .imageKeys[2])));
+                                      },
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: CachedNetworkImage(
+                                          width: size.width / 2,
+                                          height: size.height / 8.0,
+                                          fit: BoxFit.cover,
+                                          imageUrl:
+                                              "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[2]}",
+                                          placeholder: (context, url) =>
+                                              CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(1000),
+                                            child: Icon(
+                                              Icons.image,
+                                              size: 50,
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                ),
-                              )),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        width: size.width / 2,
-                        height: size.height / 8.4,
-                        fit: BoxFit.cover,
-                        imageUrl: "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[2]}",
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, url, error) =>
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(1000),
-                              child: Icon(
-                                Icons.image,
-                                size: 50,
-                              ),
-                            ),
-                      ),
-                    )
+                                      ))))
                         ],
                       ),
                     ),

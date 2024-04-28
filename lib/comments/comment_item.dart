@@ -14,7 +14,7 @@ class CommentItem  extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement buildCommentItem
+
     return Container(
 
       margin: const EdgeInsets.only(left: 40,right: 10),
