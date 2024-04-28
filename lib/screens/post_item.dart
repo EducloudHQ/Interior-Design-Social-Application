@@ -187,7 +187,7 @@ class PostItem extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(10),
                                         child: CachedNetworkImage(
                                           width: size.width / 2,
-                                          height: size.height / 8.0,
+                                          height: size.height / 8.4,
                                           fit: BoxFit.cover,
                                           imageUrl:
                                               "${Config.CLOUD_FRONT_DISTRO}${postItem.imageKeys[2]}",
