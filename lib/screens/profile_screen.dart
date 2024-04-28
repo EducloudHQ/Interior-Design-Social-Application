@@ -12,6 +12,7 @@ import 'package:social_media/screens/shimmers/shimmer_profile_screen.dart';
 
 import '../models/User.dart';
 import '../repositories/post_respository.dart';
+import 'Config.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({required this.email, super.key});
@@ -69,24 +70,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        FutureProvider<String?>.value(
-                                            value: profileRepository
-                                                .getProfilePicDownloadUrl(
-                                                    key: userModel
-                                                        .profilePicKey),
-                                            initialData: '',
-                                            child: Consumer(builder:
-                                                (BuildContext context,
-                                                    String? profilePicUrl,
-                                                    child) {
-                                              return ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: CachedNetworkImage(
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(30),
+                                       child:
+                                       CachedNetworkImage(
                                                   width: 60,
                                                   height: 60,
                                                   fit: BoxFit.cover,
-                                                  imageUrl: profilePicUrl!,
+                                                  imageUrl: "${Config.CLOUD_FRONT_DISTRO}${userModel.profilePicKey}",
                                                   placeholder: (context, url) =>
                                                       CircularProgressIndicator(),
                                                   errorWidget:
@@ -102,9 +93,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            })),
+                                                )),
+
+
                                         Expanded(
                                           child: Container(
                                             padding: EdgeInsets.only(left: 10),
