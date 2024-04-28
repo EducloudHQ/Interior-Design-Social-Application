@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:momento/momento.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -26,6 +27,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
 Future main() async{
   await dotenv.load(fileName: ".env");
+  timeDilation = 5.0;
   runApp(
 
       ChangeNotifierProvider(
