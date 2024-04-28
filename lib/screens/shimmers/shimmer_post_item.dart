@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 
-import '../models/Post.dart';
+import '../../models/Post.dart';
 
 import 'package:timeago/timeago.dart' as timeago;
 

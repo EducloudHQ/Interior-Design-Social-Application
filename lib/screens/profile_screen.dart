@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media/repositories/profile_repository.dart';
 import 'package:social_media/screens/post_item.dart';
+import 'package:social_media/screens/shimmers/shimmer_profile_screen.dart';
 
 import '../models/User.dart';
 import '../repositories/post_respository.dart';
@@ -54,11 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Consumer(
                     builder: (_, User? userModel, child) {
                       return userModel == null
-                          ? Container(
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            )
+                          ? ShimmerProfileScreen()
                           : SingleChildScrollView(
                               child: Container(
                                 padding: EdgeInsets.symmetric(horizontal: 20),

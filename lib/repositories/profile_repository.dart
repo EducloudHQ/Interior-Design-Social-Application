@@ -19,95 +19,82 @@ import 'package:momento/momento.dart';
 import '../screens/Config.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ProfileRepository extends ChangeNotifier {
   final CacheClient _cacheClient;
- //final momento_api_key = dotenv.env['MOMENTO_API_KEY'];
-  ProfileRepository.instance(): _cacheClient = CacheClient(
-      CredentialProvider.fromString(dotenv.env['MOMENTO_API_KEY']!),
-      CacheClientConfigurations.latest(),
-       Duration(seconds: 30));
+
+  ProfileRepository.instance()
+      : _cacheClient = CacheClient(
+            CredentialProvider.fromString(dotenv.env['MOMENTO_API_KEY']!),
+            CacheClientConfigurations.latest(),
+            Duration(seconds: 30));
 
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final aboutController = TextEditingController();
 
-
-
-
   Map _userProfileCache = {};
 
-
   Map get userProfileCache => _userProfileCache;
-  
-  Future<void> setUserProfileCache(String userId,List<int> userBytes) async{
 
+  Future<void> setUserProfileCache(String userId, List<int> userBytes) async {
+    final SetResponse setResp = await _cacheClient.setBytes(
+        Config.USER_PROFILE_CACHE, userId, userBytes);
 
-    final SetResponse setResp = await _cacheClient.setBytes(Config.USER_PROFILE_CACHE, userId, userBytes);
-
-    if(setResp is CreateCacheSuccess){
+    if (setResp is CreateCacheSuccess) {
       print("successfully cached user successful!");
-    }else if(setResp is SetError){
+    } else if (setResp is SetError) {
       print("Set error: ${setResp.errorCode} ${setResp.message}");
     }
-
   }
 
- Future<User?> getUserProfileCache(String userId) async{
-
-    final GetResponse getResp = await _cacheClient.get(Config.USER_PROFILE_CACHE, userId);
-    if(getResp is GetHit){
+  Future<User?> getUserProfileCache(String userId) async {
+    final GetResponse getResp =
+        await _cacheClient.get(Config.USER_PROFILE_CACHE, userId);
+    if (getResp is GetHit) {
       List<int> bytes = getResp.binaryValue;
 
       String jsonString = utf8.decode(bytes);
 
-      final dynamic responseJson1 = json.decode(jsonString);
-      final responseJson2 = json.decode(responseJson1);
+      final responseJson2 = json.decode(json.decode(jsonString));
 
       print("this response json is ${responseJson2['getUserAccount']}");
       User userModel = User.fromJson(responseJson2['getUserAccount']);
       return userModel;
-    }else if(getResp is GetHit){
-
+    } else if (getResp is GetHit) {
       print("Value was not found in ${Config.USER_PROFILE_CACHE}");
       return null;
-    }else if(getResp is GetError){
-    print("Got an error: ${getResp.errorCode} ${getResp.message}");
-    //throw getResp.errorCode;
+    } else if (getResp is GetError) {
+      print("Got an error: ${getResp.errorCode} ${getResp.message}");
+      //throw getResp.errorCode;
       return null;
     }
     return null;
-
   }
 
-  Future<void> createCache(String userId,List<int> userBytes) async{
-    final CreateCacheResponse createResp = await _cacheClient.createCache(Config.USER_PROFILE_CACHE);
-    if(createResp is CreateCacheSuccess){
+  Future<void> createCache(String userId, List<int> userBytes) async {
+    final CreateCacheResponse createResp =
+        await _cacheClient.createCache(Config.USER_PROFILE_CACHE);
+    if (createResp is CreateCacheSuccess) {
       setUserProfileCache(userId, userBytes);
-    }else if(createResp is CreateCacheAlreadyExists)
-      {
-        setUserProfileCache(userId, userBytes);
-      }else if(createResp is CreateCacheError)
-        {
-          print(
-              "Cache creation error: ${createResp.errorCode} ${createResp.message}");
-        }
-
-
+    } else if (createResp is CreateCacheAlreadyExists) {
+      setUserProfileCache(userId, userBytes);
+    } else if (createResp is CreateCacheError) {
+      print(
+          "Cache creation error: ${createResp.errorCode} ${createResp.message}");
+    }
   }
 
   set userProfileCache(Map value) {
-  
     _userProfileCache = value;
   }
 
   bool _loading = false;
-  String _userId='';
-  String _username='';
+  String _userId = '';
+  String _username = '';
 
   bool _logout = false;
-
-
 
   String get username => _username;
 
@@ -115,6 +102,7 @@ class ProfileRepository extends ChangeNotifier {
     _username = value;
     notifyListeners();
   }
+
   bool get logout => _logout;
 
   set logout(bool value) {
@@ -123,8 +111,7 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   String _profilePic = "";
-  String _profilePicKey ="";
-
+  String _profilePicKey = "";
 
   String get profilePicKey => _profilePicKey;
 
@@ -140,7 +127,6 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-
   bool get loading => _loading;
 
   set loading(bool value) {
@@ -148,31 +134,25 @@ class ProfileRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-
-
-
-  void showInSnackBar(BuildContext context,String value) {
-    ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+  void showInSnackBar(BuildContext context, String value) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
         value,
         textAlign: TextAlign.center,
-        style: const TextStyle( fontSize: 20.0),
+        style: const TextStyle(fontSize: 20.0),
       ),
       backgroundColor: Theme.of(context).colorScheme.secondary,
     ));
   }
 
-
-
   @override
-  void dispose() {
+  void dispose() async {
     // TODO: implement dispose
 
     usernameController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();
-
-
+    await _cacheClient.close();
 
     super.dispose();
   }
@@ -198,23 +178,19 @@ class ProfileRepository extends ChangeNotifier {
     }
   }
 
-
-  Future<void> uploadImage(String imageFilePath,String targetPath) async {
-    var uuid =  const Uuid().v1();
+  Future<void> uploadImage(String imageFilePath, String targetPath) async {
+    var uuid = const Uuid().v1();
     final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
     try {
-      final uploadResult =  await Amplify.Storage.uploadFile(
-          key: '$uuid.png',
-          localFile: awsFile,
-
+      final uploadResult = await Amplify.Storage.uploadFile(
+        key: '$uuid.png',
+        localFile: awsFile,
       ).result;
 
-
       safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
-      profilePicKey  = uploadResult.uploadedItem.key;
+      profilePicKey = uploadResult.uploadedItem.key;
 
-      final resultDownload =
-      await getProfilePicDownloadUrl(key: profilePicKey);
+      final resultDownload = await getProfilePicDownloadUrl(key: profilePicKey);
       if (kDebugMode) {
         print(resultDownload);
       }
@@ -223,34 +199,30 @@ class ProfileRepository extends ChangeNotifier {
       if (kDebugMode) {
         print("the key is $profilePicKey");
       }
-
-
     } on StorageException catch (e) {
       safePrint("error message is${e.message}");
-      loading= false;
+      loading = false;
       safePrint('Error uploading file: ${e.message}');
       rethrow;
     }
   }
 
-  Future<bool>signOut() async{
+  Future<bool> signOut() async {
     try {
       Amplify.Auth.signOut();
       return logout = true;
     } on AuthException catch (e) {
-
       print(e.message);
-      return logout  = false;
+      return logout = false;
     }
   }
 
-
-  Future<AuthUser>retrieveCurrentUser() async{
+  Future<AuthUser> retrieveCurrentUser() async {
     AuthUser authUser = await Amplify.Auth.getCurrentUser();
     return authUser;
   }
 
-  Future<void> saveUserDetails(String email) async{
+  Future<void> saveUserDetails(String email) async {
     loading = true;
 
     try {
@@ -286,67 +258,56 @@ class ProfileRepository extends ChangeNotifier {
     
     ''';
 
-
       var operation = Amplify.API.mutate(
-
-
           request: GraphQLRequest<String>(
-            document: graphQLDocument, apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
-            variables: {
-              "username": usernameController.text,
-              "firstName": firstNameController.text,
-              "lastName": lastNameController.text,
-              "about":aboutController.text,
-              "email": email,
-              "userType": "ADMIN",
-              "profilePicUrl": profilePic,
-              "profilePicKey":profilePicKey
-            },));
-
+        document: graphQLDocument,
+        apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+        variables: {
+          "username": usernameController.text,
+          "firstName": firstNameController.text,
+          "lastName": lastNameController.text,
+          "about": aboutController.text,
+          "email": email,
+          "userType": "ADMIN",
+          "profilePicUrl": profilePic,
+          "profilePicKey": profilePicKey
+        },
+      ));
 
       var response = await operation.response;
       if (kDebugMode) {
         print("response operation $response");
       }
-      if(response.data != null){
+      if (response.data != null) {
         final responseJson = json.decode(response.data!);
         if (kDebugMode) {
           print("here${responseJson['createUserAccount']}");
         }
         loading = false;
-
-      }else{
+      } else {
         if (kDebugMode) {
           print("something happened");
         }
         loading = false;
-
       }
-
-
     } catch (ex) {
       if (kDebugMode) {
         print(ex.toString());
       }
       loading = false;
-
     }
   }
 
-
   Future<User> getUserAccount(String id) async {
-
-
     loading = true;
 
-   User? user= await getUserProfileCache(id);
-   if(user != null){
-     print("this is the first");
-     return user;
-   }else {
-
-   print("this is the second ");
-     String graphQLDocument = '''
+    User? user = await getUserProfileCache(id);
+    if (user != null) {
+      print("this is the first");
+      return user;
+    } else {
+      print("this is the second ");
+      String graphQLDocument = '''
     
       query getUserAccount(\$id:String!) {
   getUserAccount(id:\$id ) {
@@ -365,44 +326,35 @@ class ProfileRepository extends ChangeNotifier {
 }
     ''';
 
-     var operation = Amplify.API.query(
-         request: GraphQLRequest<String>(
-           document: graphQLDocument,
-           apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
-           variables: {
-             "id": id,
+      var operation = Amplify.API.query(
+          request: GraphQLRequest<String>(
+        document: graphQLDocument,
+        apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+        variables: {
+          "id": id,
+        },
+      ));
 
-           },
-         ));
+      var response = await operation.response;
 
-     var response = await operation.response;
+      final responseJson = json.decode(response.data!);
 
-     final responseJson = json.decode(response.data!);
+      loading = false;
 
-     loading = false;
+      print("returning ${responseJson['getUserAccount']}");
 
-     print("returning ${responseJson['getUserAccount']}");
+      User userModel = User.fromJson(responseJson['getUserAccount']);
+      if (kDebugMode) {
+        print("returning ${userModel.email}");
+      }
 
-     User userModel = User.fromJson(responseJson['getUserAccount']);
-     if (kDebugMode) {
-       print("returning ${userModel.email}");
-     }
+      //save cache
+      List<int> bytes = utf8.encode(json.encode(response.data!));
 
-     //save cache
-     List<int> bytes = utf8.encode(json.encode(response.data!));
+      //create cache and set key value pair
+      createCache(userModel.id, bytes);
 
-     createCache(userModel.id, bytes);
-
-
-     return userModel;
-
-
-   }
+      return userModel;
+    }
   }
-
-
-
-
-
-
 }

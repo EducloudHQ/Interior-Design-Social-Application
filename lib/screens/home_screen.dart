@@ -12,7 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_media/repositories/profile_repository.dart';
 import 'package:social_media/screens/post_item.dart';
 import 'package:social_media/screens/profile_screen.dart';
-import 'package:social_media/screens/shimmer_post_item.dart';
+import 'package:social_media/screens/shimmers/shimmer_post_item.dart';
 import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import '../repositories/post_respository.dart';
