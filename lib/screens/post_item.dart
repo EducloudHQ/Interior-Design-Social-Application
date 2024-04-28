@@ -3,7 +3,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:social_media/repositories/post_respository.dart';
 import 'package:social_media/utils/validations.dart';
 import '../models/Post.dart';
 import 'package:provider/provider.dart';
