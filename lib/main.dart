@@ -110,7 +110,7 @@ class _MyAppState extends State<App> {
      routerConfig: GoRouter(
          routes: [
            GoRoute(
-             path: '/:userId',
+             path: '/',
              builder: (BuildContext context, GoRouterState state) =>
                  MultiProvider(
                      providers: [
@@ -120,7 +120,7 @@ class _MyAppState extends State<App> {
 
                        ),
                      ],
-                     child:_isConfigured ?  HomeScreen(userId:state.pathParameters['userId']!) : Container(
+                     child:_isConfigured ?  HomeScreen() : Container(
                        child: const Center(
                          child: CircularProgressIndicator(),
                        ),

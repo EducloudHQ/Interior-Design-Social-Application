@@ -5,7 +5,8 @@ import '../models/User.dart';
 import '../repositories/profile_repository.dart';
 import 'Config.dart';
 class DrawerScreen extends StatefulWidget {
-  const DrawerScreen({super.key});
+  const DrawerScreen({super.key,required this.userId});
+  final String userId;
 
   @override
   State<DrawerScreen> createState() => _DrawerScreenState();
@@ -37,7 +38,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
               child: FutureProvider<User?>(
               create: (_) => ProfileRepository.instance()
-        .getUserAccount("2frzJfnwk5CSWfMNIPZRZY4BUe9"),
+        .getUserAccount(widget.userId),
     initialData: null,
     catchError: (context, error) {
     throw error!;

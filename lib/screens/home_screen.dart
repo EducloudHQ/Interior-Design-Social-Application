@@ -21,14 +21,14 @@ import '../utils/FABBottomAppBarItem.dart';
 import '../utils/gradient_text.dart';
 import 'drawer_screen.dart';
 class HomeScreen extends StatefulWidget {
-  HomeScreen({required this.userId});
-  final String userId;
+
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String? userId;
+  String userId = "2frzJfnwk5CSWfMNIPZRZY4BUe9";
   int count = 0;
   late final Stream<GraphQLResponse<String>> getPostStream;
   Future<void> signOutCurrentUser() async {
@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
             : Scaffold(
 
 
-          drawer: DrawerScreen(),
+          drawer: DrawerScreen(userId: userId,),
                 appBar:
 
                 AppBar(
@@ -224,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
                       ), ChangeNotifierProvider(create: (context) => PostRepository.instance(),
                       )
-                    ],child:ProfileScreen(email: email,userId: widget.userId,) ,):
+                    ],child:ProfileScreen(email: email,userId: userId,) ,):
 
 
                 postRepo.postList.isEmpty ? Container(
@@ -247,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )),
                 ) :
                 ListView.builder(itemBuilder: (context,index){
-                  return PostItem(postRepo.postList[index],widget.userId);
+                  return PostItem(postRepo.postList[index],userId);
                 },itemCount: postRepo.postList.length,),
 
 
@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
               FABBottomAppBarItem(iconName:'assets/search.svg', text: 'search'),
               FABBottomAppBarItem(iconName:'assets/notification.svg', text: 'notification'),
               FABBottomAppBarItem(iconName:'assets/profile.svg', text: 'profile'),
-            ], email: email,
+            ], userId: userId,
           ),
 
               );

@@ -14,7 +14,7 @@ class FABBottomAppBarItem {
 class FABBottomAppBar extends StatefulWidget {
   FABBottomAppBar({super.key, 
     required this.items,
-    required this.email,
+    required this.userId,
     required  this.centerItemText,
     this.height = 60.0,
     this.iconSize = 24.0,
@@ -30,7 +30,7 @@ class FABBottomAppBar extends StatefulWidget {
   final String centerItemText;
   final double height;
   final double iconSize;
-  final String email;
+  final String userId;
 
   final Color color;
   final Color selectedColor;
@@ -84,7 +84,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
     return
       Expanded(
         child: InkWell(
-          onTap: ()=>context.push('/post/${widget.email}'),
+          onTap: ()=>context.push('/post/${widget.userId}'),
           child:
                 Container(
 

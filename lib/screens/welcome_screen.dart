@@ -10,7 +10,7 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  String userId = "2frzJfnwk5CSWfMNIPZRZY4BUe9";
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   onPressed: () async{
                    await loginRepo.googleSignIn(context).then((bool success) {
                      if(success){
-                       context.pushReplacement('/$userId');
+                       context.pushReplacement('/');
                      }else{
                        loginRepo.showSnackBar(context, "An Error occured during login");
                      }
