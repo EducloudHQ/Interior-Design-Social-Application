@@ -36,6 +36,15 @@ class ProfileRepository extends ChangeNotifier {
 
   Map _userProfileCache = {};
 
+  User? _user;
+
+
+  User? get getUser => _user;
+
+  set setUser(User? value) {
+    _user = value;
+    notifyListeners();
+  }
   Map get userProfileCache => _userProfileCache;
 
   Future<void> setUserProfileCache(String userId, List<int> userBytes) async {
@@ -44,6 +53,7 @@ class ProfileRepository extends ChangeNotifier {
 
     if (setResp is CreateCacheSuccess) {
       print("successfully cached user successful!");
+
     } else if (setResp is SetError) {
       print("Set error: ${setResp.errorCode} ${setResp.message}");
     }
@@ -304,6 +314,7 @@ class ProfileRepository extends ChangeNotifier {
     User? user = await getUserProfileCache(id);
     if (user != null) {
       print("this is the first");
+      setUser = user;
       return user;
     } else {
       String graphQLDocument = '''
@@ -347,6 +358,7 @@ class ProfileRepository extends ChangeNotifier {
         print("returning ${userModel.email}");
       }
 
+      setUser = userModel;
       //save cache
       List<int> bytes = utf8.encode(json.encode(response.data!));
 

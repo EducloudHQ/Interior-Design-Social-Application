@@ -11,8 +11,9 @@ import '../repositories/post_respository.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  CreatePostScreen({required this.email});
-  final String email;
+  CreatePostScreen({required this.userId});
+
+  final String userId;
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -431,8 +432,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                           } else {
                                             form.save();
 
-                                            postRepo.createPost(
-                                                "2euHfh8r1WwhhrjmDiO7UJRRRyc");
+                                            postRepo.createPost(widget.userId);
                                           }
                                         },
                                         child: Container(

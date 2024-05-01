@@ -110,8 +110,8 @@ class _MyAppState extends State<App> {
      routerConfig: GoRouter(
          routes: [
            GoRoute(
-             path: '/',
-             builder: (BuildContext _, GoRouterState __) =>
+             path: '/:userId',
+             builder: (BuildContext context, GoRouterState state) =>
                  MultiProvider(
                      providers: [
                        ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
@@ -120,7 +120,7 @@ class _MyAppState extends State<App> {
 
                        ),
                      ],
-                     child:_isConfigured ?  HomeScreen() : Container(
+                     child:_isConfigured ?  HomeScreen(userId:state.pathParameters['userId']!) : Container(
                        child: const Center(
                          child: CircularProgressIndicator(),
                        ),
@@ -130,7 +130,7 @@ class _MyAppState extends State<App> {
                name:'createPost',
                path:'/post/:userId',
                builder: (context,state){
-                 return  CreatePostScreen(email: state.pathParameters['userId']!);
+                 return  CreatePostScreen(userId: state.pathParameters['userId']!);
                }
 
            ),
@@ -151,7 +151,7 @@ class _MyAppState extends State<App> {
                name:'userProfile',
                path: '/profile/:email',
                builder: (context, state) {
-                 return  ProfileScreen(email:state.pathParameters['email']!);
+                 return  ProfileScreen(email:state.pathParameters['email']!, userId: state.pathParameters['userId']!,);
 
 
 

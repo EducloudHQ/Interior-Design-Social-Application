@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  String userId = "2frzJfnwk5CSWfMNIPZRZY4BUe9";
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,7 @@ class WelcomeScreen extends StatelessWidget {
         height: size.height,
         width: size.width,
       ),
-          
+
           Positioned(
             top: size.height/3,
               child: ClipRRect(
@@ -137,7 +144,7 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () async{
                    await loginRepo.googleSignIn(context).then((bool success) {
                      if(success){
-                       context.pushReplacement('/');
+                       context.pushReplacement('/$userId');
                      }else{
                        loginRepo.showSnackBar(context, "An Error occured during login");
                      }
@@ -170,7 +177,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
             ),
           ),
-         
+
 
         ],
       ),

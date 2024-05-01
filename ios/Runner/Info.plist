@@ -5,7 +5,11 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Todoish</string>
+	<string>Interior AI</string>
+	<key>NSCameraUsageDescription</key>
+    <string>We need your photo in-order to create a personalized user profile for you.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string> We need your photo in-order to create a personalized user profile for you.</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

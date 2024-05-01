@@ -36,6 +36,8 @@ class PostRepository extends ChangeNotifier{
 
   List<Post> get postList => _postList;
 
+
+
   set postList(List<Post> value) {
     _postList = value;
     notifyListeners();

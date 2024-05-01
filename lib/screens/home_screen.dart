@@ -21,6 +21,8 @@ import '../utils/FABBottomAppBarItem.dart';
 import '../utils/gradient_text.dart';
 import 'drawer_screen.dart';
 class HomeScreen extends StatefulWidget {
+  HomeScreen({required this.userId});
+  final String userId;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -222,7 +224,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
                       ), ChangeNotifierProvider(create: (context) => PostRepository.instance(),
                       )
-                    ],child:ProfileScreen(email: email,) ,):
+                    ],child:ProfileScreen(email: email,userId: widget.userId,) ,):
 
 
                 postRepo.postList.isEmpty ? Container(
@@ -245,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )),
                 ) :
                 ListView.builder(itemBuilder: (context,index){
-                  return PostItem(postRepo.postList[index]);
+                  return PostItem(postRepo.postList[index],widget.userId);
                 },itemCount: postRepo.postList.length,),
 
 

@@ -200,7 +200,7 @@ void dispose(){
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward),
                     onPressed: () {
-                      commentsRepository.createComment(widget.postItem.id,widget.postItem.userId, commentsRepository.commentController.text);
+                      commentsRepository.createComment(widget.postItem.id,widget.userId, commentsRepository.commentController.text);
                     },
                     color: Colors.white,
                   ),

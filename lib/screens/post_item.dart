@@ -13,8 +13,9 @@ import '../utils/expandable_text.dart';
 import 'Config.dart';
 
 class PostItem extends StatelessWidget {
-  const PostItem(this.postItem);
+  const PostItem(this.postItem,this.userId);
   final Post postItem;
+  final String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +243,7 @@ class PostItem extends StatelessWidget {
                       size: 30,
                       color: Theme.of(context).colorScheme.secondary)),
               InkWell(
-                onTap: () => context.push('/post/${postItem.userId}/comments',
+                onTap: () => context.push('/post/${userId}/comments',
                     extra: postItem),
                 child: Row(
                   children: [
