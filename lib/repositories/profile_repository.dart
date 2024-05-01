@@ -306,7 +306,6 @@ class ProfileRepository extends ChangeNotifier {
       print("this is the first");
       return user;
     } else {
-      print("this is the second ");
       String graphQLDocument = '''
     
       query getUserAccount(\$id:String!) {
