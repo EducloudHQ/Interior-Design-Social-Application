@@ -145,14 +145,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
                       backgroundColor: MaterialStateProperty.all(Colors.red)
                   ),
-                  onPressed: () async{
-                   await loginRepo.googleSignIn(context).then((User? user) {
+                  onPressed: () {
+                   loginRepo.googleSignIn(context).then((User? user) {
                      if(user != null){
+
+                       print("user found, move to homescreen");
                        //find out if user is old or new
 
                        context.pushReplacement('/');
                      }else{
-                       loginRepo.showSnackBar(context, "An Error occured during login");
+                       print("user not found, create new user");
+                       context.pushReplacement('/createUserAccount');
                      }
                    });
                   },

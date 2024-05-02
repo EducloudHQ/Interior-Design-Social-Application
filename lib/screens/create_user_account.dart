@@ -8,10 +8,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import '../repositories/profile_repository.dart';
+import '../utils/shared_preferences.dart';
 
 class CreateUserAccountScreen extends StatefulWidget {
-  const CreateUserAccountScreen({required this.email});
-  final String email;
+  const CreateUserAccountScreen();
 
   @override
   _CreateUserAccountScreenState createState() =>
@@ -159,264 +159,281 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     var profileRepo = context.watch<ProfileRepository>();
-
+    var sharedPrefs = context.watch<SharedPrefsUtils>();
     return Scaffold(
-
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-
           title: const Text(
-            'Edit Profile',
-
+            'Create User Account',
           ),
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                profileRepo.loading
-                    ? Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator())
-                    : InkWell(
-                        onTap: () {
-                          _onImageButtonPressed(
-                              ImageSource.gallery, context, profileRepo);
-                        },
-                        child: profileRepo.profilePic.isEmpty
-                            ? Column(
+        body: FutureProvider<String?>(
+            create: (BuildContext context) {
+              return sharedPrefs.getUserEmail();
+            },
+            initialData: null,
+            child: Consumer<String?>(builder: (_, String? email, child) {
+              return email == null
+                  ? Container()
+                  : SingleChildScrollView(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            profileRepo.loading
+                                ? Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    alignment: Alignment.center,
+                                    child: const CircularProgressIndicator())
+                                : InkWell(
+                                    onTap: () {
+                                      _onImageButtonPressed(ImageSource.gallery,
+                                          context, profileRepo);
+                                    },
+                                    child: profileRepo.profilePic.isEmpty
+                                        ? Column(
+                                            children: [
+                                              _previewImage(
+                                                  profileRepo, context),
+                                              const Text(
+                                                "Change profile picture",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white),
+                                              )
+                                            ],
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              child: ClipOval(
+                                                  child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30),
+                                                      child: CachedNetworkImage(
+                                                          width: 80.0,
+                                                          height: 80.0,
+                                                          fit: BoxFit.cover,
+                                                          imageUrl: profileRepo
+                                                              .profilePic,
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              const CircularProgressIndicator(),
+                                                          errorWidget: (context,
+                                                                  url, ex) =>
+                                                              CircleAvatar(
+                                                                backgroundColor: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .secondary,
+                                                                radius: 40.0,
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons
+                                                                      .account_circle,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 40.0,
+                                                                ),
+                                                              )))),
+                                            ))
+
+                                    // child: _prev,
+
+                                    ),
+                            Form(
+                              key: formKey,
+                              autovalidateMode: AutovalidateMode.always,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  _previewImage(profileRepo, context),
-                                  const Text(
-                                    "Change profile picture",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  )
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: TextFormField(
+                                      controller:
+                                          profileRepo.usernameController,
+                                      decoration: InputDecoration(
+                                        filled: false,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding:
+                                            EdgeInsetsDirectional.only(
+                                                start: 10.0),
+                                        labelText: 'username',
+                                        labelStyle:
+                                            TextStyle(color: Colors.white),
+                                        hintText: "username",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'username';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: TextFormField(
+                                      controller:
+                                          profileRepo.firstNameController,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      decoration: InputDecoration(
+                                        filled: false,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding:
+                                            EdgeInsetsDirectional.only(
+                                                start: 10.0),
+                                        labelText: 'First Name',
+                                        hintText: "First Name",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'First Name';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: TextFormField(
+                                      controller:
+                                          profileRepo.lastNameController,
+                                      decoration: InputDecoration(
+                                        filled: false,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding:
+                                            EdgeInsetsDirectional.only(
+                                                start: 10.0),
+                                        labelText: 'Last Name',
+                                        labelStyle:
+                                            TextStyle(color: Colors.white),
+                                        hintText: "Last Name",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Last Name';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: TextFormField(
+                                      controller: profileRepo.aboutController,
+                                      maxLines: 3,
+                                      decoration: InputDecoration(
+                                        filled: false,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        contentPadding:
+                                            EdgeInsetsDirectional.only(
+                                                start: 10.0),
+                                        labelText: 'About you',
+                                        labelStyle:
+                                            TextStyle(color: Colors.white),
+                                        hintText: "About you",
+                                        hintStyle: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'About you';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
                                 ],
-                              )
-                            : Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: ClipOval(
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          child: CachedNetworkImage(
-                                              width: 80.0,
-                                              height: 80.0,
-                                              fit: BoxFit.cover,
-                                              imageUrl: profileRepo.profilePic,
-                                              placeholder: (context, url) =>
-                                                  const CircularProgressIndicator(),
-                                              errorWidget: (context, url, ex) =>
-                                                  CircleAvatar(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                    radius: 40.0,
-                                                    child: const Icon(
-                                                      Icons.account_circle,
-                                                      color: Colors.white,
-                                                      size: 40.0,
-                                                    ),
-                                                  )))),
-                                ))
-
-                        // child: _prev,
-
-                        ),
-                Form(
-                  key: formKey,
-                  autovalidateMode: AutovalidateMode.always,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: TextFormField(
-                          controller: profileRepo.usernameController,
-
-                          decoration: InputDecoration(
-                            filled: false,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
-
-
-                            labelText: 'username',
-                            labelStyle: TextStyle(color: Colors.white),
-                            hintText: "username",
-                            hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'username';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: TextFormField(
-                          controller: profileRepo.firstNameController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            filled: false,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
+                            Container(
+                              margin:
+                                  const EdgeInsets.only(bottom: 20, top: 20),
+                              child: Column(
+                                children: <Widget>[
+                                  profileRepo.loading
+                                      ? Container(
+                                          padding:
+                                              const EdgeInsets.only(top: 30.0),
+                                          child:
+                                              const CircularProgressIndicator(),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            final FormState form =
+                                                formKey.currentState!;
+                                            if (!form.validate()) {
+                                            } else {
+                                              form.save();
 
+                                              if (kDebugMode) {
+                                                print(profileRepo.profilePic);
+                                              }
 
-
-                            labelText: 'First Name',
-                            hintText: "First Name",
-                            hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'First Name';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: TextFormField(
-                          controller: profileRepo.lastNameController,
-
-                          decoration: InputDecoration(
-                            filled: false,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
-                            labelText: 'Last Name',
-                            labelStyle: TextStyle(color: Colors.white),
-                            hintText: "Last Name",
-                            hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Last Name';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: TextFormField(
-                          controller: profileRepo.aboutController,
-
-maxLines: 3,
-                          decoration: InputDecoration(
-                            filled: false,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-
-                            contentPadding: EdgeInsetsDirectional.only(start: 10.0),
-                            labelText: 'About you',
-                            labelStyle: TextStyle(color: Colors.white),
-                            hintText: "About you",
-                            hintStyle: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'About you';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 20,top: 20),
-                  child: Column(
-                    children: <Widget>[
-                      profileRepo.loading
-                          ? Container(
-                              padding: const EdgeInsets.only(top: 30.0),
-                              child: const CircularProgressIndicator(),
+                                              profileRepo.saveUserDetails(email);
+                                            }
+                                          },
+                                          child: Container(
+                                              width: size.width / 1.2,
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 20),
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  gradient:
+                                                      const LinearGradient(
+                                                          begin:
+                                                              Alignment.topLeft,
+                                                          end:
+                                                              Alignment(0.8, 1),
+                                                          colors: [
+                                                        Color(0xFFFBDA61),
+                                                        Color(0xFFFF5ACD),
+                                                      ])),
+                                              child: const Text(
+                                                "save account details",
+                                                style: TextStyle(fontSize: 15),
+                                              )),
+                                        ),
+                                ],
+                              ),
                             )
-                          :
-
-                      InkWell(
-                        onTap: (){
-                          final FormState form =
-                          formKey.currentState!;
-                          if (!form.validate()) {
-                          } else {
-                            form.save();
-
-                            if (kDebugMode) {
-                              print(profileRepo.profilePic);
-                            }
-                            if (kDebugMode) {
-                              print("email is ${widget.email}");
-                            }
-                           profileRepo.saveUserDetails(widget.email);
-
-                          }
-                        },
-                        child: Container(
-                            width: size.width/1.2,
-                            padding: EdgeInsets.symmetric(vertical: 20),
-                            alignment: Alignment.center,
-                            decoration:  BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                gradient: const LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment(0.8, 1),
-                                    colors: [
-                                      Color(0xFFFBDA61),
-                                      Color(0xFFFF5ACD),
-
-                                    ]
-
-                                )
-                            ),
-
-
-                            child: const Text("save account details",style: TextStyle(fontSize: 15),)),
+                          ],
+                        ),
                       ),
-
-
-
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ));
+                    );
+            })));
   }
 }

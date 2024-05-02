@@ -117,8 +117,8 @@ class LoginRepository extends ChangeNotifier {
 
     String graphQLDocument = '''
     
-      query getUserAccount(\$id:String!) {
-  getUserAccount(id:\$id ) {
+      query getUserByEmail(\$email:String!) {
+  getUserByEmail(email:\$email ) {
   about
   createdOn
   email
@@ -173,13 +173,7 @@ class LoginRepository extends ChangeNotifier {
       if (isSignedIn) {
         return fetchCurrentUserAttributes()
             .then((List<AuthUserAttribute> listUserAttributes) async {
-          String userSub = listUserAttributes[0].value;
-          String email = listUserAttributes[1].value;
 
-          if (kDebugMode) {
-            print(userSub);
-            print(email);
-          }
 
           User? user;
 
@@ -189,14 +183,15 @@ class LoginRepository extends ChangeNotifier {
               //save email to shared preferences
 
               if (user != null) {
-                SharedPrefsUtils.instance()
-                    .saveUserEmail(user.id);
-                SharedPrefsUtils.instance()
+                print("user id is ${user.id}");
+                await SharedPrefsUtils.instance()
+                    .saveUserId(user.id);
+                await SharedPrefsUtils.instance()
                     .saveUserEmail(user.email);
                 googleLoading = false;
                 return user;
               } else {
-                SharedPrefsUtils.instance()
+                await SharedPrefsUtils.instance()
                     .saveUserEmail(item.value)
                     .then((value) {
                   if (kDebugMode) {

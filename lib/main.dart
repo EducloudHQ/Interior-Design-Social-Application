@@ -136,10 +136,10 @@ class _MyAppState extends State<App> {
            ),
            GoRoute(
                name:'createUserAccount',
-               path: '/userAccount/:email',
+               path: '/createUserAccount',
                builder: (context, state) {
                  return ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
-                     child: CreateUserAccountScreen(email:state.pathParameters['email']!,)
+                     child: CreateUserAccountScreen()
 
 
                  );
