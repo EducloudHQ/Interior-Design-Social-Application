@@ -25,18 +25,15 @@ import 'models/Post.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final AmplifyLogger _logger = AmplifyLogger('socialApp');
-Future main() async{
+Future main() async {
   await dotenv.load(fileName: ".env");
-  //timeDilation = 5.0;
+  //timeDilation = 5.0;=';;
   runApp(
-
-      ChangeNotifierProvider(
-        create: (_) =>
-            LoginRepository.instance(),
-        child: App(),
-      ),
-
-      );
+    ChangeNotifierProvider(
+      create: (_) => LoginRepository.instance(),
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatefulWidget {
@@ -47,12 +44,9 @@ class App extends StatefulWidget {
 }
 
 class _MyAppState extends State<App> {
-
-
   bool _isConfigured = false;
 
   Future<void> _configureAmplify() async {
-
     try {
       await Amplify.addPlugins([
         AmplifyAPI(),
@@ -62,18 +56,17 @@ class _MyAppState extends State<App> {
           /// https://docs.amplify.aws/lib/project-setup/platform-setup/q/platform/flutter/#enable-keychain
           secureStorageFactory: AmplifySecureStorage.factoryFrom(
             macOSOptions:
-            // ignore: invalid_use_of_visible_for_testing_member
-            MacOSSecureStorageOptions(useDataProtection: false),
+                // ignore: invalid_use_of_visible_for_testing_member
+                MacOSSecureStorageOptions(useDataProtection: false),
           ),
         ),
         AmplifyStorageS3(),
-
       ]);
 
       await Amplify.configure(amplifyconfig);
-       setState(() {
-         _isConfigured = true;
-       });
+      setState(() {
+        _isConfigured = true;
+      });
       _logger.debug('Successfully configured Amplify');
 
       Amplify.Hub.listen(HubChannel.Auth, (event) {
@@ -88,97 +81,91 @@ class _MyAppState extends State<App> {
   void initState() {
     // TODO: implement initState
     super.initState();
-   _configureAmplify();
-
+    _configureAmplify();
   }
-
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp.router(
-      title: 'Interior Design Social App',
+        title: 'Interior Design Social App',
+        theme: ThemeData(
+          fontFamily: 'Syne-Regular',
+        ),
+        themeMode: ThemeMode.dark,
+        darkTheme: ThemeData.dark(),
 
-      theme: ThemeData(
-        fontFamily: 'Syne-Regular',
-      ),
-      themeMode: ThemeMode.dark,
-      darkTheme: ThemeData.dark(),
-
-      //  themeMode: ThemeMode.system,
+        //  themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
-     routerConfig: GoRouter(
-         routes: [
-           GoRoute(
-             path: '/',
-             builder: (BuildContext context, GoRouterState state) =>
-                 MultiProvider(
-                     providers: [
-                       ChangeNotifierProvider(create: (BuildContext context) => SharedPrefsUtils.instance(),),
-                       ChangeNotifierProvider(create: (BuildContext context) => LoginRepository.instance(),),
-                       ChangeNotifierProvider(create: (BuildContext context) => PostRepository.instance(),
-
-                       ),
-                     ],
-                     child:_isConfigured ?  HomeScreen() : Container(
-                       child: const Center(
-                         child: CircularProgressIndicator(),
-                       ),
-                     )),
-           ),
-           GoRoute(
-               name:'createPost',
-               path:'/post/:userId',
-               builder: (context,state){
-                 return  CreatePostScreen(userId: state.pathParameters['userId']!);
-               }
-
-           ),
-           GoRoute(
-               name:'createUserAccount',
-               path: '/createUserAccount',
-               builder: (context, state) {
-                 return ChangeNotifierProvider(create:(_) =>ProfileRepository.instance(),
-                     child: CreateUserAccountScreen()
-
-
-                 );
-
-
-               }),
-
-           GoRoute(
-               name:'userProfile',
-               path: '/profile/:userId',
-               builder: (context, state) {
-                 return  ProfileScreen( userId: state.pathParameters['userId']!,);
-
-
-
-
-
-               }),
-
-
-
-        GoRoute(
-            name: 'commentsScreen',
-            path: '/post/:userId/comments',
-            builder: (context,state){
-              Post postItem= state.extra as Post;
-              return ChangeNotifierProvider(create: (context) => CommentsRepository.instance(),
-                child: CommentsScreen(postItem: postItem,userId: state.pathParameters['userId']!,),
-              );
-            }),
-
-
-
-         ])
-
-
-
-
-    );
+        routerConfig: GoRouter(routes: [
+          GoRoute(
+            path: '/',
+            builder: (BuildContext context, GoRouterState state) =>
+                MultiProvider(
+                    providers: [
+                  ChangeNotifierProvider(
+                    create: (BuildContext context) =>
+                        SharedPrefsUtils.instance(),
+                  ),
+                  ChangeNotifierProvider(
+                    create: (BuildContext context) =>
+                        LoginRepository.instance(),
+                  ),
+                  ChangeNotifierProvider(
+                    create: (BuildContext context) => PostRepository.instance(),
+                  ),
+                ],
+                    child: _isConfigured
+                        ? HomeScreen()
+                        : Container(
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )),
+          ),
+          GoRoute(
+              name: 'createPost',
+              path: '/post/:userId',
+              builder: (context, state) {
+                return CreatePostScreen(
+                    userId: state.pathParameters['userId']!);
+              }),
+          GoRoute(
+              name: 'createUserAccount',
+              path: '/createUserAccount',
+              builder: (context, state) {
+                return MultiProvider(
+                  providers: [
+                    ChangeNotifierProvider(
+                      create: (_) => ProfileRepository.instance(),
+                    ),
+                    ChangeNotifierProvider(
+                      create: (_) => SharedPrefsUtils.instance(),
+                    ),
+                  ],
+                  child: CreateUserAccountScreen(),
+                );
+              }),
+          GoRoute(
+              name: 'userProfile',
+              path: '/profile/:userId',
+              builder: (context, state) {
+                return ProfileScreen(
+                  userId: state.pathParameters['userId']!,
+                );
+              }),
+          GoRoute(
+              name: 'commentsScreen',
+              path: '/post/:userId/comments',
+              builder: (context, state) {
+                Post postItem = state.extra as Post;
+                return ChangeNotifierProvider(
+                  create: (context) => CommentsRepository.instance(),
+                  child: CommentsScreen(
+                    postItem: postItem,
+                    userId: state.pathParameters['userId']!,
+                  ),
+                );
+              }),
+        ]));
   }
 }
-
