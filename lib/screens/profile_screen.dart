@@ -13,8 +13,8 @@ import '../repositories/post_respository.dart';
 import 'Config.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({required this.email,required this.userId, super.key});
-  final String email;
+  const ProfileScreen({required this.userId, super.key});
+
   final String userId;
 
   @override
@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var profileRepo = context.read<ProfileRepository>();
     Future.delayed(Duration.zero).then((_) async {
       postRepo.getAllPosts(10);
-      profileRepo.getUserAccount(widget.userId);
+      profileRepo.getUserAccountById(widget.userId);
     });
   }
 
@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           InkWell(
                             onTap: () {
                               context.push(
-                                  "/userAccount/${widget.email}");
+                                  "/userAccount/${widget.userId}");
                             },
                             child: Container(
                               width: 40,

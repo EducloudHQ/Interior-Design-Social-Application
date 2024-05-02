@@ -38,7 +38,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
               child: FutureProvider<User?>(
               create: (_) => ProfileRepository.instance()
-        .getUserAccount(widget.userId),
+        .getUserAccountById(widget.userId),
     initialData: null,
     catchError: (context, error) {
     throw error!;

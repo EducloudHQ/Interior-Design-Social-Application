@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,12 +8,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../models/User.dart';
 import '../utils/shared_preferences.dart';
 
-
-class LoginRepository extends ChangeNotifier{
-
-
+class LoginRepository extends ChangeNotifier {
   LoginRepository.instance();
 
   final passwordController = TextEditingController();
@@ -27,7 +25,6 @@ class LoginRepository extends ChangeNotifier{
 
   bool _success = false;
 
-
   bool get success => _success;
 
   set success(bool value) {
@@ -35,12 +32,9 @@ class LoginRepository extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool _loadingAmplify  = true;
-
-
+  bool _loadingAmplify = true;
 
   bool get isValidEmail => _isValidEmail;
-
 
   bool get loadingAmplify => _loadingAmplify;
 
@@ -56,15 +50,12 @@ class LoginRepository extends ChangeNotifier{
 
   String _groupName = 'parent';
 
-
   String get groupName => _groupName;
 
   set groupName(String value) {
     _groupName = value;
     notifyListeners();
   }
-
-
 
   bool get obscureText => _obscureText;
 
@@ -92,10 +83,13 @@ class LoginRepository extends ChangeNotifier{
     notifyListeners();
   }
 
-  showSnackBar(BuildContext context,String message){
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message,style: const TextStyle(fontSize: 20),)));
+  showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+      message,
+      style: const TextStyle(fontSize: 20),
+    )));
   }
-
 
   bool get isOTPSignUpComplete => _isOTPSignUpComplete;
 
@@ -118,100 +112,136 @@ class LoginRepository extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<bool>googleSignIn(BuildContext context) async{
+  Future<User?> getUserAccountByEmail(String email) async {
+    loading = true;
+
+    String graphQLDocument = '''
+    
+      query getUserAccount(\$id:String!) {
+  getUserAccount(id:\$id ) {
+  about
+  createdOn
+  email
+  firstName
+  id
+  lastName
+  profilePicUrl
+  profilePicKey
+   userType
+    username
+  updatedOn
+  }
+}
+    ''';
+
+    var operation = Amplify.API.query(
+        request: GraphQLRequest<String>(
+      document: graphQLDocument,
+      apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+      variables: {
+        "email": email,
+      },
+    ));
+
+    var response = await operation.response;
+
+    final responseJson = json.decode(response.data!);
+
+    loading = false;
+
+    print("returning ${responseJson['getUserByEmail']}");
+
+    if (responseJson['getUserByEmail'] == null) {
+      return null;
+    } else {
+      User userModel = User.fromJson(responseJson['getUserByEmail']);
+      if (kDebugMode) {
+        print("returning ${userModel.email}");
+      }
+
+      return userModel;
+    }
+  }
+
+  Future<User?> googleSignIn(BuildContext context) async {
     googleLoading = true;
     try {
-     var res = await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
-
-
+      var res =
+          await Amplify.Auth.signInWithWebUI(provider: AuthProvider.google);
 
       isSignedIn = res.isSignedIn;
-      if(isSignedIn){
-
-
-
-         return fetchCurrentUserAttributes().then((List<AuthUserAttribute> listUserAttributes) {
+      if (isSignedIn) {
+        return fetchCurrentUserAttributes()
+            .then((List<AuthUserAttribute> listUserAttributes) async {
           String userSub = listUserAttributes[0].value;
           String email = listUserAttributes[1].value;
 
-          if(kDebugMode)
-            {
-              print(userSub);
-              print(email);
-            }
-
-
-
-          for(var item in listUserAttributes){
-            if(item.userAttributeKey.key =='email'){
-
-            return SharedPrefsUtils.instance().saveUserEmail(item.value).then((value) {
-                if (kDebugMode) {
-                  print("email address saved");
-                }
-                googleLoading = false;
-                return success = true;
-
-
-              });
-
-
-
-
-
-            }
-
+          if (kDebugMode) {
+            print(userSub);
+            print(email);
           }
 
-          return success = true;
+          User? user;
 
+         for (var item in listUserAttributes) {
+            if (item.userAttributeKey.key == 'email') {
+              user = await getUserAccountByEmail(item.value);
+              //save email to shared preferences
+
+              if (user != null) {
+                SharedPrefsUtils.instance()
+                    .saveUserEmail(user.id);
+                SharedPrefsUtils.instance()
+                    .saveUserEmail(user.email);
+                googleLoading = false;
+                return user;
+              } else {
+                SharedPrefsUtils.instance()
+                    .saveUserEmail(item.value)
+                    .then((value) {
+                  if (kDebugMode) {
+                    print("email address saved");
+                  }
+                  googleLoading = false;
+                  return item.value;
+                });
+                return user;
+              }
+            }
+          }
+          return user;
         });
-
-
-      }else{
-
+      } else {
         googleLoading = false;
-        return success = false;
-
+        return null;
       }
-
     } on AmplifyException catch (e) {
       if (kDebugMode) {
         print(e.message);
       }
 
       googleLoading = false;
-      return success = false;
+      return null;
     }
-
-
-
   }
 
   Future<void> signOutCurrentUser() async {
     try {
       await Amplify.Auth.signOut();
-
     } on AuthException catch (e) {
       print(e.message);
     }
   }
 
   Future<List<AuthUserAttribute>> fetchCurrentUserAttributes() async {
-
     try {
       List<AuthUserAttribute> result = await Amplify.Auth.fetchUserAttributes();
 
-
-
       return result;
     } on AuthException catch (e) {
-
-     rethrow;
+      rethrow;
     }
   }
-
-
 
   @override
   void dispose() {
@@ -221,6 +251,4 @@ class LoginRepository extends ChangeNotifier{
     passwordController.dispose();
     emailController.dispose();
   }
-
-
 }

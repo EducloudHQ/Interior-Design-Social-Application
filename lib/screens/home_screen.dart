@@ -28,7 +28,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String userId = "2frzJfnwk5CSWfMNIPZRZY4BUe9";
+
   int count = 0;
   late final Stream<GraphQLResponse<String>> getPostStream;
   Future<void> signOutCurrentUser() async {
@@ -173,13 +173,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return FutureProvider<String?>(
       create: (BuildContext context) {
-        return sharedPrefs.getUserEmail();
+        return sharedPrefs.getUserId();
       },
       initialData: null,
-      child: Consumer<String?>(builder: (_, String? email, child) {
-        return email == null
-            ? ChangeNotifierProvider(create: (context) => LoginRepository.instance(),
-        child:  WelcomeScreen(),)
+      child: Consumer<String?>(builder: (_, String? userId, child) {
+        return userId == null
+            ? MultiProvider(providers: [
+          ChangeNotifierProvider(create: (context) => LoginRepository.instance(),
+            ),
+          ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
+          ),
+
+
+        ],child: WelcomeScreen(),)
+
             : Scaffold(
 
 
@@ -224,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
                       ), ChangeNotifierProvider(create: (context) => PostRepository.instance(),
                       )
-                    ],child:ProfileScreen(email: email,userId: userId,) ,):
+                    ],child:ProfileScreen(userId: userId,) ,):
 
 
                 postRepo.postList.isEmpty ? Container(

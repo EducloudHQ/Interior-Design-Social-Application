@@ -308,7 +308,7 @@ class ProfileRepository extends ChangeNotifier {
     }
   }
 
-  Future<User> getUserAccount(String id) async {
+  Future<User> getUserAccountById(String id) async {
     loading = true;
 
     User? user = await getUserProfileCache(id);
@@ -367,5 +367,64 @@ class ProfileRepository extends ChangeNotifier {
 
       return userModel;
     }
+  }
+
+
+  Future<User?> getUserAccountByEmail(String email) async {
+    loading = true;
+
+      String graphQLDocument = '''
+    
+      query getUserAccount(\$id:String!) {
+  getUserAccount(id:\$id ) {
+  about
+  createdOn
+  email
+  firstName
+  id
+  lastName
+  profilePicUrl
+  profilePicKey
+   userType
+    username
+  updatedOn
+  }
+}
+    ''';
+
+      var operation = Amplify.API.query(
+          request: GraphQLRequest<String>(
+            document: graphQLDocument,
+            apiName: "cdk-rust-social-api_AMAZON_COGNITO_USER_POOLS",
+            variables: {
+              "email": email,
+            },
+          ));
+
+      var response = await operation.response;
+
+      final responseJson = json.decode(response.data!);
+
+      loading = false;
+
+      print("returning ${responseJson['getUserByEmail']}");
+
+      if(responseJson['getUserByEmail'] == null){
+        return null;
+      }else {
+        User userModel = User.fromJson(responseJson['getUserByEmail']);
+        if (kDebugMode) {
+          print("returning ${userModel.email}");
+        }
+
+        setUser = userModel;
+        //save cache
+        List<int> bytes = utf8.encode(json.encode(response.data!));
+
+        //create cache and set key value pair
+        createCache(userModel.id, bytes);
+
+        return userModel;
+      }
   }
 }

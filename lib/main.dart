@@ -149,9 +149,9 @@ class _MyAppState extends State<App> {
 
            GoRoute(
                name:'userProfile',
-               path: '/profile/:email',
+               path: '/profile/:userId',
                builder: (context, state) {
-                 return  ProfileScreen(email:state.pathParameters['email']!, userId: state.pathParameters['userId']!,);
+                 return  ProfileScreen( userId: state.pathParameters['userId']!,);
 
 
 

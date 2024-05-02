@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:social_media/repositories/login_respository.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
+
+import '../models/User.dart';
+import '../repositories/profile_repository.dart';
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
@@ -16,6 +19,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     LoginRepository loginRepo = context.watch<LoginRepository>();
+    ProfileRepository profileRepo = context.watch<ProfileRepository>();
     return Scaffold(
 
       body: Stack(
@@ -142,8 +146,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       backgroundColor: MaterialStateProperty.all(Colors.red)
                   ),
                   onPressed: () async{
-                   await loginRepo.googleSignIn(context).then((bool success) {
-                     if(success){
+                   await loginRepo.googleSignIn(context).then((User? user) {
+                     if(user != null){
+                       //find out if user is old or new
+
                        context.pushReplacement('/');
                      }else{
                        loginRepo.showSnackBar(context, "An Error occured during login");
