@@ -33,7 +33,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
           MasonryGridView.count(
             crossAxisCount: 3,
-            mainAxisSpacing: 2,
+            mainAxisSpacing: 7,
             crossAxisSpacing: 3,
             itemCount: gridImages.length,
 
