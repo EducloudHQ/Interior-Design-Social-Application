@@ -225,6 +225,7 @@ query getCommentsPerPost(\$postId:String!,\$limit:Int!,\$nextToken:String) {
           print("here${responseJson['createComment']}");
         }
         loading = false;
+        commentController.clear();
 
       }else{
         print("something happened");

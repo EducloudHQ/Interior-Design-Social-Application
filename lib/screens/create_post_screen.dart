@@ -425,19 +425,20 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                             const CircularProgressIndicator(),
                                       )
                                     : InkWell(
-                                        onTap: () {
+                                        onTap: () async {
                                           final FormState form =
                                               formKey.currentState!;
                                           if (!form.validate()) {
                                           } else {
                                             form.save();
 
-                                            postRepo.createPost(widget.userId);
+                                            await postRepo.createPost(widget.userId);
+
                                           }
                                         },
                                         child: Container(
                                             width: size.width / 1.2,
-                                            padding: EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 vertical: 20),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(

@@ -199,8 +199,9 @@ void dispose(){
                 child: Center(
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward),
-                    onPressed: () {
-                      commentsRepository.createComment(widget.postItem.id,widget.userId, commentsRepository.commentController.text);
+                    onPressed: () async{
+                      await commentsRepository.createComment(widget.postItem.id,widget.userId, commentsRepository.commentController.text);
+
                     },
                     color: Colors.white,
                   ),
