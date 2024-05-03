@@ -11,7 +11,6 @@ import '../repositories/profile_repository.dart';
 import '../utils/shared_preferences.dart';
 
 class CreateUserAccountScreen extends StatefulWidget {
-  const CreateUserAccountScreen();
 
   @override
   _CreateUserAccountScreenState createState() =>

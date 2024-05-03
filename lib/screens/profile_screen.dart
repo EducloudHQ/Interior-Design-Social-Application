@@ -117,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           InkWell(
                             onTap: () {
                               context.push(
-                                  "/userAccount/${widget.userId}");
+                                  "/createUserAccount");
                             },
                             child: Container(
                               width: 40,

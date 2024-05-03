@@ -16,6 +16,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      width: 120,
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
       // space to fit everything.
@@ -52,8 +53,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
         ClipRRect(
           borderRadius: BorderRadius.circular(1000),
           child:  CachedNetworkImage(
-            width: 80,
-            height: 80,
+            width: 60,
+            height: 60,
             imageUrl:"${Config.CLOUD_FRONT_DISTRO}${userModel.profilePicKey}",
             placeholder: (context, url) => CircularProgressIndicator(),
             errorWidget: (context, url, error) => ClipRRect(
@@ -63,6 +64,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
           ),
 
         ),
+        /*
         Container(
 
           child:  Text( "${userModel.lastName} ${userModel.firstName}" ,
@@ -97,6 +99,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ),
           ),
         ),
+        */
       ],
       );}))
 
