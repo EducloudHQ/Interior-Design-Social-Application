@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/User.dart';
 import '../repositories/profile_repository.dart';
 import 'Config.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 class DrawerScreen extends StatefulWidget {
   const DrawerScreen({super.key,required this.userId});
   final String userId;
@@ -105,41 +106,61 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
 
           ),
-          ListTile(
-            title: const Text('Home'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('Bed Rooms'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('Living Rooms'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('Kitchens'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            title: const Text('Bedrooms'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
+          InkWell(
+              onTap: (){
+
+
+              },
+              child: Container(
+
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  color: Color(0xFFf3c300),
+
+                  child: SvgPicture.asset('assets/home.svg',height: 35,width: 35,color: Colors.white,))),
+          InkWell(
+              onTap: (){
+
+
+              },
+              child: Container(
+
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  color: Color(0xFF00d48e),
+
+                  child: SvgPicture.asset('assets/search.svg',height: 35,width: 35,color: Colors.white,))),
+          InkWell(
+              onTap: (){
+
+
+              },
+              child: Container(
+
+    padding: EdgeInsets.symmetric(vertical: 40),
+    color: Color(0xFF02c3d9),
+
+                  child: SvgPicture.asset('assets/notification.svg',height: 35,width: 35,color: Colors.white,))),
+          InkWell(
+              onTap: (){
+
+
+              },
+              child: Container(
+
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  color: Color(0xFFFBDA61),
+
+                  child: SvgPicture.asset('assets/profile.svg',height: 35,width: 35,color: Colors.white,))),
+          InkWell(
+              onTap: (){
+
+
+              },
+              child: Container(
+
+                  padding: EdgeInsets.symmetric(vertical: 40),
+                  color: Color(0xFFde6e01),
+
+                  child: SvgPicture.asset('assets/live.svg',height: 35,width: 35,color: Colors.white,))),
         ],
       ),
     );

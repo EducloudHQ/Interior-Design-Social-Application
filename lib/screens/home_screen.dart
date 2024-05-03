@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:social_media/models/ModelProvider.dart';
 import 'package:social_media/repositories/login_respository.dart';
@@ -215,9 +216,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   actions: [
 
                     InkWell(
-                      onTap: (){
-                        signOutCurrentUser();
-                        sharedPrefs.deleteAllKeys();
+                      onTap: () async{
+                        await signOutCurrentUser();
+                        await sharedPrefs.deleteAllKeys();
+                        context.pushReplacement('/welcomeScreen');
 
                       },
                         child: SvgPicture.asset('assets/off.svg',height: 35,width: 35,color: Colors.white,))

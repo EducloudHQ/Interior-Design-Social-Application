@@ -13,6 +13,7 @@ import 'package:social_media/screens/create_user_account.dart';
 import 'package:social_media/screens/home_screen.dart';
 import 'package:social_media/screens/profile_screen.dart';
 import 'package:go_router/go_router.dart';
+import 'package:social_media/screens/welcome_screen.dart';
 import 'package:social_media/utils/shared_preferences.dart';
 import 'amplifyconfiguration.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
@@ -145,6 +146,20 @@ class _MyAppState extends State<App> {
                   child: CreateUserAccountScreen(),
                 );
               }),
+          GoRoute(
+              name: 'welcomeScreen',
+              path: '/welcomeScreen',
+            builder: (context,state){
+              return MultiProvider(providers: [
+                ChangeNotifierProvider(create: (context) => LoginRepository.instance(),
+                ),
+                ChangeNotifierProvider(create: (context) => ProfileRepository.instance(),
+                ),
+
+
+              ],child: WelcomeScreen(),);
+            }
+          ),
           GoRoute(
               name: 'userProfile',
               path: '/profile/:userId',
