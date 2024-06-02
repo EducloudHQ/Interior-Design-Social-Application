@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
@@ -400,7 +401,9 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                                 print(profileRepo.profilePic);
                                               }
 
-                                              profileRepo.saveUserDetails(email);
+                                              profileRepo.saveUserDetails(email).then((value){
+                                                context.push('/post/2hH66ON5jNdDNYFIL50o1ayb2GZ');
+                                              });
                                             }
                                           },
                                           child: Container(
