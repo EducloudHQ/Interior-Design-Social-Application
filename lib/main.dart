@@ -1,7 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:momento/momento.dart';
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
@@ -117,11 +115,11 @@ class _MyAppState extends State<App> {
                 ],
                     child: _isConfigured
                         ? HomeScreen()
-                        : Container(
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )),
+                        : const Scaffold(
+                      body:Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    )),
           ),
           GoRoute(
               name: 'createPost',

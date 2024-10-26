@@ -1,22 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-socialmedia-dev-122329-authRole",
-      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-socialmedia-dev-122329-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-socialmedia-dev-122329-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-socialmedia-dev-122329-deployment",
-      "UnauthRoleName": "amplify-socialmedia-dev-122329-unauthRole",
-      "StackName": "amplify-socialmedia-dev-122329",
-      "StackId": "arn:aws:cloudformation:us-east-1:132260253285:stack/amplify-socialmedia-dev-122329/1e620eb0-ea9a-11ee-93e0-1261bcfa881d",
-      "AmplifyAppId": "d1abouhj3cttwg"
+      "AuthRoleName": "amplify-interiordesignsocial-dev-4fbff-authRole",
+      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-interiordesignsocial-dev-4fbff-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-interiordesignsocial-dev-4fbff-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-interiordesignsocial-dev-4fbff-deployment",
+      "UnauthRoleName": "amplify-interiordesignsocial-dev-4fbff-unauthRole",
+      "StackName": "amplify-interiordesignsocial-dev-4fbff",
+      "StackId": "arn:aws:cloudformation:us-east-2:132260253285:stack/amplify-interiordesignsocial-dev-4fbff/2ed357c0-93de-11ef-85df-0ae26f276da5",
+      "AmplifyAppId": "d3nl0j5bpge2kv"
     },
     "categories": {
       "auth": {
-        "socialmedia681fe629": {}
+        "interiordesignsocial563734cc": {}
       },
       "storage": {
-        "s377696833": {}
+        "s3e8594e24": {}
       }
     }
   }

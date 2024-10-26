@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "socialmedia681fe629": {
+    "interiordesignsocial563734cc": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "HostedUIDomain": "string",
@@ -13,7 +13,7 @@ export type AmplifyDependentResourcesAttributes = {
     }
   },
   "storage": {
-    "s377696833": {
+    "s3e8594e24": {
       "BucketName": "string",
       "Region": "string"
     }

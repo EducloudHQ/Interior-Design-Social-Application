@@ -1,19 +1,5 @@
-# todoish
-
-A new Flutter project.
-
-https://api.cache.cell-4-us-west-2-1.prod.a.momentohq.com
+# Building an Interior Design Social Application
 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Backend
+Workshop Tutorial for the backend is available on [Educloud Academy](https://www.educloud.academy/content/3fdbfcb8-c803-4aaf-b2a2-78dcc1511b2f)

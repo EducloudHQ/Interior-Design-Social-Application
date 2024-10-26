@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/models/grid_images.dart';
 import 'package:social_media/repositories/login_respository.dart';
@@ -67,13 +68,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       onTap: () {
                         loginRepo.googleSignIn(context).then((User? user) {
                           if(user != null){
-
-                            print("user found, move to homescreen");
-                            //find out if user is old or new
+                            if(kDebugMode){
+                              print("user found, move to homescreen");
+                            }
 
                             context.pushReplacement('/');
                           }else{
-                            print("user not found, create new user");
+                            if(kDebugMode){
+                              print("user not found, create new user");
+                            }
                             context.pushReplacement('/createUserAccount');
                           }
                         });

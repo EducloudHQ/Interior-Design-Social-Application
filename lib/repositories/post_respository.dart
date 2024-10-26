@@ -95,24 +95,23 @@ class PostRepository extends ChangeNotifier{
   final contentController = TextEditingController();
   final promptController = TextEditingController();
 
-
+/*
   Future<String> uploadImage(String base64String) async {
 
     String uuid = const Uuid().v4();
     try {
       final uploadResult =  await Amplify.Storage.uploadData(
-        key: uuid,
 
         data: S3DataPayload.string(
           base64String,
           contentType: 'text/plain',
-        ),
+        ), path: StoragePath.fromString("public/'$uuid.png'"),
 
       ).result;
 
-      postImageKeys.add(uploadResult.uploadedItem.key);
+      postImageKeys.add(uploadResult.uploadedItem.path);
       final resultDownload =
-      await Validations.getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
+      await Validations.getProfilePicDownloadUrl(path: uploadResult.uploadedItem.path);
       if (kDebugMode) {
         print(resultDownload);
       }
@@ -125,24 +124,23 @@ class PostRepository extends ChangeNotifier{
       rethrow;
     }
   }
-
+*/
   Future<String> uploadByteImage(String base64String) async {
     List<int> bytes =base64Decode(base64String);
    String uuid = const Uuid().v4();
     try {
       final uploadResult =  await Amplify.Storage.uploadData(
-        key: uuid,
 
         data: S3DataPayload.bytes(
          bytes,
           contentType: 'image/jpg',
-        ),
+        ), path: StoragePath.fromString("public/$uuid.jpg"),
 
       ).result;
 
-      postImageKeys.add(uploadResult.uploadedItem.key);
+      postImageKeys.add(uploadResult.uploadedItem.path);
       final resultDownload =
-      await Validations.getProfilePicDownloadUrl(key: uploadResult.uploadedItem.key);
+      await Validations.getProfilePicDownloadUrl(path: uploadResult.uploadedItem.path);
       if (kDebugMode) {
         print(resultDownload);
       }

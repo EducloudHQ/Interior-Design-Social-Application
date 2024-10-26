@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "socialmedia681fe629_identitypool_681fe629",
+    "identityPoolName": "interiordesignsocial563734cc_identitypool_563734cc",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "social681fe629",
-    "userPoolName": "socialmedia681fe629_userpool_681fe629",
+    "resourceNameTruncated": "interi563734cc",
+    "userPoolName": "interiordesignsocial563734cc_userpool_563734cc",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,14 +31,14 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "social681fe629_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "interi563734cc_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "681fe629",
-    "resourceName": "socialmedia681fe629",
+    "sharedId": "563734cc",
+    "resourceName": "interiordesignsocial563734cc",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "defaultSocial",
     "hostedUI": true,
-    "hostedUIDomainName": "socialmedia681fe629-681fe629",
+    "hostedUIDomainName": "interiordesignsocial563734cc-563734cc",
     "authProvidersUserPool": [
       "Google"
     ],

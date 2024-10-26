@@ -1,7 +1,7 @@
 {
-  "resourceName": "s377696833",
-  "policyUUID": "77696833",
-  "bucketName": "socialmediae87e050092c84fbeb66f03afaa0783c5",
+  "resourceName": "s3e8594e24",
+  "policyUUID": "e8594e24",
+  "bucketName": "interiordesignsocial21e54d28ce14474d8243012beb2",
   "storageAccess": "authAndGuest",
   "guestAccess": [
     "READ"
@@ -11,5 +11,6 @@
     "READ",
     "DELETE"
   ],
+  "triggerFunction": "NONE",
   "groupAccess": {}
 }

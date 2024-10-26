@@ -5,7 +5,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:momento/src/errors/errors.dart';
+
 import 'package:uuid/uuid.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 
@@ -69,14 +69,20 @@ class ProfileRepository extends ChangeNotifier {
 
       final responseJson2 = json.decode(json.decode(jsonString));
 
-      print("this response json is ${responseJson2['getUserAccount']}");
+      if (kDebugMode) {
+        print("this response json is ${responseJson2['getUserAccount']}");
+      }
       User userModel = User.fromJson(responseJson2['getUserAccount']);
       return userModel;
     } else if (getResp is GetHit) {
-      print("Value was not found in ${Config.USER_PROFILE_CACHE}");
+      if (kDebugMode) {
+        print("Value was not found in ${Config.USER_PROFILE_CACHE}");
+      }
       return null;
     } else if (getResp is GetError) {
-      print("Got an error: ${getResp.errorCode} ${getResp.message}");
+      if (kDebugMode) {
+        print("Got an error: ${getResp.errorCode} ${getResp.message}");
+      }
       //throw getResp.errorCode;
       return null;
     }
@@ -168,18 +174,18 @@ class ProfileRepository extends ChangeNotifier {
   }
 
   Future<String> getProfilePicDownloadUrl({
-    required String key,
+    required String path,
   }) async {
     try {
       final result = await Amplify.Storage.getUrl(
-        key: key,
+
         options: const StorageGetUrlOptions(
-          accessLevel: StorageAccessLevel.guest,
+
           pluginOptions: S3GetUrlPluginOptions(
             validateObjectExistence: true,
             expiresIn: Duration(days: 1),
           ),
-        ),
+        ), path: StoragePath.fromString(path),
       ).result;
       return result.url.toString();
     } on StorageException catch (e) {
@@ -193,14 +199,13 @@ class ProfileRepository extends ChangeNotifier {
     final awsFile = AWSFilePlatform.fromFile(File(imageFilePath));
     try {
       final uploadResult = await Amplify.Storage.uploadFile(
-        key: '$uuid.png',
-        localFile: awsFile,
+        localFile: awsFile, path: StoragePath.fromString("public/'$uuid.png'"),
       ).result;
 
-      safePrint('Uploaded file: ${uploadResult.uploadedItem.key}');
-      profilePicKey = uploadResult.uploadedItem.key;
+      safePrint('Uploaded file: ${uploadResult.uploadedItem.path}');
+      profilePicKey = uploadResult.uploadedItem.path;
 
-      final resultDownload = await getProfilePicDownloadUrl(key: profilePicKey);
+      final resultDownload = await getProfilePicDownloadUrl(path: profilePicKey);
       if (kDebugMode) {
         print(resultDownload);
       }

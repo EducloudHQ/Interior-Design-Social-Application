@@ -1,5 +1,6 @@
 {
-  "projectName": "socialMedia",
+  "whyContinueWithGen1": "I am a current Gen 1 user",
+  "projectName": "InteriorDesignSocial",
   "version": "3.1",
   "frontend": "flutter",
   "flutter": {

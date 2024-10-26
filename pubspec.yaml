@@ -45,10 +45,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  amplify_flutter: ^1.6.1
-  amplify_api: ^1.6.2
-  amplify_auth_cognito: ^1.6.1
-  amplify_storage_s3: ^1.6.1
+  amplify_flutter: ^2.0.0
+  amplify_api: ^2.0.0
+  amplify_auth_cognito: ^2.0.0
+  amplify_storage_s3: ^2.0.0
   momento: ^0.1.0
   flutter_dotenv: ^5.0.2
   shimmer: ^3.0.0

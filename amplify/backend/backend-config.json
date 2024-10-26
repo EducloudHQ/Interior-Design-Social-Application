@@ -1,6 +1,6 @@
 {
   "auth": {
-    "socialmedia681fe629": {
+    "interiordesignsocial563734cc": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -28,7 +28,7 @@
     }
   },
   "storage": {
-    "s377696833": {
+    "s3e8594e24": {
       "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "S3"

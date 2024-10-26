@@ -27,18 +27,18 @@ class Validations{
   }
 
   static Future<String> getProfilePicDownloadUrl({
-    required String key,
+    required String path,
   }) async {
     try {
       final result = await Amplify.Storage.getUrl(
-        key: key,
+
         options: const StorageGetUrlOptions(
-          accessLevel: StorageAccessLevel.guest,
+
           pluginOptions: S3GetUrlPluginOptions(
             validateObjectExistence: true,
             expiresIn: Duration(days: 1),
           ),
-        ),
+        ), path: StoragePath.fromString(path) ,
       ).result;
       return result.url.toString();
     } on StorageException catch (e) {
