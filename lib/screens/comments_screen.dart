@@ -14,11 +14,11 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../models/Comment.dart';
 import '../models/Post.dart';
 
-import '../screens/Config.dart';
+import 'Config.dart';
 import '../utils/gradient_text.dart';
 import '../utils/validations.dart';
-import 'comment_item.dart';
-import 'comments_repository.dart';
+import '../comments/comment_item.dart';
+import '../repositories/comments_repository.dart';
 
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({required this.userId,required this.postItem});

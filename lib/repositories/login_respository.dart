@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -32,30 +30,17 @@ class LoginRepository extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool _loadingAmplify = true;
 
   bool get isValidEmail => _isValidEmail;
 
-  bool get loadingAmplify => _loadingAmplify;
 
-  set loadingAmplify(bool value) {
-    _loadingAmplify = value;
-    notifyListeners();
-  }
 
   set isValidEmail(bool value) {
     _isValidEmail = value;
     notifyListeners();
   }
 
-  String _groupName = 'parent';
 
-  String get groupName => _groupName;
-
-  set groupName(String value) {
-    _groupName = value;
-    notifyListeners();
-  }
 
   bool get obscureText => _obscureText;
 
@@ -66,17 +51,9 @@ class LoginRepository extends ChangeNotifier {
 
   bool _googleLoading = false;
 
-  bool _isOTPSignUpComplete = false;
 
-  bool _isSignUpComplete = false;
   bool get isSignedIn => _isSignedIn;
 
-  bool get isSignUpComplete => _isSignUpComplete;
-
-  set isSignUpComplete(bool value) {
-    _isSignUpComplete = value;
-    notifyListeners();
-  }
 
   set isSignedIn(bool value) {
     _isSignedIn = value;
@@ -91,12 +68,6 @@ class LoginRepository extends ChangeNotifier {
     )));
   }
 
-  bool get isOTPSignUpComplete => _isOTPSignUpComplete;
-
-  set isOTPSignUpComplete(bool value) {
-    _isOTPSignUpComplete = value;
-    notifyListeners();
-  }
 
   bool get googleLoading => _googleLoading;
 
@@ -183,7 +154,7 @@ class LoginRepository extends ChangeNotifier {
               //save email to shared preferences
 
               if (user != null) {
-                print("user id is ${user.id}");
+
                 await SharedPrefsUtils.instance()
                     .saveUserId(user.id);
                 await SharedPrefsUtils.instance()

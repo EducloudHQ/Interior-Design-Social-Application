@@ -401,7 +401,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                                 print(profileRepo.profilePic);
                                               }
 
-                                              profileRepo.saveUserDetails(email).then((value){
+                                              profileRepo.createUserAccount(email).then((value){
                                                 context.push('/post/2hH66ON5jNdDNYFIL50o1ayb2GZ');
                                               });
                                             }

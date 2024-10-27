@@ -222,22 +222,14 @@ class ProfileRepository extends ChangeNotifier {
     }
   }
 
-  Future<bool> signOut() async {
-    try {
-      Amplify.Auth.signOut();
-      return logout = true;
-    } on AuthException catch (e) {
-      print(e.message);
-      return logout = false;
-    }
-  }
+
 
   Future<AuthUser> retrieveCurrentUser() async {
     AuthUser authUser = await Amplify.Auth.getCurrentUser();
     return authUser;
   }
 
-  Future<void> saveUserDetails(String email) async {
+  Future<void> createUserAccount(String email) async {
     loading = true;
 
     try {

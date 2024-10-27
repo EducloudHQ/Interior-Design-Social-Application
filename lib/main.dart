@@ -17,8 +17,8 @@ import 'amplifyconfiguration.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:provider/provider.dart';
 
-import 'comments/comments_repository.dart';
-import 'comments/comments_screen.dart';
+import 'repositories/comments_repository.dart';
+import 'screens/comments_screen.dart';
 import 'models/Post.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -50,9 +50,7 @@ class _MyAppState extends State<App> {
       await Amplify.addPlugins([
         AmplifyAPI(),
         AmplifyAuthCognito(
-          // FIXME: In your app, make sure to remove this line and set up
-          /// Keychain Sharing in Xcode as described in the docs:
-          /// https://docs.amplify.aws/lib/project-setup/platform-setup/q/platform/flutter/#enable-keychain
+
           secureStorageFactory: AmplifySecureStorage.factoryFrom(
             macOSOptions:
                 // ignore: invalid_use_of_visible_for_testing_member

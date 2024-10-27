@@ -1,12 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/repositories/post_respository.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../models/Comment.dart';
-import 'package:provider/provider.dart';
-
 import '../screens/Config.dart';
-import '../utils/validations.dart';
 class CommentItem  extends StatelessWidget {
    CommentItem({required this.commentItem});
    final Comment commentItem;
