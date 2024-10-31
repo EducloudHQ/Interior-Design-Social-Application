@@ -402,7 +402,7 @@ class _CreateUserAccountScreenState extends State<CreateUserAccountScreen> {
                                               }
 
                                               profileRepo.createUserAccount(email).then((value){
-                                                context.push('/post/2hH66ON5jNdDNYFIL50o1ayb2GZ');
+                                                context.pushReplacement('/');
                                               });
                                             }
                                           },
